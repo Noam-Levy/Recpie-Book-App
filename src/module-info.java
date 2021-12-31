@@ -1,8 +1,7 @@
-module OODFinalProject_AmitMaudi_NoamLevy {
+module recipie2 {
 	requires javafx.controls;
+	requires javafx.fxml;
 	requires javafx.graphics;
-	requires java.net.http;
-	requires json.simple;
 	
 	opens application to javafx.graphics, javafx.fxml;
 }
