@@ -13,6 +13,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.AddRecipePage">
@@ -54,25 +55,8 @@
             </HBox>
          </children>
       </HBox>
-      <Button layoutX="394.0" layoutY="605.0" mnemonicParsing="false" onAction="#saveRecipie">
-         <graphic>
-            <ImageView fitHeight="29.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../../Downloads/save.png" />
-               </image>
-            </ImageView>
-         </graphic></Button>
       <Pane layoutX="15.0" layoutY="242.0" prefHeight="273.0" prefWidth="410.0">
          <children>
-            <Button fx:id="btnAddRowIngrediant" layoutY="240.0" mnemonicParsing="false" onAction="#addRowIngrediant" prefHeight="26.0" prefWidth="14.0">
-               <graphic>
-                  <ImageView fitHeight="24.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../../Downloads/plus.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
             <ScrollPane layoutX="-2.0" prefHeight="225.0" prefWidth="410.0" style="-fx-background-color: transparent;">
                <content>
                   <GridPane fx:id="GPingiridiant" hgap="17.0" prefHeight="165.0" prefWidth="401.0" style="-fx-background-color: transparent;" vgap="20.0">
@@ -110,15 +94,6 @@
       </Pane>
       <Pane layoutX="433.0" layoutY="242.0" prefHeight="273.0" prefWidth="349.0">
          <children>
-            <Button fx:id="btnAddRowInstruction" layoutY="240.0" mnemonicParsing="false" onAction="#addRowInstruction" prefHeight="26.0" prefWidth="14.0">
-               <graphic>
-                  <ImageView fitHeight="24.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../../Downloads/plus.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
             <ScrollPane layoutY="-1.0" prefHeight="225.0" prefWidth="349.0">
                <content>
                   <GridPane fx:id="GPinstruction" hgap="17.0" prefHeight="193.0" prefWidth="316.0" vgap="20.0">
@@ -152,5 +127,41 @@
             </ScrollPane>
          </children>
       </Pane>
+      <Button layoutX="674.0" layoutY="584.0" mnemonicParsing="false">
+         <graphic>
+            <ImageView fitHeight="30.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../Documents/GitHub/Recpie-Book-App/src/images/NextBack.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button layoutX="615.0" layoutY="584.0" mnemonicParsing="false" rotate="180.0">
+         <graphic>
+            <ImageView fitHeight="30.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../Documents/GitHub/Recpie-Book-App/src/images/NextBack.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button layoutX="374.0" layoutY="515.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="26.0">
+         <graphic>
+            <StackPane prefHeight="6.0" prefWidth="0.0">
+               <children>
+                  <ImageView fitHeight="51.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../299040_star_icon.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="51.0" fitWidth="60.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../211824_star_icon.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </StackPane>
+         </graphic>
+      </Button>
    </children>
 </Pane>

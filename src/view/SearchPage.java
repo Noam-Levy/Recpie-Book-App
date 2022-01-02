@@ -1,7 +1,5 @@
 package view;
 
-import java.security.InvalidParameterException;
-import java.util.ArrayList;
 import java.util.Iterator;
 
 import javafx.event.ActionEvent;
@@ -14,11 +12,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import listeners.UIEventListener;
 import model.Ingredient;
-import model.Recipe;
 
-public class SearchPage extends Page {
+public class SearchPage {
 
 
 	@FXML private ToggleGroup TGsearchOptions;
@@ -28,10 +24,20 @@ public class SearchPage extends Page {
 	@FXML private TextField searchField;
 	@FXML private Pane searchPage;
 	
+	 @FXML
+	    private ChoiceBox<String> cmbINGRED;
+ 	
+
+
+
 	@FXML
 	protected void initialize() {
 		ingredientsSelector.setVisible(false);
 		searchButton.setDisable(true);
+
+		cmbINGRED.getItems().add("1");
+    	cmbINGRED.getItems().add("2");
+    	cmbINGRED.getItems().add("3");
 	}
 
 	@FXML
@@ -39,6 +45,7 @@ public class SearchPage extends Page {
 		ingredientsSelector.setVisible(true);
 		searchField.setDisable(true);
 		searchButton.setDisable(false);
+		
 	}
 	
 	@FXML
@@ -49,39 +56,35 @@ public class SearchPage extends Page {
 	}
 	
 	@FXML
-	void searchForRecipe(ActionEvent event) throws Exception {
-		ArrayList<Recipe> foundRecipes;
-		for (UIEventListener l : listeners) {
-			if (searchByIngredients.isSelected())
-				foundRecipes = l.getRecipiesByIngredients(ingredientsBox.getChildren());
-			else if (searchField.getText().isBlank())
-			{
-				showErrorWindow("Please enter search data");
-				return;
-			}
-			else {
-				if (searchByCuisine.isSelected())
-					foundRecipes = l.getRecipiesByCuisine(searchField.getText());
-				else
-					foundRecipes = l.getRecipieByName(searchField.getText());
-			}
-			// display all recipes found.
-			l.chagneView("AllRecipesPage");
-			l.showRecipies(foundRecipes);
-		}
+	void searchForRecipe(ActionEvent event) {
+		// TO DO
 	}
 
-   @SuppressWarnings("unchecked") // ingredientsBox contains ChoiceBox<Ingredient> objects only
-	@FXML
+    @FXML
     void addIngredientsRow(ActionEvent event) {
-    	Iterator<Node> it = ingredientsBox.getChildren().iterator();
-    	while(it.hasNext()) {
-    		if (((ChoiceBox<Ingredient>)it.next()).getValue() == null)
+    	
+    	for (Node c : ingredientsBox.getChildren()) {
+    		if (((ChoiceBox<String>)c).getValue() == null)
     			return;
     	}
-    	ChoiceBox<Ingredient> newBox = new ChoiceBox<Ingredient>();
-    	newBox.setPrefWidth(ingredientsBox.getWidth());
-    	ingredientsBox.getChildren().add(newBox);
+    	
+    	
+    	ChoiceBox<String> cmbINGREDClone = new ChoiceBox<String>();
+    	for (String s : cmbINGRED.getItems()) {
+    		cmbINGREDClone.getItems().add(s);	
+		}
+    	cmbINGREDClone.setPrefSize(cmbINGRED.getPrefWidth(), cmbINGRED.getPrefHeight());
+    	ingredientsBox.getChildren().add(cmbINGREDClone);
+    	
+    	
+//    	Iterator<Node> it = ingredientsBox.getChildren().iterator();
+//    	while(it.hasNext()) {
+//    		if ((ChoiceBox)it.next(). == null)
+//    			return;
+//    	}
+//    	ChoiceBox<Ingredient> newBox = new ChoiceBox<Ingredient>();
+//    	newBox.setPrefWidth(ingredientsBox.getWidth());
+//    	ingredientsBox.getChildren().add(newBox);
     }
 
 
