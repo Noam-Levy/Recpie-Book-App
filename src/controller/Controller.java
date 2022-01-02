@@ -18,9 +18,7 @@ public class Controller implements UIEventListener, ModelEventListener {
 	private Page currentView;
 	private MenuPage menuPage;
 	private Model model;
-	private User loggedUser;
-	
-	
+		
 	public Controller(Page view, Model model) {
 		this.model = model;
 		this.currentView = view;

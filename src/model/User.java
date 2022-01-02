@@ -1,5 +1,9 @@
 package model;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.util.Base64;
+
 public class User {
 	
 	private String userID;
@@ -14,6 +18,23 @@ public class User {
 		this.APIKey = APIKey;
 	}
 
+	/*private void encrypt() {
+		try {
+			SecureRandom r = SecureRandom.getInstance("SHA1PRNG");
+			byte[] salt = new byte[8];
+			r.nextBytes(salt);
+			System.out.println(Base64.getEncoder().encodeToString(salt) + " " + Base64.getEncoder().encodeToString(salt).length());
+			
+		} catch (NoSuchAlgorithmException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	private void decrypt() {
+	
+	}
+	*/
+	
 	public String getUserID() {
 		return userID;
 	}
