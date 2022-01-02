@@ -1,11 +1,16 @@
 package view;
 
+import listeners.UIEventListener;
 
 import java.util.ArrayList;
 
-import javafx.fxml.Initializable;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
-import listeners.UIEventListener;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+
 
 
 public abstract class Page extends Pane  {

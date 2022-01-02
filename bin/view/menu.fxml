@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="bp" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.MenuPage">
+<BorderPane fx:id="bp" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1020.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.MenuPage">
    <left>
       <Pane prefHeight="500.0" prefWidth="170.0" style="-fx-background-color: #b1c1b5;" BorderPane.alignment="CENTER">
          <children>
@@ -29,7 +29,7 @@
                   <Font name="Zapfino" size="16.0" />
                </font>
             </Button>
-            <Button alignment="CENTER" layoutX="2.0" layoutY="251.0" mnemonicParsing="false" onAction="#showAllRecipiesPage" prefHeight="80.0" prefWidth="165.0" style="-fx-background-color: #b1c1b5 #b1c1b5;" text="show recipies" textFill="#5e4f3a">
+            <Button alignment="CENTER" layoutX="2.0" layoutY="251.0" mnemonicParsing="false" onAction="#showRecipesPage" prefHeight="80.0" prefWidth="165.0" style="-fx-background-color: #b1c1b5 #b1c1b5;" text="show recipies" textFill="#5e4f3a">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
@@ -50,7 +50,7 @@
       </Pane>
    </left>
    <center>
-      <ImageView fitHeight="508.0" fitWidth="530.0" pickOnBounds="true" BorderPane.alignment="CENTER">
+      <ImageView fitHeight="650.0" fitWidth="850.0" pickOnBounds="true" BorderPane.alignment="CENTER">
          <image>
             <Image url="@../../images/recipieBook.jpg" />
          </image>

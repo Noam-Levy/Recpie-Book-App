@@ -57,8 +57,15 @@ public class Controller implements UIEventListener, ModelEventListener {
 	}
 	
 	@Override
-	public void chagneView(String string) {
-		this.currentView = menuPage.switchPane(string);
+	public void setCurrentView(Page currentView) {
+		this.currentView = currentView;
+	}
+
+	@Override
+	public void changeView(String requestedView) {
+		/* Allows for other view controllers to request view change.
+		   I.E - after searching for recipes, the view will change automatically to ShowRecipeBookPage in order to display found recipes */
+		menuPage.switchPane(requestedView);
 	}
 
 

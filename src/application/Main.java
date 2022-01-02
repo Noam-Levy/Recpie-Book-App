@@ -1,27 +1,22 @@
 package application;
 
 import controller.Controller;
+import model.Model;
+import view.LoginRegisterPage;
+import view.Page;
 
-//import java.net.ConnectException;
-
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
-import model.Model;
-
-import view.MenuPage;
-import view.Page;
-//import model.RecipeFetcher;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-//import javafx.scene.layout.BorderPane;
 
 
 public class Main extends Application {
 
 	@Override
 	public void start(Stage primaryStage) {
-		Page view = new MenuPage();
+		Page view = new LoginRegisterPage();
 		Model model = new Model();
 		Controller controller = new Controller(view, model);
 		try {
@@ -32,7 +27,8 @@ public class Main extends Application {
 
 		} catch(Exception e) {
 			// show error window with Exception message.
-			System.err.println(e.getMessage());
+			e.printStackTrace();
+			//System.err.println(e.getMessage());
 		}
 	}
 
@@ -40,12 +36,3 @@ public class Main extends Application {
 		launch(args);	
 	}
 }
-
-//		try {
-		//			RecipeFetcher.getInstance("").getRandomRecipe();
-		//			//RecipeFetcher.getInstance().convertMeasurementToGrams(null);
-		//		} catch (ConnectException e) {
-		//			System.err.println("Cannot connect to API. Check internet connection");
-		//		}
-		//		catch (Exception e) {
-		//			System.err.println(e.getMessage());

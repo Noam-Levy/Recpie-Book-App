@@ -9,21 +9,9 @@ import javafx.scene.layout.VBox;
 public class LoginRegisterPage extends Page {
 
 
-    @FXML
-    private Button btnLogin;
-
-    @FXML
-    private Button btnRegister;
-
-    @FXML
-    private HBox hbAPI;
-
-
-    @FXML
-    private VBox vbLogin;
-
-    @FXML
-    private VBox vbRegister;
+    @FXML private Button btnLogin, btnRegister;
+    @FXML private HBox hbAPI;
+    @FXML private VBox vbLogin, vbRegister;
 
     @FXML
     void showLoginOpt(ActionEvent event) {

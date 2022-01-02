@@ -29,7 +29,7 @@
                   <Font name="Zapfino" size="16.0" />
                </font>
             </Button>
-            <Button alignment="CENTER" layoutX="2.0" layoutY="251.0" mnemonicParsing="false" onAction="#showAllRecipiesPage" prefHeight="80.0" prefWidth="165.0" style="-fx-background-color: #b1c1b5 #b1c1b5;" text="show recipies" textFill="#5e4f3a">
+            <Button alignment="CENTER" layoutX="2.0" layoutY="251.0" mnemonicParsing="false" onAction="#showRecipesPage" prefHeight="80.0" prefWidth="165.0" style="-fx-background-color: #b1c1b5 #b1c1b5;" text="show recipies" textFill="#5e4f3a">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>

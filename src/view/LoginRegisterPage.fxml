@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="LoginRegisterPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.LoginRegisterPage">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.LoginRegisterPage">
    <children>
       <ImageView fitHeight="650.0" fitWidth="850.0" opacity="0.49" pickOnBounds="true">
          <image>
@@ -74,7 +74,7 @@
                   </HBox>
                   <HBox fx:id="hbAPI" layoutX="10.0" layoutY="90.0" prefHeight="50.0" prefWidth="537.0">
                      <children>
-                        <Label prefHeight="43.0" prefWidth="217.0" text="Api key">
+                        <Label prefHeight="43.0" prefWidth="217.0" text="API Key (spoonacular)">
                            <font>
                               <Font size="31.0" />
                            </font>
