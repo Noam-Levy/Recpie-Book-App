@@ -17,8 +17,6 @@ public class MenuPage extends Page implements Initializable {
 	@FXML
 	private BorderPane bp;
 	
-	
-	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		switchPane("LoginRegisterPage")	;
@@ -40,15 +38,22 @@ public class MenuPage extends Page implements Initializable {
 	}
 	
 	
-	public final void switchPane(String fileName)  {
+	public final Page switchPane(String fileName)  {
 		try {
 			pane = FXMLLoader.load(getClass().getResource("/view/"+fileName+".fxml"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		bp.setCenter(pane);
+		switch (fileName) {
+		case "AllRecipesPage":
+			return new ShowRecipeBookPage();
+		case "AddPage":
+			return new AddRecipePage();
+		case "SearchPage":
+			return new SearchPage();
+		default:
+			throw new IllegalArgumentException("Unexpected value: " + fileName); // MIGHT NEED TO BE CHANGED
+		}
 	}
-
-	
-
 }
