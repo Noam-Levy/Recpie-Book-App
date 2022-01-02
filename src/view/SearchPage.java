@@ -23,9 +23,7 @@ public class SearchPage {
 	@FXML private RadioButton searchByCuisine, searchByIngredients, searchByName;
 	@FXML private TextField searchField;
 	@FXML private Pane searchPage;
-	
-	 @FXML
-	    private ChoiceBox<String> cmbINGRED;
+	@FXML private ChoiceBox<String> cmbINGRED; // NEED TO BE CHANGED TO <Ingredient>
  	
 
 
@@ -34,10 +32,10 @@ public class SearchPage {
 	protected void initialize() {
 		ingredientsSelector.setVisible(false);
 		searchButton.setDisable(true);
-
+		// to be fixed
 		cmbINGRED.getItems().add("1");
-    	cmbINGRED.getItems().add("2");
-    	cmbINGRED.getItems().add("3");
+    		cmbINGRED.getItems().add("2");
+    		cmbINGRED.getItems().add("3");
 	}
 
 	@FXML
@@ -57,24 +55,40 @@ public class SearchPage {
 	
 	@FXML
 	void searchForRecipe(ActionEvent event) {
-		// TO DO
+		ArrayList<Recipe> foundRecipes;
+		for (UIEventListener l : listeners) {
+			if (searchByIngredients.isSelected())
+				foundRecipes = l.getRecipiesByIngredients(ingredientsBox.getChildren());
+			else if (searchField.getText().isBlank())
+			{
+				showErrorWindow("Please enter search data");
+				return;
+			}
+			else {
+				if (searchByCuisine.isSelected())
+					foundRecipes = l.getRecipiesByCuisine(searchField.getText());
+				else
+					foundRecipes = l.getRecipieByName(searchField.getText());
+			}
+			// display all recipes found.
+			l.chagneView("AllRecipesPage");
+			l.showRecipies(foundRecipes);
 	}
 
-    @FXML
-    void addIngredientsRow(ActionEvent event) {
-    	
-    	for (Node c : ingredientsBox.getChildren()) {
-    		if (((ChoiceBox<String>)c).getValue() == null)
-    			return;
+   	 @FXML
+    	void addIngredientsRow(ActionEvent event) {
+    		for (Node c : ingredientsBox.getChildren()) {
+    			if (((ChoiceBox<String>)c).getValue() == null)
+    				return;
     	}
     	
-    	
-    	ChoiceBox<String> cmbINGREDClone = new ChoiceBox<String>();
-    	for (String s : cmbINGRED.getItems()) {
-    		cmbINGREDClone.getItems().add(s);	
+    		ChoiceBox<String> cmbINGREDClone = new ChoiceBox<String>();
+    		for (String s : cmbINGRED.getItems()) {
+    			cmbINGREDClone.getItems().add(s);	
 		}
-    	cmbINGREDClone.setPrefSize(cmbINGRED.getPrefWidth(), cmbINGRED.getPrefHeight());
-    	ingredientsBox.getChildren().add(cmbINGREDClone);
+    		cmbINGREDClone.setPrefSize(cmbINGRED.getPrefWidth(), cmbINGRED.getPrefHeight());
+    		ingredientsBox.getChildren().add(cmbINGREDClone);
+	}
     	
     	
 //    	Iterator<Node> it = ingredientsBox.getChildren().iterator();
@@ -85,8 +99,5 @@ public class SearchPage {
 //    	ChoiceBox<Ingredient> newBox = new ChoiceBox<Ingredient>();
 //    	newBox.setPrefWidth(ingredientsBox.getWidth());
 //    	ingredientsBox.getChildren().add(newBox);
-    }
-
-
 }
 
