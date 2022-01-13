@@ -24,6 +24,7 @@ public abstract class Page extends Pane  {
 	
 	public final void showErrorWindow(String error) {
 		Stage stage = new Stage();
+		stage.centerOnScreen();
 		stage.setTitle("Something went wrong");
 		StackPane root = new StackPane();
 		Label label = new Label(error);

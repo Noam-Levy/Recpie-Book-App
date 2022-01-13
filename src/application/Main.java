@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
+	@SuppressWarnings("unused") // controller
 	@Override
 	public void start(Stage primaryStage) {
 		Page view = new LoginRegisterPage();

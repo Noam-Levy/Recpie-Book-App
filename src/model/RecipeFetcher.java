@@ -7,6 +7,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.security.InvalidParameterException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -27,8 +28,7 @@ public class RecipeFetcher {
 
 	private RecipeFetcher(String APIKey) {
 		this.parser = new JSONParser();
-		//setKey(APIKey);
-		this.APIKey = "8a9e1f0217mshdad71089a8aab63p17a388jsn2590e5097725"; // change to key from method.
+		this.APIKey = ""; // change to key from config file.
 	}
 	
 	private void setKey(String APIKey) {
@@ -119,8 +119,11 @@ public class RecipeFetcher {
 		return recipes;
 	}
 
-	private void addRecipeToDB(Recipe recipe) {
+	private void addRecipeToDB(Recipe recipe) throws SQLException {
 		// Compares the recipe with the DB and (if necessary) adds it to the DB.
+		DBManager manager = DBManager.getInstance();
+		if(manager.requestRecipeByID(recipe.getRecipeID()) == null)
+			manager.addRecipe(recipe);
 	}
 	
 	public String convertMeasurementToGrams(Ingredient i) throws IOException, InterruptedException, ParseException {
@@ -149,7 +152,7 @@ public class RecipeFetcher {
 		throw new InvalidParameterException("Cannot convert from " + i.getMeasurement());
 	}
 	
-	private Recipe createRecipie(JSONObject recipieData) {
+	private Recipe createRecipie(JSONObject recipieData) throws SQLException {
 		/*
 		 * translates and returns received JSONObject from spoonacular API as recipe object.
 		 */

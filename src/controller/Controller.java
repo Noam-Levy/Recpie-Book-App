@@ -1,14 +1,15 @@
 package controller;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
+import exceptions.UserRegistrationException;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import listeners.ModelEventListener;
 import listeners.UIEventListener;
 import model.Model;
 import model.Recipe;
-import model.User;
 import view.MenuPage;
 import view.Page;
 import view.ShowRecipeBookPage;
@@ -21,9 +22,15 @@ public class Controller implements UIEventListener, ModelEventListener {
 		
 	public Controller(Page view, Model model) {
 		this.model = model;
+		this.model.addListener(this);
 		this.currentView = view;
 		this.currentView.addListener(this);
 		this.menuPage = new MenuPage();
+	}
+	
+	@Override
+	public void registerUser(String userName, String userPassword) throws UserRegistrationException, SQLException {
+		model.registerUser(userName,userPassword);	
 	}
 
 	@Override
@@ -64,11 +71,14 @@ public class Controller implements UIEventListener, ModelEventListener {
 	@Override
 	public void changeView(String requestedView) {
 		/* Allows for other view controllers to request view change.
-		   I.E - after searching for recipes, the view will change automatically to ShowRecipeBookPage in order to display found recipes */
+		   I.E - after searching for recipes, 
+		   the view will change automatically to ShowRecipeBookPage in order to display found recipes 
+		*/
 		menuPage.switchPane(requestedView);
 	}
 
-
-
-
+	@Override
+	public void showErrorMessage(String string) {
+		currentView.showErrorWindow(string);
+	}
 }

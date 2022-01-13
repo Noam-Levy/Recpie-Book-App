@@ -1,7 +1,9 @@
 package listeners;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
+import exceptions.UserRegistrationException;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import model.Recipe;
@@ -15,5 +17,6 @@ public interface UIEventListener {
 	void setCurrentView(Page currentView);
 	void changeView(String requestedView);
 	void showRecipies(ArrayList<Recipe> foundRecipes);
+	void registerUser(String userName, String userPassword) throws UserRegistrationException, SQLException;
 
 }
