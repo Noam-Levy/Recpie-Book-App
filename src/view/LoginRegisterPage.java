@@ -1,5 +1,6 @@
 package view;
 
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
 import exceptions.UserRegistrationException;
@@ -20,7 +21,7 @@ public class LoginRegisterPage extends Page {
     @FXML private VBox vbLogin, vbRegister;
     @FXML private TextField registerUserName;
     @FXML private PasswordField registerPassword;
-
+ 
     @FXML
     void showLoginOpt(ActionEvent event) {
     	vbRegister.setVisible(false);
@@ -42,10 +43,14 @@ public class LoginRegisterPage extends Page {
     	for (UIEventListener l : listeners) {
 			try {
 				l.registerUser(registerUserName.getText(), registerPassword.getText());
+				// enable menu buttons
 			} catch (UserRegistrationException e) {
 				showErrorWindow(e.getMessage());
 			} catch (SQLException sqe) {
 				//ADD SQLException handling cases
+				showErrorWindow("Faild logging into database");
+			} catch (NoSuchAlgorithmException e) {
+				showErrorWindow("Cannot create properties file: " + e.getMessage());
 			}
 		}
     }

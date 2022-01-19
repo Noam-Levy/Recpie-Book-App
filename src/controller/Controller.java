@@ -1,5 +1,6 @@
 package controller;
 
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -29,7 +30,7 @@ public class Controller implements UIEventListener, ModelEventListener {
 	}
 	
 	@Override
-	public void registerUser(String userName, String userPassword) throws UserRegistrationException, SQLException {
+	public void registerUser(String userName, String userPassword) throws UserRegistrationException, SQLException, NoSuchAlgorithmException {
 		model.registerUser(userName,userPassword);	
 	}
 
@@ -81,4 +82,6 @@ public class Controller implements UIEventListener, ModelEventListener {
 	public void showErrorMessage(String string) {
 		currentView.showErrorWindow(string);
 	}
+
+
 }

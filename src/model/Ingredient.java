@@ -38,6 +38,8 @@ public class Ingredient {
 			this.measurement = "cups";
 		else if (measurement.isBlank())
 			this.measurement = "units";
+		else if(measurement.toLowerCase().equals("tbsp"))
+				this.measurement = "tablespoons";
 		else
 			this.measurement = measurement;
 	}
@@ -50,5 +52,11 @@ public class Ingredient {
 		this.amount = amount;
 	}
 	
+	public void setFrom(String form) {
+		this.form = form;
+	}
 	
+	public String getFrom() {
+		return form;
+	}
 }

@@ -1,15 +1,16 @@
 package application;
 
+
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
 import controller.Controller;
 import model.Model;
 import view.LoginRegisterPage;
 import view.Page;
-
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.stage.Stage;
 
 
 public class Main extends Application {
@@ -27,9 +28,7 @@ public class Main extends Application {
 			primaryStage.show();
 
 		} catch(Exception e) {
-			// show error window with Exception message.
-			e.printStackTrace();
-			//System.err.println(e.getMessage());
+			view.showErrorWindow(e.getMessage());
 		}
 	}
 

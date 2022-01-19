@@ -1,5 +1,6 @@
 package listeners;
 
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -17,6 +18,6 @@ public interface UIEventListener {
 	void setCurrentView(Page currentView);
 	void changeView(String requestedView);
 	void showRecipies(ArrayList<Recipe> foundRecipes);
-	void registerUser(String userName, String userPassword) throws UserRegistrationException, SQLException;
+	void registerUser(String userName, String userPassword) throws UserRegistrationException, SQLException, NoSuchAlgorithmException;
 
 }

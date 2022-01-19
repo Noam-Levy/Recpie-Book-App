@@ -1,5 +1,7 @@
 package model;
 
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 import exceptions.UserRegistrationException;
@@ -20,7 +22,7 @@ public class User {
 		userIDGenerator ++;
 	}
 	
-	public User(int userID, String userName, String password, String APIKey) {
+	public User(int userID, String userName, String password, String APIKey) throws IOException, NoSuchAlgorithmException {
 		this.userID = userID;
 		this.userName = userName;
 		this.password = Encrypt(password);
@@ -29,9 +31,9 @@ public class User {
 	public boolean validatePassword(String password) throws UserRegistrationException {
 		
 		if(password.isBlank() || password.length() < 8)
-			throw new UserRegistrationException("Password is too short. must be 8-16 characters long."); // code for password is too short
+			throw new UserRegistrationException("Password is too short. must be 8-16 characters long.");
 		if (password.length() > 16)
-			throw new UserRegistrationException("Password is too long. must be 8-16 characters long."); // code for password is too long
+			throw new UserRegistrationException("Password is too long. must be 8-16 characters long.");
 		for (char c : illegalCharacters) {
 			if(password.indexOf(c) != -1)
 				throw new UserRegistrationException("Password cannot contain: " 
@@ -40,9 +42,8 @@ public class User {
 			return true;
 	}
 
-	private String Encrypt(String password) {
-		//TODO
-		return null;
+	private String Encrypt(String password) throws IOException, NoSuchAlgorithmException {
+		return PasswordManager.getInstance().encrypt(password);
 	}
 	
 
@@ -62,7 +63,7 @@ public class User {
 		return password;
 	}
 
-	public void setPassword(String password) {
+	public void setPassword(String password) throws IOException, NoSuchAlgorithmException {
 		this.password = Encrypt(password);
 	}
 }

@@ -20,6 +20,7 @@ public class MenuPage extends Page implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		switchPane("LoginRegisterPage");
+		// disable menu buttons
 	}
 	
 	@FXML
@@ -47,7 +48,8 @@ public class MenuPage extends Page implements Initializable {
 			e.printStackTrace();
 		}
 		bp.setCenter(pane);
-		/* set MVC controller current view to actual view.
+		/* 
+		 * set MVC controller current view to actual view.
 		 * this is effectively implements the command design pattern between the MVC controller and the view controllers 
 		 * such that the MVC controller functionality regarding each view changes during runtime.
 		 */
