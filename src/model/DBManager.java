@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Properties;
 
@@ -97,6 +98,7 @@ public class DBManager {
 
 	public boolean addRecipe(Recipe recipe) throws SQLException {
 		String id = recipe.getRecipeID();
+		// transaction - to do
 		boolean success =  saveRecipeToDB(recipe) && saveInstructionsToDB(id, recipe.getInstructions()) 
 				&& saveIngredientsToDB(id, recipe.getIngrediants()) && saveCuisineToDB(id, recipe.getCuisine());
 
@@ -104,10 +106,22 @@ public class DBManager {
 	}
 
 	public ArrayList<Recipe> getUserFavorites(int userID) throws SQLException {
-		//TODO
-		//disconnectFromDB();
-		return null;
+		
+		String query = "Select recipeID FROM user_favorites WHERE userID = " + userID + ";";
+		ResultSet rs = executeQuery(query);
+		if(!(rs.next())) {
+			disconnectFromDB(rs);
+			return null;
+		}
+		ArrayList<Recipe> favoriteRecipiesOfUser =  new ArrayList<Recipe>();
+		while(rs.next()) {
+			favoriteRecipiesOfUser.add(requestRecipeByID(rs.getString("recipeID")));	// maybe disconnect because requestRecipeByID
+		}
+		
+		disconnectFromDB(rs);
+		return favoriteRecipiesOfUser;
 	}
+	
 
 	public Recipe requestRecipeByID(String recipeID) throws SQLException { // TO BE CHECKED
 		String query = "Select * FROM recipe WHERE recipeID = " + recipeID + ";";
@@ -238,6 +252,93 @@ public class DBManager {
 		return effectedRows > 0;
 	}
 
+	public Recipe searchByName(String recipeName) throws SQLException {
+		
+		String query = "Select recipeID FROM recipe WHERE recipeName = " + recipeName + ";";
+		ResultSet rs = executeQuery(query);
+		if(!(rs.next())) {
+			disconnectFromDB(rs);
+			return null;
+		}
+		
+		Recipe r =  requestRecipeByID(rs.getString("recipeID"));	// maybe disconnect because requestRecipeByID
+		
+		disconnectFromDB(rs);
+		return r;
+	}
+	
+	public ArrayList<Recipe> searchByCuisine(String cuisine) throws SQLException {
+		
+		String query = "Select recipeID FROM (SELECT cuisineID FROM cuisine WHERE cuisineName = " + cuisine + ") JOIN recipe_cuisine;";
+		ResultSet rs = executeQuery(query);
+		if(!(rs.next())) {
+			disconnectFromDB(rs);
+			return null;
+		}
+		ArrayList<Recipe> recipies =  new ArrayList<Recipe>();
+		while(rs.next()) {
+			recipies.add(requestRecipeByID(rs.getString("recipeID")));	// maybe disconnect because requestRecipeByID
+		}
+		
+		disconnectFromDB(rs);
+		return recipies;
+	
+	}
+	
+	
+	public ArrayList<Recipe> searchByIngredients(Ingredient[] userIngredients) throws SQLException {
+		
+		StringBuffer allIngredients = new StringBuffer();
+		for (int i = 0; i < userIngredients.length; i++) {
+			allIngredients.append(userIngredients[i].IngredientID );
+			if(i< (userIngredients.length - 1)) {
+				allIngredients.append(" OR ingredientID = ");
+			}
+		}
+		
+		
+		String query = "Select recipeID FROM recipe_ingredients WHERE ingredientID = " + allIngredients.toString() + ";";
+		ResultSet rs = executeQuery(query);
+		if(!(rs.next())) {
+			disconnectFromDB(rs);
+			return null;
+		}
+		ArrayList<Recipe> recipies =  new ArrayList<Recipe>();
+		while(rs.next()) {
+			recipies.add(requestRecipeByID(rs.getString("recipeID")));	// maybe disconnect because requestRecipeByID
+		}
+		
+		disconnectFromDB(rs);
+		return recipies;
+	
+	}
+	
+	
+	public ArrayList<Recipe> showAllRecipies() throws SQLException {
+		
+		String query = "Select recipeID FROM recipe ;";
+		ResultSet rs = executeQuery(query);
+		if(!(rs.next())) {
+			disconnectFromDB(rs);
+			return null;
+		}
+		ArrayList<Recipe> recipies =  new ArrayList<Recipe>();
+		while(rs.next()) {
+			recipies.add(requestRecipeByID(rs.getString("recipeID")));	// maybe disconnect because requestRecipeByID
+		}
+		
+		disconnectFromDB(rs);
+		return recipies;
+	
+	}
+	
+	public boolean addToUserFavorites(String userID , String recipeID ) throws SQLException { 
+		String query = "INSERT INTO user_favorites (userID,recipeID) VALUES ("+userID +"," +recipeID+");" ;
+		
+		int effectedRows = executeUpdate(query);
+		disconnectFromDB(null);	
+		return effectedRows > 0;
+	}
+
 
 }
-
