@@ -1,6 +1,7 @@
 /config.properties
-/view/
-/controller/
+/.gitignore
 /application/
+/controller/
 /listeners/
 /model/
+/view/
