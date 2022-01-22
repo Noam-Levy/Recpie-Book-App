@@ -22,10 +22,10 @@ public class User {
 		userIDGenerator ++;
 	}
 	
-	public User(int userID, String userName, String password, String APIKey) throws IOException, NoSuchAlgorithmException {
+	public User(int userID, String userName, String password) {
 		this.userID = userID;
 		this.userName = userName;
-		this.password = Encrypt(password);
+		this.password = password;
 	}
 	
 	public boolean validatePassword(String password) throws UserRegistrationException {
@@ -43,7 +43,7 @@ public class User {
 	}
 
 	private String Encrypt(String password) throws IOException, NoSuchAlgorithmException {
-		return PasswordManager.getInstance().encrypt(password);
+		return PasswordManager.getInstance().encryptPassword(password);
 	}
 	
 

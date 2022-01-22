@@ -21,25 +21,36 @@ public class Model {
 		listeners.add(listener);
 	}
 	
-	public void registerUser(String userName, String userPassword) throws UserRegistrationException, SQLException, NoSuchAlgorithmException {
+	public boolean loginUser(String userName, String password) throws SQLException, NoSuchAlgorithmException, IOException {
+		User match = DBManager.getInstance().getUser(userName);
+		if(match == null || !PasswordManager.getInstance().checkPassowrd(password, match.getPassword()))
+			return false;
+		else {
+			this.loggedUser = match;
+			return true;
+		}
+	}
+	
+	public void logoutUser() {
+		this.loggedUser = null;
+	}
+	
+	public boolean registerUser(String userName, String userPassword) throws UserRegistrationException, SQLException, NoSuchAlgorithmException {
 		if(checkUserExsists(userName))
 			throw new UserRegistrationException("Username already exsists");
 		User user = new User();
 		user.validatePassword(userPassword); // throws UserRegistrationException if fails
 		user.setUserName(userName);
 		try {
-			user.setPassword(userPassword);
+			user.setPassword(userPassword); // throws NoSuchAlgorithmException if fails
 		} catch (IOException e) {
 			for (ModelEventListener l : listeners) {
 				l.showErrorMessage(e.getMessage());
 			}
 		}
 		if(addUserToDB(user)) // throws SQLException if fails
-		{
-			this.loggedUser = user;
-			for (ModelEventListener l : listeners)
-				l.changeView("AllRecipesPage");
-		}	
+			return true;
+		return false;
 	}
 	
 	public boolean checkUserExsists(String userName) throws SQLException, NoSuchAlgorithmException {

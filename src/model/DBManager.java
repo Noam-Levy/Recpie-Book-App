@@ -10,7 +10,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Properties;
 
@@ -86,6 +85,14 @@ public class DBManager {
 		boolean success = rs.next();
 		disconnectFromDB(rs);	
 		return success;
+	}
+	
+	public User getUser(String userName) throws SQLException {
+		String query = "SELECT * FROM accounttable WHERE userName = '" + userName + "'";
+		ResultSet rs = executeQuery(query);
+		if(!rs.next())
+			return null;
+		return new User(rs.getInt("userID"), rs.getString("userName"), rs.getString("password"));
 	}
 
 	public boolean addUser(User user) throws SQLException {
@@ -252,7 +259,7 @@ public class DBManager {
 		return effectedRows > 0;
 	}
 
-	public Recipe searchByName(String recipeName) throws SQLException {
+	public Recipe searchRecipeByName(String recipeName) throws SQLException { // TO BE CHECKED
 		
 		String query = "Select recipeID FROM recipe WHERE recipeName = " + recipeName + ";";
 		ResultSet rs = executeQuery(query);
@@ -267,7 +274,7 @@ public class DBManager {
 		return r;
 	}
 	
-	public ArrayList<Recipe> searchByCuisine(String cuisine) throws SQLException {
+	public ArrayList<Recipe> searchRecipeByCuisine(String cuisine) throws SQLException { // TO BE CHECKED
 		
 		String query = "Select recipeID FROM (SELECT cuisineID FROM cuisine WHERE cuisineName = " + cuisine + ") JOIN recipe_cuisine;";
 		ResultSet rs = executeQuery(query);
@@ -286,7 +293,7 @@ public class DBManager {
 	}
 	
 	
-	public ArrayList<Recipe> searchByIngredients(Ingredient[] userIngredients) throws SQLException {
+	public ArrayList<Recipe> searchRecipeByIngredients(Ingredient[] userIngredients) throws SQLException { // TO BE CHECKED
 		
 		StringBuffer allIngredients = new StringBuffer();
 		for (int i = 0; i < userIngredients.length; i++) {
@@ -314,7 +321,7 @@ public class DBManager {
 	}
 	
 	
-	public ArrayList<Recipe> showAllRecipies() throws SQLException {
+	public ArrayList<Recipe> showAllRecipies() throws SQLException { // TO BE CHECKED
 		
 		String query = "Select recipeID FROM recipe ;";
 		ResultSet rs = executeQuery(query);
@@ -332,7 +339,7 @@ public class DBManager {
 	
 	}
 	
-	public boolean addToUserFavorites(String userID , String recipeID ) throws SQLException { 
+	public boolean addRecipeToUserFavorites(String userID , String recipeID ) throws SQLException {  // TO BE CHECKED
 		String query = "INSERT INTO user_favorites (userID,recipeID) VALUES ("+userID +"," +recipeID+");" ;
 		
 		int effectedRows = executeUpdate(query);

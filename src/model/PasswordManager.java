@@ -10,6 +10,7 @@ import java.util.Properties;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
+import org.jasypt.util.password.BasicPasswordEncryptor;
 import org.jasypt.util.text.StrongTextEncryptor;
 
 public class PasswordManager {
@@ -18,10 +19,12 @@ public class PasswordManager {
 
 	private String salt;
 	private final int DEFAULT_SIZE = 128;
-	private StrongTextEncryptor manager;
+	private StrongTextEncryptor textEncryptor;
+	private BasicPasswordEncryptor  passwordEncryptor;
 
 	private PasswordManager() throws IOException, NoSuchAlgorithmException {
-		this.manager = new StrongTextEncryptor();
+		this.textEncryptor = new StrongTextEncryptor();
+		this.passwordEncryptor = new BasicPasswordEncryptor ();
 		// get encryption key from config file
 		FileReader reader;
 		Properties p = new Properties();
@@ -30,7 +33,7 @@ public class PasswordManager {
 		p.load(reader); 
 		// set encryptor's key
 		setSalt(p.getProperty("saltKey"));
-		this.manager.setPassword(this.salt);
+		this.textEncryptor.setPassword(this.salt);
 		//save key to config file
 		//if key was read from file - it will stay the same, otherwise a new key will be set.
 		p.setProperty("saltKey", salt);
@@ -56,13 +59,21 @@ public class PasswordManager {
 			_instance = new PasswordManager();
 		return _instance;
 	}
-
-	public String decrypt(String message) {
-		return manager.decrypt(message);
+	
+	public boolean checkPassowrd(String plainPassword, String encryptedPassword) {
+		return passwordEncryptor.checkPassword(plainPassword, encryptedPassword);
+	}
+	
+	public String encryptPassword(String password) {
+		return passwordEncryptor.encryptPassword(password);
 	}
 
-	public String encrypt(String message) {
-		return manager.encrypt(message);
+	public String decrypt(String message) {
+		return textEncryptor.decrypt(message);
+	}
+
+	public String encryptText(String message) {
+		return textEncryptor.encrypt(message);
 	}
 
 }
