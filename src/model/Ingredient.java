@@ -4,7 +4,7 @@ public class Ingredient {
 	String IngredientID, name, measurement, form;
 	float amount;
 	
-	public Ingredient(String id, String name, String measurement, float amount, String form)
+	public Ingredient(String id, float amount, String measurement, String name, String form)
 	{
 		this.IngredientID = id;
 		this.name = name;
@@ -59,4 +59,14 @@ public class Ingredient {
 	public String getFrom() {
 		return form;
 	}
+
+	@Override
+	public String toString() {
+		return "Ingredient : (name " + name + ", measurement " + measurement + ", form " + form + ", amount " + amount
+				+ ")\n";
+	}
+	
+	
+	
+	
 }

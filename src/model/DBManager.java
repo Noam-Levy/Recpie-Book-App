@@ -186,8 +186,8 @@ public class DBManager {
 			throw new SQLException("Cannot retrive ingredients list to requested recipe");
 		}
 		while(rs.next())
-			recipe.addIngrediant(new Ingredient(((Integer)(rs.getInt("ingredientID"))).toString(), rs.getString("ingredientName"), 
-					rs.getString("measurementName"), rs.getFloat("amount"), rs.getString("form")));
+			recipe.addIngrediant(new Ingredient(((Integer)(rs.getInt("ingredientID"))).toString(), rs.getFloat("amount"), 
+					rs.getString("measurementName"), rs.getString("ingredientName"), rs.getString("form")));
 		disconnectFromDB(rs);
 
 	}
@@ -347,5 +347,50 @@ public class DBManager {
 		return effectedRows > 0;
 	}
 
+	public Ingredient searchIngredient(String name) throws SQLException {
+		String query = "Select ingredientID FROM ingredient WHERE ingredientName = " + name + ";";
+		ResultSet rs = executeQuery(query);
+		if(!(rs.next())) {
+			disconnectFromDB(rs);
+			return null;
+		}
+		
+		Ingredient i =  new Ingredient(rs.getInt("ingredientID")+"" ,0,null,name,null);	// maybe disconnect because requestRecipeByID
+		
+		disconnectFromDB(rs);
+		return i;
+	}
+
+	public Ingredient addIngredient(String name) throws SQLException {
+		String query = "INSERT INTO ingredient(ingredientID, ingredientName) VALUES (," +  name + ");";
+	
+		int effectedRows = executeUpdate(query);
+		disconnectFromDB(null);	
+		if (effectedRows > 0)
+			return searchIngredient(name);
+		return null;
+	}
+
+	
+	public ArrayList<String> getMeasurements() throws SQLException {
+		String query = "Select measurementName FROM standard_measurementName ;";
+		ResultSet rs = executeQuery(query);
+		if(!(rs.next())) {
+			disconnectFromDB(rs);
+			return null;
+		}
+		
+		ArrayList<String> measurements =  new ArrayList<String>();
+		while(rs.next()) 
+			measurements.add(rs.getString("measurementName"));	// maybe disconnect because requestRecipeByID
+		
+		return measurements;
+	}
+	
+	
+	
+	
+	
+	
 
 }

@@ -44,6 +44,8 @@ public class Controller implements UIEventListener, ModelEventListener {
 		Scene scene = new Scene(root);
 		primaryStage.setScene(scene);
 		primaryStage.show();
+		//menuPage.enableMenuButtons(); // cancel 
+
 	}
 
 	@Override
@@ -78,15 +80,27 @@ public class Controller implements UIEventListener, ModelEventListener {
 
 	@Override
 	public ArrayList<Recipe> getRecipiesByCuisine(String text) {
-		// TODO Auto-generated method stub
+		try {
+			return model.getRecipeByCuisine(text);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
+		
 	}
 
 
 	@Override
 	public ArrayList<Recipe> getRecipieByName(String text) {
-		// TODO Auto-generated method stub
+		try {
+			return model.getRecipeByName(text);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
+		
 	}
 
 	@Override

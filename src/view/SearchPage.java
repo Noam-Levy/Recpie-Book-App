@@ -22,7 +22,9 @@ public class SearchPage extends Page{
 
 	@FXML private ToggleGroup TGsearchOptions;
 	@FXML private Button addIngredientToSearchButton, searchButton;
-	@FXML private VBox ingredientsSelector, ingredientsBox;
+	@FXML private VBox ingredientsBox;
+	@FXML private Pane ingredientsSelector;
+   
 	@FXML private RadioButton searchByCuisine, searchByIngredients, searchByName;
 	@FXML private TextField searchField;
 	@FXML private Pane searchPage;

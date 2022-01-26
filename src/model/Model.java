@@ -11,6 +11,7 @@ import listeners.ModelEventListener;
 public class Model {
 	
 	private User loggedUser;
+//	private RecipeFetcher recipeFetcher; //declaration
 	private ArrayList<ModelEventListener> listeners;
 	
 	public Model() {
@@ -69,5 +70,16 @@ public class Model {
 		return DBManager.getInstance().getUserFavorites(loggedUser.getUserID());
 	}
 
+	
+	
+	public ArrayList<Recipe> getRecipeByName(String recipeName) throws Exception {
+		 return RecipeFetcher.getInstance().searchRecipe(recipeName);
+		
+	}
+	public ArrayList<Recipe> getRecipeByCuisine(String cuisine) throws Exception {
+		return	DBManager.getInstance().searchRecipeByCuisine(cuisine);
+		 
+		
+	}
 
 }

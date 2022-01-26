@@ -184,8 +184,8 @@ public class RecipeFetcher {
 			String form = ((String)(currentIngredient.get("originalName")));
 			form = form.replaceAll(((String)(currentIngredient.get("name"))), "").replaceAll(",","");
 			randomRecipe.addIngrediant(new Ingredient(
-					((Long)(recipieData.get("id"))).toString(), (String)(currentIngredient.get("name")),
-					(String)(currentIngredient.get("unit")), ((Double)(currentIngredient.get("amount"))).floatValue(),form));
+					((Long)(recipieData.get("id"))).toString(), ((Double)(currentIngredient.get("amount"))).floatValue(),
+					(String)(currentIngredient.get("unit")), (String)(currentIngredient.get("name")),form));
 		}
 
 		JSONArray cuisines = (JSONArray)recipieData.get("cuisines");
