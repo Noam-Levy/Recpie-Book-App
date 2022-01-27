@@ -14,14 +14,14 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="searchPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.SearchPage">
+<Pane fx:id="searchPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1150.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.SearchPage">
    <children>
-      <ImageView fitHeight="650.0" fitWidth="850.0" opacity="0.49" pickOnBounds="true">
+      <ImageView fitHeight="900.0" fitWidth="1150.0" opacity="0.49" pickOnBounds="true">
          <image>
             <Image url="@../../images/recipieBook.jpg" />
          </image>
       </ImageView>
-      <Pane layoutX="141.0" layoutY="158.0" prefHeight="69.0" prefWidth="496.0" style="-fx-background-color: transparent;">
+      <Pane layoutX="262.0" layoutY="167.0" prefHeight="69.0" prefWidth="496.0" style="-fx-background-color: transparent;">
          <children>
             <RadioButton fx:id="searchByCuisine" layoutX="155.0" layoutY="16.0" mnemonicParsing="false" onAction="#searchByCuisineOrName" text="Cuisine" textFill="#5e4f3a">
                <toggleGroup>
@@ -43,10 +43,13 @@
             </RadioButton>
          </children>
       </Pane>
-      <HBox layoutX="139.0" layoutY="83.0" prefHeight="50.0" prefWidth="537.0">
+      <HBox layoutX="262.0" layoutY="100.0" prefHeight="50.0" prefWidth="537.0">
          <children>
-            <TextField fx:id="searchField" prefHeight="43.0" prefWidth="458.0" promptText="serach" />
-            <Button fx:id="searchButton" minWidth="35.0" mnemonicParsing="false" onAction="#searchForRecipe" prefHeight="43.0" prefWidth="40.0">
+            <TextField fx:id="searchField" prefHeight="43.0" prefWidth="458.0" promptText="serach">
+               <font>
+                  <Font size="22.0" />
+               </font></TextField>
+            <Button fx:id="searchButton" minWidth="35.0" mnemonicParsing="false" onAction="#searchForRecipe" prefHeight="43.0" prefWidth="40.0" translateX="20.0">
                <graphic>
                   <ImageView fitHeight="31.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -57,25 +60,25 @@
             </Button>
          </children>
       </HBox>
-      <Pane fx:id="ingredientsSelector" layoutX="240.0" layoutY="245.0" prefHeight="223.0" prefWidth="270.0">
+      <Pane fx:id="ingredientsSelector" layoutX="375.0" layoutY="250.0" prefHeight="223.0" prefWidth="270.0">
          <children>
             <ScrollPane prefHeight="218.0" prefWidth="259.0" style="-fx-background-color: transparent; -fx-background: transparent;" vmax="0.0">
                <content>
-                  <VBox id="tr" fx:id="ingredientsBox" prefHeight="56.0" prefWidth="215.0" style="-fx-background-color: transparent;">
+                  <VBox id="tr" fx:id="ingredientsBox" prefHeight="56.0" prefWidth="250.0" style="-fx-background-color: transparent;">
                      <children>
-                        <ChoiceBox fx:id="cmbINGRED" maxWidth="110.0" minWidth="30.0" prefHeight="30.0" prefWidth="110">
+                        <ChoiceBox fx:id="cmbINGRED" maxWidth="180.0" minWidth="30.0" prefHeight="30.0" prefWidth="180.0">
                            <VBox.margin>
                               <Insets top="9.0" />
                            </VBox.margin>
                         </ChoiceBox>
                      </children>
                      <padding>
-                        <Insets left="81.0" />
+                        <Insets left="60.0" />
                      </padding>
                   </VBox>
                </content>
             </ScrollPane>
-            <Button fx:id="addIngredientToSearchButton" alignment="BOTTOM_CENTER" layoutX="20.0" layoutY="200.0" mnemonicParsing="false" onAction="#addIngredientsRow" prefHeight="20.0" prefWidth="20.0" text="+" translateY="-188.0">
+            <Button fx:id="addIngredientToSearchButton" alignment="BOTTOM_CENTER" layoutX="20.0" layoutY="200.0" mnemonicParsing="false" onAction="#addIngredientsRow" text="+" translateY="-188.0">
                <font>
                   <Font name="System Italic" size="13.0" />
                </font></Button>

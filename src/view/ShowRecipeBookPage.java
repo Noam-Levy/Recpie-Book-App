@@ -10,7 +10,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -58,32 +57,58 @@ public class ShowRecipeBookPage extends Page implements Initializable {
 	public void showNewRecipe(ActionEvent event) {
 		if(event == null)
 			showRecipe(allRecipes.get(currentRecipeIndex));
-		else if(event.getSource().equals(nextRecipeButton))
-			;//TODO
-		else if (event.getSource().equals(previousRecipeButton))
-			;//TODO
+		else if(((Button)event.getSource()).getId().equals("nextRecipeButton") && currentRecipeIndex < allRecipes.size() - 1)
+			showRecipe(allRecipes.get(++currentRecipeIndex));
+		else if (((Button)event.getSource()).getId().equals("previousRecipeButton") && currentRecipeIndex > 0)
+			showRecipe(allRecipes.get(--currentRecipeIndex));
 	}
 	
-	public void showFoundRecipes(ArrayList<Recipe> foundRecips) {
-		this.allRecipes = foundRecips;
+	public void showFoundRecipes(ArrayList<Recipe> foundRecipes) {
+		if(foundRecipes == null || foundRecipes.size() == 0) {
+			for (UIEventListener l : listeners) {
+				l.changeView("searchRecipe");
+			}
+			showErrorWindow("No recipes Found");		
+		}
+		this.allRecipes = foundRecipes;
 		this.currentRecipeIndex = 0;
 		showNewRecipe(null);
 	}
 
 	private void showRecipe(Recipe r) {
+		resetGridPanes();
 		lbCookTime.setText(r.getCookTime()+"");
 		lbCuisine.setText(getAllCuisine(r));
 		lbRecipeName.setText(r.getRecipieName()+"");
 		lbServing.setText(r.getServings()+"");
 		Ingredient currentIngredient;
+		
 		int ingredientsSize = r.getIngrediants().size();
-		for (int i = 1; i < ingredientsSize; i++) {
+		for (int i = 1; i <= ingredientsSize; i++) {
 			currentIngredient = r.getIngrediants().get(i-1);
-			GPingredient.addRow(i, new Label(currentIngredient.getAmount()+""), new Label(currentIngredient.getMeasurement()),
-					new Label(currentIngredient.getName()),new Label(currentIngredient.getFrom()));	
+			Label lbAmount = new Label(currentIngredient.getAmount()+"");
+			Label lbMeasurement = new Label(currentIngredient.getMeasurement());
+			Label lbIngredientName = new Label(currentIngredient.getName());
+			Label lbForm = new Label(currentIngredient.getFrom());
+			lbAmount.setWrapText(true);
+			lbMeasurement.setWrapText(true);
+			lbIngredientName.setWrapText(true);
+			lbForm.setWrapText(true);
+			GPingredient.addRow(i, lbAmount, lbMeasurement, lbIngredientName, lbForm);	
 		}
-		GPingredient.getChildren().forEach(node -> node.maxWidth(Control.USE_COMPUTED_SIZE));
-		r.getInstructions().forEach((step,instruction) -> GPinstruction.addRow(step, new Label(step.toString()), new Label(instruction)));
+		r.getInstructions().forEach((step,instruction) -> { 
+			Label lbStepNum = new Label(step.toString());
+			Label lbInstruction =  new Label(instruction);
+			lbStepNum.setWrapText(true);
+			lbInstruction.setWrapText(true);
+			GPinstruction.addRow(step, lbStepNum, lbInstruction);
+		});
+	}
+
+	private void resetGridPanes() {
+		GPingredient.getChildren().retainAll(GPingredient.getChildren().get(0),GPingredient.getChildren().get(1),
+											 GPingredient.getChildren().get(2),GPingredient.getChildren().get(3));
+		GPinstruction.getChildren().retainAll(GPinstruction.getChildren().get(0),GPinstruction.getChildren().get(1));
 	}
 
 	private String getAllCuisine(Recipe r) {

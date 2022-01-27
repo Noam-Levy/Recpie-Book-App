@@ -271,7 +271,7 @@ public class RecipeFetcher {
 			String form = ((String)(currentIngredient.get("originalName")));
 			form = form.replaceAll(((String)(currentIngredient.get("name"))), "").replaceAll(",","");
 			randomRecipe.addIngrediant(new Ingredient(
-					((Long)(recipieData.get("id"))).toString(), ((Double)(currentIngredient.get("amount"))).floatValue(),
+					((Long)(currentIngredient.get("id"))).toString(), ((Double)(currentIngredient.get("amount"))).floatValue(),
 					(String)(currentIngredient.get("unit")), (String)(currentIngredient.get("name")),form));
 		}
 

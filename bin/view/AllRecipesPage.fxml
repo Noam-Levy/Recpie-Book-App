@@ -98,17 +98,17 @@
       </HBox>
       <Pane layoutX="3.0" layoutY="230.0" prefHeight="550.0" prefWidth="550.0" style="-fx-background-color: #e8e5dc; -fx-background-radius: 10;">
          <children>
-            <ScrollPane hbarPolicy="NEVER" layoutX="3.0" prefHeight="551.0" prefWidth="548.0" style="-fx-background-color: #e8e5dc; -fx-background: #e8e5dc; -fx-background-radius: 10;">
+            <ScrollPane layoutX="3.0" prefHeight="551.0" prefWidth="548.0" style="-fx-background-color: #e8e5dc; -fx-background: #e8e5dc; -fx-background-radius: 10;">
                <content>
                   <GridPane fx:id="GPingredient" hgap="17.0" layoutX="3.0" prefHeight="220.0" prefWidth="540.0" style="-fx-background-color: transparent;" vgap="20.0">
                      <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                      </columnConstraints>
                      <rowConstraints>
-                        <RowConstraints maxHeight="37.0" minHeight="10.0" prefHeight="37.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="37.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
                         <Label style="-fx-text-fill: black;" text="Amount">
@@ -139,22 +139,22 @@
       </Pane>
       <Pane layoutX="598.0" layoutY="230.0" prefHeight="550.0" prefWidth="550.0" style="-fx-background-color: #e8e5dc; -fx-background-radius: 10;">
          <children>
-            <ScrollPane hbarPolicy="NEVER" layoutY="-1.0" prefHeight="551.0" prefWidth="548.0" style="-fx-background-color: #e8e5dc; -fx-background: #e8e5dc; -fx-background-radius: 10;">
+            <ScrollPane layoutY="-1.0" prefHeight="551.0" prefWidth="548.0" style="-fx-background-color: #e8e5dc; -fx-background: #e8e5dc; -fx-background-radius: 10;">
                <content>
                   <GridPane fx:id="GPinstruction" hgap="17.0" prefHeight="220.0" prefWidth="540.0" vgap="20.0">
                      <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="0.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" />
                      </columnConstraints>
                      <rowConstraints>
-                        <RowConstraints maxHeight="36.0" minHeight="10.0" prefHeight="36.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="36.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
                         <Label style="-fx-text-fill: black;" text="Instruction" GridPane.columnIndex="1">
                            <font>
                               <Font name="Baskerville" size="27.0" />
                            </font></Label>
-                        <Label layoutX="20.0" layoutY="183.0" style="-fx-text-fill: black;" text="Step">
+                        <Label layoutX="20.0" layoutY="183.0" minWidth="-Infinity" style="-fx-text-fill: black;" text="Step">
                            <font>
                               <Font name="Baskerville" size="27.0" />
                            </font>

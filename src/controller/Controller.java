@@ -75,9 +75,10 @@ public class Controller implements UIEventListener, ModelEventListener {
 		try {
 			return model.getRecipesByIngredients(ingredientsList);
 		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
+			changeView("searchRecipe");
+			showErrorMessage(e.getMessage());
 		}
+		return null;
 	}
 
 
@@ -86,9 +87,8 @@ public class Controller implements UIEventListener, ModelEventListener {
 		try {
 			return model.getRecipeByCuisine(text);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			System.out.println("getRecipesByCuisine");
-			e.printStackTrace();
+			changeView("SearchPage");
+			showErrorMessage(e.getMessage());
 		}
 		return null;
 	}
@@ -98,9 +98,8 @@ public class Controller implements UIEventListener, ModelEventListener {
 		try {
 			return model.getRecipeByName(text);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			System.out.println("getRecipesByCuisine");
-			e.printStackTrace();
+			changeView("SearchPage");
+			showErrorMessage(e.getMessage());
 		}
 		return null;
 	}
@@ -113,7 +112,8 @@ public class Controller implements UIEventListener, ModelEventListener {
 	public void showFoundRecipes(ArrayList<Recipe> foundRecipes) {
 		if (!(currentView instanceof ShowRecipeBookPage))
 		{
-			Page.showErrorWindow("Something went wrong. Please try again");
+			changeView("SearchPage");
+			showErrorMessage("Something went wrong. Please try again");
 			return;
 		}
 		((ShowRecipeBookPage)currentView).showFoundRecipes(foundRecipes);

@@ -73,8 +73,7 @@ public class Model {
 	}
 
 	public ArrayList<Recipe> getRecipeByName(String recipeName) throws Exception {
-		ArrayList<Recipe> foundRecipes = new ArrayList<Recipe>();
-		foundRecipes.add(DBManager.getInstance().searchRecipeByName(recipeName)); 
+		 ArrayList<Recipe> foundRecipes = DBManager.getInstance().searchRecipeByName(recipeName);
 		if(foundRecipes.size() == 0)
 			foundRecipes = RecipeFetcher.getInstance().searchRecipe(recipeName);
 		return foundRecipes; 
@@ -95,10 +94,9 @@ public class Model {
 		for (int i = 0; i < size; i++) {
 			ingredients[i] = DBManager.getInstance().searchIngredient(((ChoiceBox<String>)ingredientsList.get(i)).getValue());
 		}
-		ArrayList<Recipe> foundRecipes = RecipeFetcher.getInstance().searchRecipesByIngredients(ingredients);
-//		ArrayList<Recipe> foundRecipes = DBManager.getInstance().searchRecipeByIngredients(ingredients);
-//		if(foundRecipes.size() == 0)
-//			foundRecipes = RecipeFetcher.getInstance().searchRecipesByIngredients(ingredients);
+		ArrayList<Recipe> foundRecipes = DBManager.getInstance().searchRecipeByIngredients(ingredients);
+		if(foundRecipes.size() == 0)
+			foundRecipes = RecipeFetcher.getInstance().searchRecipesByIngredients(ingredients);
 		return foundRecipes;
 	}
 

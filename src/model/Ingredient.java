@@ -10,7 +10,7 @@ public class Ingredient {
 		this.name = name;
 		setMeasurement(measurement);
 		this.amount = amount;
-		this.form = form;
+		setFrom(form);
 	}
 
 	public String getIngrediantID() {
@@ -39,9 +39,13 @@ public class Ingredient {
 		if (measurement.toLowerCase().equals("c"))
 			this.measurement = "cups";
 		else if (measurement.isBlank())
-			this.measurement = "units";
+			this.measurement = "unit";
 		else if(measurement.toLowerCase().equals("tbsp"))
 				this.measurement = "tablespoons";
+		else if(measurement.toLowerCase().equals("tsp"))
+			this.measurement = "teaspoons";
+		else if(measurement.toLowerCase().equals("units"))
+			this.measurement = "unit";
 		else
 			this.measurement = measurement;
 	}
@@ -55,7 +59,10 @@ public class Ingredient {
 	}
 	
 	public void setFrom(String form) {
-		this.form = form;
+		if(form == null)
+			this.form = form;
+		else
+			this.form = form.replaceAll("\\s{2,}", " ").trim(); // removes multiple white spaces if any
 	}
 	
 	public String getFrom() {
