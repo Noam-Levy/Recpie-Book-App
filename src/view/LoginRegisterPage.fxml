@@ -14,14 +14,14 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.LoginRegisterPage">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1150.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.LoginRegisterPage">
    <children>
-      <ImageView fitHeight="650.0" fitWidth="850.0" opacity="0.49" pickOnBounds="true">
+      <ImageView fitHeight="900.0" fitWidth="1150.0" opacity="0.49" pickOnBounds="true">
          <image>
             <Image url="@../../images/recipieBook.jpg" />
          </image>
       </ImageView>
-      <StackPane layoutX="149.0" layoutY="156.0" prefHeight="317.0" prefWidth="553.0">
+      <StackPane layoutX="234.0" layoutY="213.0" prefHeight="475.0" prefWidth="682.0">
          <children>
             <VBox fx:id="vbLogin" layoutX="10.0" layoutY="10.0" prefHeight="131.0" prefWidth="553.0" spacing="20.0" translateY="-2.0" visible="false">
                <children>
@@ -29,20 +29,20 @@
                      <children>
                         <Label prefHeight="43.0" prefWidth="217.0" text="Username">
                            <font>
-                              <Font name="Freestyle Script" size="36.0" />
+                              <Font name="Baskerville" size="37.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="loginUserName" prefHeight="45.0" prefWidth="450.0" />
+                        <TextField fx:id="loginUserName" prefHeight="45.0" prefWidth="450.0" style="-fx-background-color: #e8e5dc; -fx-border-color: black; -fx-border-radius: 5;" />
                      </children>
                   </HBox>
                   <HBox prefHeight="50.0" prefWidth="537.0" translateY="2.0">
                      <children>
                         <Label prefHeight="43.0" prefWidth="217.0" text="Password">
                            <font>
-                              <Font name="Freestyle Script" size="36.0" />
+                              <Font name="Baskerville" size="37.0" />
                            </font>
                         </Label>
-                        <PasswordField fx:id="loginPassword" prefHeight="45.0" prefWidth="450.0" />
+                        <PasswordField fx:id="loginPassword" prefHeight="45.0" prefWidth="450.0" style="-fx-background-color: #e8e5dc; -fx-border-color: black; -fx-border-radius: 5;" />
                      </children>
                   </HBox>
                </children>
@@ -56,20 +56,20 @@
                      <children>
                         <Label prefHeight="43.0" prefWidth="217.0" text="Username">
                            <font>
-                              <Font name="Freestyle Script" size="36.0" />
+                              <Font name="Baskerville" size="37.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="registerUserName" prefHeight="45.0" prefWidth="450.0" />
+                        <TextField fx:id="registerUserName" prefHeight="45.0" prefWidth="450.0" style="-fx-background-color: #e8e5dc; -fx-border-color: black; -fx-border-radius: 5;" />
                      </children>
                   </HBox>
                   <HBox prefHeight="50.0" prefWidth="537.0">
                      <children>
                         <Label prefHeight="43.0" prefWidth="217.0" text="Password">
                            <font>
-                              <Font name="Freestyle Script" size="36.0" />
+                              <Font name="Baskerville" size="37.0" />
                            </font>
                         </Label>
-                        <PasswordField fx:id="registerPassword" prefHeight="45.0" prefWidth="450.0" />
+                        <PasswordField fx:id="registerPassword" prefHeight="45.0" prefWidth="450.0" style="-fx-background-color: #e8e5dc; -fx-border-color: black; -fx-border-radius: 5;" />
                      </children>
                   </HBox>
                </children>
@@ -77,14 +77,14 @@
                   <Insets top="10.0" />
                </padding>
             </VBox>
-            <Button fx:id="btnLogin" mnemonicParsing="false" onAction="#userLogin" text="Login" translateY="100.0" visible="false">
+            <Button fx:id="btnLogin" mnemonicParsing="false" onAction="#userLogin" style="-fx-background-color: #e8e5dc; -fx-background-radius: 20; -fx-border-radius: 20; -fx-border-color: black;" text="Login" translateY="100.0" visible="false">
                <font>
-                  <Font name="Freestyle Script" size="24.0" />
+                  <Font name="Baskerville" size="27.0" />
                </font>
             </Button>
-            <Button fx:id="btnRegister" mnemonicParsing="false" onAction="#registerNewUser" text="Register" translateY="100.0" visible="false">
+            <Button fx:id="btnRegister" mnemonicParsing="false" onAction="#registerNewUser" style="-fx-background-color: #e8e5dc; -fx-background-radius: 20; -fx-border-radius: 20; -fx-border-color: black;" text="Register" translateY="100.0" visible="false">
                <font>
-                  <Font name="Freestyle Script" size="24.0" />
+                  <Font name="Baskerville" size="27.0" />
                </font>
             </Button>
          </children>
@@ -94,17 +94,17 @@
             <Font size="28.0" />
          </font>
       </Label>
-      <Button layoutX="301.0" layoutY="76.0" mnemonicParsing="false" onAction="#showRegisterOpt" style="-fx-background-color: transparent;" text="Sign-up" underline="true">
+      <Button layoutX="365.0" layoutY="73.0" mnemonicParsing="false" onAction="#showRegisterOpt" style="-fx-background-color: transparent; -fx-border-color: black; -fx-border-radius: 60;" text="Sign-up">
          <font>
-            <Font name="Freestyle Script" size="28.0" />
+            <Font name="Baskerville" size="43.0" />
          </font>
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Button layoutX="418.0" layoutY="76.0" mnemonicParsing="false" onAction="#showLoginOpt" style="-fx-background-color: transparent;" text="Sign-in" underline="true">
+      <Button layoutX="604.0" layoutY="73.0" mnemonicParsing="false" onAction="#showLoginOpt" style="-fx-background-color: transparent; -fx-border-color: black; -fx-border-radius: 60;" text="Sign-in">
          <font>
-            <Font name="Freestyle Script" size="28.0" />
+            <Font name="Baskerville" size="43.0" />
          </font>
          <cursor>
             <Cursor fx:constant="HAND" />

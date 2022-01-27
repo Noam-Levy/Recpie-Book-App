@@ -57,9 +57,15 @@ public class AddRecipePage extends Page implements Initializable {
 			cmbUnitClone.getItems().add(s);	
 		}
 		cmbUnitClone.setPrefSize(cmbUnit.getPrefWidth(), cmbUnit.getPrefHeight());
-		TextField newTF = new TextField();
-		addListenerToTextField(newTF);
-		GPingredient.addRow(GPingredient.getRowCount(), newTF,cmbUnitClone,new TextField(), new TextField());
+		cmbUnitClone.setStyle("-fx-background-color:  #e8e5dc");
+		TextField newTF1 = new TextField();
+		addListenerToTextField(newTF1);
+		newTF1.setStyle("-fx-background-color:  #e8e5dc");
+		TextField newTF2 = new TextField();
+		newTF2.setStyle("-fx-background-color:  #e8e5dc");
+		TextField newTF3 = new TextField();
+		newTF3.setStyle("-fx-background-color:  #e8e5dc");
+		GPingredient.addRow(GPingredient.getRowCount(), newTF1,cmbUnitClone,newTF2, newTF3);
 	}
 
 	@FXML
@@ -68,8 +74,10 @@ public class AddRecipePage extends Page implements Initializable {
 		if (!checkGPinstruction())
 			return;
 		Label l= new Label(GPinstruction.getRowCount()+"");
-		l.setStyle("-fx-text-fill: black");
-		GPinstruction.addRow(GPinstruction.getRowCount(),l,new TextField());
+		l.setStyle("-fx-text-fill: black ; ");
+		TextField newTF = new TextField();
+		newTF.setStyle("-fx-background-color:  #e8e5dc");
+		GPinstruction.addRow(GPinstruction.getRowCount(),l,newTF);
 	}
 
 	@FXML

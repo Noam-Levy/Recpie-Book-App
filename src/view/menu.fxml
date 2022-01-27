@@ -11,55 +11,55 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="bp" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1020.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.MenuPage">
+<BorderPane fx:id="bp" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.MenuPage">
    <left>
-      <Pane prefHeight="500.0" prefWidth="170.0" style="-fx-background-color: #b1c1b5;" BorderPane.alignment="CENTER">
+      <Pane prefHeight="900.0" prefWidth="253.0" style="-fx-background-color: #b1c1b5;" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="searchRecipeButton" alignment="CENTER" defaultButton="true" layoutX="2.0" layoutY="81.0" mnemonicParsing="false" onAction="#showSearchPage" prefHeight="80.0" prefWidth="165.0" style="-fx-background-color: #b1c1b5 #b1c1b5;" text="Search recipe" textFill="#5e4f3a">
+            <Button fx:id="searchRecipeButton" alignment="CENTER" defaultButton="true" layoutX="2.0" layoutY="81.0" mnemonicParsing="false" onAction="#showSearchPage" prefWidth="240.0" style="-fx-background-color: #b1c1b5 #b1c1b5;" text="Search recipe" textFill="#5e4f3a">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
                <font>
-                  <Font name="Freestyle Script" size="28.0" />
+                  <Font name="Zapfino" size="19.0" />
                </font>
             </Button>
-            <Button fx:id="addRecipeButton" alignment="CENTER" defaultButton="true" layoutX="2.0" layoutY="164.0" mnemonicParsing="false" onAction="#showAddPage" prefHeight="80.0" prefWidth="165.0" style="-fx-background-color: #b1c1b5 #b1c1b5;" text="Add recipe" textFill="#5e4f3a">
+            <Button fx:id="addRecipeButton" alignment="CENTER" defaultButton="true" layoutX="2.0" layoutY="178.0" mnemonicParsing="false" onAction="#showAddPage" prefWidth="240.0" style="-fx-background-color: #b1c1b5 #b1c1b5;" text="Add recipe" textFill="#5e4f3a">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
                <font>
-                  <Font name="Freestyle Script" size="28.0" />
+                  <Font name="Zapfino" size="19.0" />
                </font>
             </Button>
-            <Button fx:id="allRecipesButton" alignment="CENTER" layoutX="3.0" layoutY="252.0" mnemonicParsing="false" onAction="#showRecipesPage" prefHeight="80.0" prefWidth="165.0" style="-fx-background-color: #b1c1b5 #b1c1b5;" text="Show all recipes" textFill="#5e4f3a">
+            <Button fx:id="allRecipesButton" alignment="CENTER" layoutX="4.0" layoutY="276.0" mnemonicParsing="false" onAction="#showRecipesPage" prefWidth="240.0" style="-fx-background-color: #b1c1b5 #b1c1b5;" text="Show all recipes" textFill="#5e4f3a">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
                <font>
-                  <Font name="Freestyle Script" size="28.0" />
+                  <Font name="Zapfino" size="19.0" />
                </font>
             </Button>
-            <Button fx:id="favoriteRecipeButton" alignment="CENTER" layoutX="2.0" layoutY="337.0" mnemonicParsing="false" onAction="#showFavoriteRecipes" prefHeight="80.0" prefWidth="165.0" style="-fx-background-color: #b1c1b5;" text="My favorite recipes" textFill="#5e4f3a">
+            <Button fx:id="favoriteRecipeButton" alignment="CENTER" layoutX="5.0" layoutY="378.0" mnemonicParsing="false" onAction="#showFavoriteRecipes" prefWidth="240.0" style="-fx-background-color: #b1c1b5;" text="My favorite recipes" textFill="#5e4f3a">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
                <font>
-                  <Font name="Freestyle Script" size="24.0" />
+                  <Font name="Zapfino" size="19.0" />
                </font>
             </Button>
-            <Separator layoutY="81.0" prefHeight="3.0" prefWidth="170.0" />
-            <Separator layoutY="162.0" prefHeight="3.0" prefWidth="170.0" />
-            <Separator layoutY="249.0" prefHeight="3.0" prefWidth="170.0" />
-            <Separator layoutY="334.0" prefHeight="3.0" prefWidth="170.0" />
-            <Separator layoutX="1.0" layoutY="416.0" prefHeight="3.0" prefWidth="170.0" />
-            <VBox alignment="CENTER" layoutY="576.0" prefHeight="78.0" prefWidth="170.0">
+            <Separator layoutX="2.0" layoutY="81.0" prefHeight="3.0" prefWidth="251.0" />
+            <Separator layoutX="2.0" layoutY="178.0" prefHeight="3.0" prefWidth="251.0" />
+            <Separator layoutX="2.0" layoutY="274.0" prefHeight="3.0" prefWidth="251.0" />
+            <Separator layoutX="2.0" layoutY="373.0" prefHeight="3.0" prefWidth="251.0" />
+            <Separator layoutX="1.0" layoutY="473.0" prefHeight="3.0" prefWidth="251.0" />
+            <VBox alignment="CENTER" layoutX="37.0" layoutY="807.0" prefHeight="78.0" prefWidth="170.0">
                <children>
-                  <Label fx:id="loggedUserLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="26.0" prefWidth="166.0" textFill="#5e4f3a">
+                  <Label fx:id="loggedUserLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="26.0" prefWidth="166.0" textFill="#5e4f3a" translateY="-4.0">
                      <font>
                         <Font name="Freestyle Script" size="18.0" />
                      </font>
                   </Label>
-                  <Button fx:id="logOutButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#userLogout" style="-fx-background-color: #b1c1b5;" text="Log out" textFill="#5e4f3a">
+                  <Button fx:id="logOutButton" alignment="TOP_CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#userLogout" style="-fx-background-color: #b1c1b5; -fx-border-color: white; -fx-border-radius: 17;" text="Log out" textFill="#5e4f3a">
                      <font>
                         <Font name="Freestyle Script" size="18.0" />
                      </font>
@@ -78,7 +78,7 @@
       </Pane>
    </left>
    <center>
-      <ImageView fitHeight="650.0" fitWidth="850.0" pickOnBounds="true" BorderPane.alignment="CENTER">
+      <ImageView fitHeight="900.0" fitWidth="1150.0" pickOnBounds="true" BorderPane.alignment="CENTER">
          <image>
             <Image url="@../../images/recipieBook.jpg" />
          </image>
