@@ -1,8 +1,7 @@
 package view;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Iterator;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -14,6 +13,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import listeners.UIEventListener;
+import model.DBManager;
 import model.Ingredient;
 import model.Recipe;
 
@@ -23,24 +23,27 @@ public class SearchPage extends Page{
 	@FXML private ToggleGroup TGsearchOptions;
 	@FXML private Button addIngredientToSearchButton, searchButton;
 	@FXML private VBox ingredientsBox;
-	@FXML private Pane ingredientsSelector;
-   
+	@FXML private Pane ingredientsSelector;   
 	@FXML private RadioButton searchByCuisine, searchByIngredients, searchByName;
 	@FXML private TextField searchField;
 	@FXML private Pane searchPage;
-	@FXML private ChoiceBox<String> cmbINGRED; // NEED TO BE CHANGED TO <Ingredient>
-
-
+	@FXML private ChoiceBox<String> cmbINGRED;
 
 
 	@FXML
 	protected void initialize() {
 		ingredientsSelector.setVisible(false);
 		searchButton.setDisable(true);
-		// to be fixed
-		cmbINGRED.getItems().add("1");
-		cmbINGRED.getItems().add("2");
-		cmbINGRED.getItems().add("3");
+		ArrayList<Ingredient> ingredientList;
+		try {
+			ingredientList = DBManager.getInstance().getIngredients();
+			for (Ingredient i : ingredientList) {
+				cmbINGRED.getItems().add(i.getName());
+			}
+		} catch (SQLException e) {
+			showErrorWindow("Something happned. please try again." + e.getMessage());
+			searchByCuisineOrName(null);
+		}
 	}
 
 	@FXML
@@ -48,7 +51,6 @@ public class SearchPage extends Page{
 		ingredientsSelector.setVisible(true);
 		searchField.setDisable(true);
 		searchButton.setDisable(false);
-
 	}
 
 	@FXML
@@ -58,14 +60,19 @@ public class SearchPage extends Page{
 		searchButton.setDisable(false);
 	}
 
+	@SuppressWarnings("unchecked") // Choice boxes are of type string
 	@FXML
 	void searchForRecipe(ActionEvent event) {
 		ArrayList<Recipe> foundRecipes;
 		for (UIEventListener l : listeners) {
-			if (searchByIngredients.isSelected())
-				foundRecipes = l.getRecipiesByIngredients(ingredientsBox.getChildren());
-			else if (searchField.getText().isBlank())
-			{
+			if (searchByIngredients.isSelected()) {
+				if(((ChoiceBox<String>)ingredientsBox.getChildren().get(0)).getValue() == null) {
+					showErrorWindow("Please select as least one ingredient");
+					return;
+				}
+				foundRecipes = l.getRecipiesByIngredients(ingredientsBox.getChildren());	
+			}
+			else if (searchField.getText().isBlank()) {
 				showErrorWindow("Please enter search data");
 				return;
 			}
@@ -73,21 +80,21 @@ public class SearchPage extends Page{
 				if (searchByCuisine.isSelected())
 					foundRecipes = l.getRecipiesByCuisine(searchField.getText());
 				else
-					foundRecipes = l.getRecipieByName(searchField.getText());
+					foundRecipes = l.getRecipesByName(searchField.getText());
 			}
 			// display all recipes found.
 			l.changeView("AllRecipesPage");
-			l.showRecipies(foundRecipes);
+			l.showFoundRecipes(foundRecipes);
 		}
 	}
 
+	@SuppressWarnings("unchecked") // choice boxes of type String
 	@FXML
 	void addIngredientsRow(ActionEvent event) {
 		for (Node c : ingredientsBox.getChildren()) {
-			if (((ChoiceBox<String>)c).getValue() == null) // needs to be changed to <ingredient>
+			if (((ChoiceBox<String>)c).getValue() == null)
 				return;
 		}
-
 		ChoiceBox<String> cmbINGREDClone = new ChoiceBox<String>();
 		for (String s : cmbINGRED.getItems()) {
 			cmbINGREDClone.getItems().add(s);	
@@ -95,14 +102,5 @@ public class SearchPage extends Page{
 		cmbINGREDClone.setPrefSize(cmbINGRED.getPrefWidth(), cmbINGRED.getPrefHeight());
 		ingredientsBox.getChildren().add(cmbINGREDClone);
 	}
-
-	//    	Iterator<Node> it = ingredientsBox.getChildren().iterator();
-	//    	while(it.hasNext()) {
-	//    		if ((ChoiceBox)it.next(). == null)
-	//    			return;
-	//    	}
-	//    	ChoiceBox<Ingredient> newBox = new ChoiceBox<Ingredient>();
-	//    	newBox.setPrefWidth(ingredientsBox.getWidth());
-	//    	ingredientsBox.getChildren().add(newBox);
 }
 

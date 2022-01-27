@@ -24,12 +24,15 @@
       </ImageView>
       <HBox layoutX="80.0" layoutY="57.0" prefHeight="38.0" prefWidth="621.0">
          <children>
-            <Label prefHeight="31.0" prefWidth="258.0" text="Recipie Name">
+            <Label text="Recipie Name">
                <font>
                   <Font name="System Bold Italic" size="26.0" />
                </font>
             </Label>
-            <Label fx:id="lbRecipeName" prefHeight="35.0" prefWidth="552.0" />
+            <Label fx:id="lbRecipeName" contentDisplay="CENTER" prefHeight="35.0" prefWidth="400.0" textAlignment="CENTER" translateX="20.0">
+               <font>
+                  <Font size="21.0" />
+               </font></Label>
          </children>
       </HBox>
       <HBox fillHeight="false" layoutX="131.0" layoutY="138.0" prefHeight="63.0" prefWidth="596.0" spacing="50.0">
@@ -41,7 +44,10 @@
                         <Font size="21.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lbCookTime" prefHeight="29.0" prefWidth="58.0" />
+                  <Label fx:id="lbCookTime" prefHeight="29.0" prefWidth="58.0" textAlignment="CENTER">
+                     <font>
+                        <Font size="21.0" />
+                     </font></Label>
                </children>
             </HBox>
             <HBox prefHeight="45.0" prefWidth="185.0">
@@ -51,7 +57,10 @@
                         <Font size="21.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lbCuisine" prefHeight="30.0" prefWidth="106.0" />
+                  <Label fx:id="lbCuisine" prefHeight="30.0" prefWidth="106.0" textAlignment="CENTER">
+                     <font>
+                        <Font size="21.0" />
+                     </font></Label>
                </children>
             </HBox>
             <HBox layoutX="10.0" layoutY="10.0" prefHeight="45.0" prefWidth="185.0">
@@ -61,14 +70,17 @@
                         <Font size="21.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lbServing" prefHeight="30.0" prefWidth="100.0" />
+                  <Label fx:id="lbServing" prefHeight="30.0" prefWidth="100.0" textAlignment="CENTER">
+                     <font>
+                        <Font size="21.0" />
+                     </font></Label>
                </children>
             </HBox>
          </children>
       </HBox>
       <Pane layoutX="15.0" layoutY="242.0" style="-fx-background-color: #e8e5dc;">
          <children>
-            <ScrollPane layoutX="-2.0" prefHeight="228.0" prefWidth="416.0" style="-fx-background-color: transparent; -fx-background: transparent;">
+            <ScrollPane layoutX="-2.0" prefHeight="228.0" prefWidth="416.0" style="-fx-background-color: #e8e5dc; -fx-background: #e8e5dc;">
                <content>
                   <GridPane fx:id="GPingredient" hgap="17.0" prefWidth="400.0" style="-fx-background-color: transparent;" vgap="20.0">
                      <columnConstraints>
@@ -100,7 +112,7 @@
       </Pane>
       <Pane layoutX="433.0" layoutY="242.0" style="-fx-background-color: #e8e5dc;">
          <children>
-            <ScrollPane layoutY="-1.0" prefHeight="225.0" prefWidth="404.0" style="-fx-background-color: trasparent; -fx-background: transparent;">
+            <ScrollPane layoutY="-1.0" prefHeight="225.0" prefWidth="404.0" style="-fx-background-color: #e8e5dc; -fx-background: #e8e5dc;">
                <content>
                   <GridPane fx:id="GPinstruction" hgap="17.0" prefWidth="400.0" vgap="20.0">
                      <columnConstraints>
@@ -126,7 +138,7 @@
             </ScrollPane>
          </children>
       </Pane>
-      <Button layoutX="722.0" layoutY="584.0" mnemonicParsing="false" style="-fx-background-color: #e8e5dc;">
+      <Button fx:id="nextRecipeButton" layoutX="722.0" layoutY="584.0" mnemonicParsing="false" onAction="#showNewRecipe" style="-fx-background-color: #e8e5dc;">
          <graphic>
             <ImageView fitHeight="30.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -135,7 +147,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button layoutX="674.0" layoutY="584.0" mnemonicParsing="false" style="-fx-background-color: #e8e5dc;">
+      <Button fx:id="previousRecipeButton" layoutX="674.0" layoutY="584.0" mnemonicParsing="false" onAction="#showNewRecipe" style="-fx-background-color: #e8e5dc;">
          <graphic>
             <ImageView fitHeight="30.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
                <image>
