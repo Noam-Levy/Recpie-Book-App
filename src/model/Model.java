@@ -6,12 +6,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import exceptions.UserRegistrationException;
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
+import javafx.scene.control.ChoiceBox;
 import listeners.ModelEventListener;
 
 public class Model {
 	
 	private User loggedUser;
-//	private RecipeFetcher recipeFetcher; //declaration
 	private ArrayList<ModelEventListener> listeners;
 	
 	public Model() {
@@ -70,16 +72,34 @@ public class Model {
 		return DBManager.getInstance().getUserFavorites(loggedUser.getUserID());
 	}
 
-	
-	
 	public ArrayList<Recipe> getRecipeByName(String recipeName) throws Exception {
-		 return RecipeFetcher.getInstance().searchRecipe(recipeName);
-		
+		ArrayList<Recipe> foundRecipes = new ArrayList<Recipe>();
+		foundRecipes.add(DBManager.getInstance().searchRecipeByName(recipeName)); 
+		if(foundRecipes.size() == 0)
+			foundRecipes = RecipeFetcher.getInstance().searchRecipe(recipeName);
+		return foundRecipes; 
 	}
+	
 	public ArrayList<Recipe> getRecipeByCuisine(String cuisine) throws Exception {
-		return	DBManager.getInstance().searchRecipeByCuisine(cuisine);
-		 
-		
+		ArrayList<Recipe> foundRecipes;
+		foundRecipes = DBManager.getInstance().searchRecipeByCuisine(cuisine);
+		if(foundRecipes.size() == 0)
+			foundRecipes = RecipeFetcher.getInstance().searchRecipeByCuisine(cuisine);
+		return foundRecipes;
+	}
+
+	@SuppressWarnings("unchecked") // choice boxes are of type String
+	public ArrayList<Recipe> getRecipesByIngredients(ObservableList<Node> ingredientsList) throws NoSuchAlgorithmException, IOException, Exception {
+		int size = ingredientsList.size();
+		Ingredient[] ingredients = new Ingredient[size];
+		for (int i = 0; i < size; i++) {
+			ingredients[i] = DBManager.getInstance().searchIngredient(((ChoiceBox<String>)ingredientsList.get(i)).getValue());
+		}
+		ArrayList<Recipe> foundRecipes = RecipeFetcher.getInstance().searchRecipesByIngredients(ingredients);
+//		ArrayList<Recipe> foundRecipes = DBManager.getInstance().searchRecipeByIngredients(ingredients);
+//		if(foundRecipes.size() == 0)
+//			foundRecipes = RecipeFetcher.getInstance().searchRecipesByIngredients(ingredients);
+		return foundRecipes;
 	}
 
 }

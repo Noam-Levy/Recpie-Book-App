@@ -15,6 +15,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import listeners.ModelEventListener;
 import listeners.UIEventListener;
+import model.DBManager;
 import model.Model;
 import model.Recipe;
 import view.MenuPage;
@@ -44,13 +45,6 @@ public class Controller implements UIEventListener, ModelEventListener {
 		Scene scene = new Scene(root);
 		primaryStage.setScene(scene);
 		primaryStage.show();
-		//menuPage.enableMenuButtons(); // cancel 
-
-	}
-
-	@Override
-	public void userLogout() {
-		model.logoutUser();
 	}
 
 	@Override
@@ -63,18 +57,27 @@ public class Controller implements UIEventListener, ModelEventListener {
 		}
 		return success;
 	}
-
+	
 	@Override
 	public void registerUser(String userName, String userPassword) throws NoSuchAlgorithmException, UserRegistrationException, SQLException, IOException {
 		boolean success = model.registerUser(userName,userPassword);
 		if(success)
 			userLogin(userName, userPassword);
 	}
+	
+	@Override
+	public void userLogout() {
+		model.logoutUser();
+	}
 
 	@Override
 	public ArrayList<Recipe> getRecipiesByIngredients(ObservableList<Node> ingredientsList) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			return model.getRecipesByIngredients(ingredientsList);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 
@@ -84,33 +87,36 @@ public class Controller implements UIEventListener, ModelEventListener {
 			return model.getRecipeByCuisine(text);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
+			System.out.println("getRecipesByCuisine");
 			e.printStackTrace();
 		}
 		return null;
-		
 	}
 
-
 	@Override
-	public ArrayList<Recipe> getRecipieByName(String text) {
+	public ArrayList<Recipe> getRecipesByName(String text) {
 		try {
 			return model.getRecipeByName(text);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
+			System.out.println("getRecipesByCuisine");
 			e.printStackTrace();
 		}
 		return null;
-		
 	}
 
 	@Override
-	public void showRecipies(ArrayList<Recipe> foundRecipes) {
+	public ArrayList<Recipe> getRecipies() throws SQLException {
+		return DBManager.getInstance().showAllRecipies();
+	}
+	
+	public void showFoundRecipes(ArrayList<Recipe> foundRecipes) {
 		if (!(currentView instanceof ShowRecipeBookPage))
 		{
 			Page.showErrorWindow("Something went wrong. Please try again");
 			return;
-		}	
-		((ShowRecipeBookPage)currentView).showRecipes(foundRecipes);
+		}
+		((ShowRecipeBookPage)currentView).showFoundRecipes(foundRecipes);
 	}
 
 	@Override

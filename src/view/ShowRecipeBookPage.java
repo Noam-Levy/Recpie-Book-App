@@ -82,7 +82,7 @@ public class ShowRecipeBookPage extends Page implements Initializable {
 			GPingredient.addRow(i, new Label(currentIngredient.getAmount()+""), new Label(currentIngredient.getMeasurement()),
 					new Label(currentIngredient.getName()),new Label(currentIngredient.getFrom()));	
 		}
-		GPingredient.getChildren().forEach(node -> node.prefWidth(Control.USE_COMPUTED_SIZE));
+		GPingredient.getChildren().forEach(node -> node.maxWidth(Control.USE_COMPUTED_SIZE));
 		r.getInstructions().forEach((step,instruction) -> GPinstruction.addRow(step, new Label(step.toString()), new Label(instruction)));
 	}
 

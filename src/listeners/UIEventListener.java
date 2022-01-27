@@ -15,12 +15,13 @@ public interface UIEventListener {
 
 	ArrayList<Recipe> getRecipiesByIngredients(ObservableList<Node> ingredientsList);
 	ArrayList<Recipe> getRecipiesByCuisine(String text);
-	ArrayList<Recipe> getRecipieByName(String text);
+	ArrayList<Recipe> getRecipesByName(String text);
+	ArrayList<Recipe> getRecipies() throws SQLException;
 	void setCurrentView(Page currentView);
 	void changeView(String requestedView);
-	void showRecipies(ArrayList<Recipe> foundRecipes);
 	void registerUser(String userName, String userPassword) throws UserRegistrationException, SQLException, NoSuchAlgorithmException, IOException;
 	void userLogout();
 	boolean userLogin(String userName, String password) throws SQLException, NoSuchAlgorithmException, IOException;
+	void showFoundRecipes(ArrayList<Recipe> foundRecipes);
 
 }

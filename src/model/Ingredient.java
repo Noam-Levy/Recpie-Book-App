@@ -34,6 +34,8 @@ public class Ingredient {
 	}
 
 	public void setMeasurement(String measurement) {
+		if(measurement == null)
+			return;
 		if (measurement.toLowerCase().equals("c"))
 			this.measurement = "cups";
 		else if (measurement.isBlank())

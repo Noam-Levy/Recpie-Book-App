@@ -64,6 +64,10 @@ public class Recipe {
 	public void addInstruction(int stepNumber, String stepInfo) {
 		this.instructions.put(stepNumber, stepInfo);
 	}
+	
+	public void setInstructions(HashMap<Integer, String> recipeInstructions) {
+		this.instructions = recipeInstructions;	
+	}
 
 	public ArrayList<Ingredient> getIngrediants() {
 		return ingredients;
@@ -71,6 +75,11 @@ public class Recipe {
 
 	public void addIngrediant(Ingredient i) {
 		this.ingredients.add(i);
+	}
+	
+	public void setIngredients(ArrayList<Ingredient> recipeIngredients) {
+		this.ingredients = recipeIngredients;
+		
 	}
 
 	public HashMap<String, String> getCuisine() {
@@ -80,6 +89,8 @@ public class Recipe {
 	public void addCuisine(String id, String name) {
 		cuisine.put(id, name);
 	}
+
+	
 	
 	
 	

@@ -73,7 +73,7 @@ public class RecipeFetcher {
 		if(recipieData == null)
 			throw new ConnectException("Invalid response from API");
 
-		return createRecipie(recipieData);
+		return createRecipe(recipieData);
 	}
 
 	public Recipe createRecipeFromWebPage(String url) throws Exception { // NEEDS TO BE CHECEKD
@@ -94,7 +94,7 @@ public class RecipeFetcher {
 		if(recipieData == null)
 			throw new ConnectException("Invalid response from API");
 
-		return createRecipie(recipieData);
+		return createRecipe(recipieData);
 	}
 
 	public ArrayList<Recipe> searchRecipe(String query) throws Exception { // NEEDS TO BE CHECEKD
@@ -122,8 +122,95 @@ public class RecipeFetcher {
 		Iterator<JSONObject> it = recipiesData.iterator();
 		ArrayList<Recipe> recipes = new ArrayList<Recipe>();
 		while(it.hasNext())
-			recipes.add(createRecipie(it.next()));
+			recipes.add(createRecipe(it.next()));
 		return recipes;
+	}
+	
+	public ArrayList<Recipe> searchRecipeByCuisine(String cuisine) throws Exception {
+		HttpRequest request = HttpRequest.newBuilder()
+				.uri(URI.create("https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/searchComplex?limitLicense=true&offset=0&number=5&cuisine=" + cuisine))
+				.header("x-rapidapi-host", "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com")
+				.header("x-rapidapi-key", "8a9e1f0217mshdad71089a8aab63p17a388jsn2590e5097725")
+				.method("GET", HttpRequest.BodyPublishers.noBody())
+				.build();
+		this.response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+		checkResponseCode(response.statusCode());
+
+		JSONArray recipiesData = ((JSONArray)(((JSONObject)this.parser.parse(this.response.body())).get("results")));
+
+		if(recipiesData == null)
+			throw new ConnectException("Invalid response from API");
+
+		if(recipiesData.isEmpty())
+			throw new Exception("No recpies found.");
+
+		@SuppressWarnings("unchecked") // spoonacular API returns JSON objects inside of the JSON array. 
+		Iterator<JSONObject> it = recipiesData.iterator();
+		ArrayList<Recipe> recipes = new ArrayList<Recipe>();
+		while(it.hasNext()) {
+			int id = ((Long)it.next().get("id")).intValue();
+			recipes.add(searchRecipeByID(id));
+		}
+		return recipes;
+	}
+	
+	public ArrayList<Recipe> searchRecipesByIngredients(Ingredient[] ingredientList) throws Exception {
+		// prepare ingredients list for web request
+		if(ingredientList.length == 0 || ingredientList == null)
+			return null;
+		StringBuffer ingredients = new StringBuffer();
+		for (Ingredient i : ingredientList) {
+			ingredients.append(i.getName()+"%2C");
+		}
+		
+		HttpRequest request = HttpRequest.newBuilder()
+				.uri(URI.create("https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/findByIngredients?ingredients=" + ingredients.toString() + "&number=5&ranking=1"))
+				.header("x-rapidapi-host", "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com")
+				.header("x-rapidapi-key", "8a9e1f0217mshdad71089a8aab63p17a388jsn2590e5097725")
+				.method("GET", HttpRequest.BodyPublishers.noBody())
+				.build();
+		this.response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+		checkResponseCode(response.statusCode());
+		
+		JSONArray recipesData = (JSONArray)this.parser.parse(this.response.body());
+		
+		if(recipesData == null)
+			throw new ConnectException("Invalid response from API");
+
+		if(recipesData.isEmpty())
+			throw new Exception("No recpies found.");
+
+		@SuppressWarnings("unchecked") // spoonacular API returns JSON objects inside of the JSON array. 
+		Iterator<JSONObject> it = recipesData.iterator();
+		ArrayList<Recipe> recipes = new ArrayList<Recipe>();
+		while(it.hasNext()) {
+			int id = ((Long)it.next().get("id")).intValue();
+			try {
+			recipes.add(searchRecipeByID(id));
+			} catch(IndexOutOfBoundsException e) {};
+		}
+		return recipes;
+	}
+
+	public Recipe searchRecipeByID(int id) throws Exception {
+		HttpRequest request = HttpRequest.newBuilder()
+				.uri(URI.create("https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/"+ id + "/information"))
+				.header("x-rapidapi-host", "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com")
+				.header("x-rapidapi-key", "8a9e1f0217mshdad71089a8aab63p17a388jsn2590e5097725")
+				.method("GET", HttpRequest.BodyPublishers.noBody())
+				.build();
+		this.response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+		checkResponseCode(response.statusCode());
+		
+		JSONObject recipeData = ((JSONObject)this.parser.parse(this.response.body()));
+		
+		if(recipeData == null)
+			throw new ConnectException("Invalid response from API");
+
+		if(recipeData.isEmpty())
+			throw new Exception("No recpies found.");
+
+		return createRecipe(recipeData);
 	}
 
 	private void addRecipeToDB(Recipe recipe) throws SQLException, NoSuchAlgorithmException {
@@ -159,7 +246,7 @@ public class RecipeFetcher {
 		throw new InvalidParameterException("Cannot convert from " + i.getMeasurement());
 	}
 
-	private Recipe createRecipie(JSONObject recipieData) throws SQLException, NoSuchAlgorithmException {
+	private Recipe createRecipe(JSONObject recipieData) throws Exception{
 		/*
 		 * translates and returns received JSONObject from spoonacular API as recipe object.
 		 */
@@ -169,7 +256,7 @@ public class RecipeFetcher {
 		int servings = ((Long)recipieData.get("servings")).intValue();
 
 		Recipe randomRecipe = new Recipe(id,title,readyInMinutes,servings);
-
+		
 		JSONArray instructionsData = (JSONArray)((JSONObject)((JSONArray)recipieData.get("analyzedInstructions")).get(0)).get("steps");
 		Iterator<?> it = instructionsData.iterator();
 		while(it.hasNext())	{
@@ -191,8 +278,9 @@ public class RecipeFetcher {
 		JSONArray cuisines = (JSONArray)recipieData.get("cuisines");
 		it = cuisines.iterator();
 		while(it.hasNext()) {
-			JSONObject currentCuisine = (JSONObject)it.next();
-			randomRecipe.addCuisine(((Long)(currentCuisine.get("id"))).toString(), (String)currentCuisine.get("cuisine"));
+			String currentCuisine = (String)it.next();
+			String cuisineID = DBManager.getInstance().getCuisineID(currentCuisine);
+			randomRecipe.addCuisine(cuisineID, currentCuisine);
 		}
 		addRecipeToDB(randomRecipe);
 		return randomRecipe;
