@@ -27,9 +27,21 @@ public abstract class Page {
 		stage.setTitle("Something went wrong");
 		StackPane root = new StackPane();
 		Label label = new Label(error);
+		label.setWrapText(true);
 		label.setTextFill(Color.RED);
 		root.getChildren().add(label);
 		stage.setScene(new Scene(root, Region.USE_PREF_SIZE, Region.USE_PREF_SIZE));
 		stage.show();
 	}
+	
+	public static final void showSuccessWindow(String message) {
+		Stage stage = new Stage();
+		stage.centerOnScreen();
+		StackPane root = new StackPane();
+		Label label = new Label(message);
+		root.getChildren().add(label);
+		stage.setScene(new Scene(root, Region.USE_PREF_SIZE, Region.USE_PREF_SIZE));
+		stage.show();
+	}
+
 }

@@ -36,7 +36,6 @@ public class Controller implements UIEventListener, ModelEventListener {
 		this.menuPage = new MenuPage();
 	}
 
-
 	public void start(Stage primaryStage) throws IOException {
 		URL location = getClass().getResource("/view/menu.fxml");
 		FXMLLoader fxmlLoader = new FXMLLoader(location);
@@ -57,67 +56,71 @@ public class Controller implements UIEventListener, ModelEventListener {
 		}
 		return success;
 	}
-	
+
 	@Override
 	public void registerUser(String userName, String userPassword) throws NoSuchAlgorithmException, UserRegistrationException, SQLException, IOException {
 		boolean success = model.registerUser(userName,userPassword);
 		if(success)
 			userLogin(userName, userPassword);
 	}
-	
+
 	@Override
 	public void userLogout() {
 		model.logoutUser();
 	}
 
 	@Override
-	public ArrayList<Recipe> getRecipiesByIngredients(ObservableList<Node> ingredientsList) {
-		try {
-			return model.getRecipesByIngredients(ingredientsList);
-		} catch (Exception e) {
-			changeView("searchRecipe");
-			showErrorMessage(e.getMessage());
-		}
-		return null;
-	}
-
-
-	@Override
-	public ArrayList<Recipe> getRecipiesByCuisine(String text) {
-		try {
-			return model.getRecipeByCuisine(text);
-		} catch (Exception e) {
-			changeView("SearchPage");
-			showErrorMessage(e.getMessage());
-		}
-		return null;
+	public ArrayList<Recipe> getRecipiesByIngredients(ObservableList<Node> ingredientsList) throws Exception {
+		return model.getRecipesByIngredients(ingredientsList);
 	}
 
 	@Override
-	public ArrayList<Recipe> getRecipesByName(String text) {
-		try {
-			return model.getRecipeByName(text);
-		} catch (Exception e) {
-			changeView("SearchPage");
-			showErrorMessage(e.getMessage());
-		}
-		return null;
+	public ArrayList<Recipe> getRecipiesByCuisine(String text) throws Exception {
+		return model.getRecipeByCuisine(text);
+	}
+
+	@Override
+	public ArrayList<Recipe> getRecipesByName(String text) throws Exception {
+		return model.getRecipeByName(text);
 	}
 
 	@Override
 	public ArrayList<Recipe> getRecipies() throws SQLException {
 		return DBManager.getInstance().showAllRecipies();
 	}
-	
+
+	@Override
 	public void showFoundRecipes(ArrayList<Recipe> foundRecipes) {
-		if (!(currentView instanceof ShowRecipeBookPage))
-		{
+		if (!(currentView instanceof ShowRecipeBookPage)) {
 			changeView("SearchPage");
 			showErrorMessage("Something went wrong. Please try again");
 			return;
 		}
+		//((ShowRecipeBookPage)currentView).setRecipesArray(foundRecipes);
 		((ShowRecipeBookPage)currentView).showFoundRecipes(foundRecipes);
 	}
+
+	@Override
+	public boolean addRecipeToUserFavorites(Recipe favoriteRecipe) throws SQLException {
+		return model.addToUserFavorites(favoriteRecipe);
+	}
+
+	@Override
+	public boolean removeRecipeFromUserFavorites(Recipe favoriteRecipe) throws SQLException {
+		return model.removeFromUserFavorites(favoriteRecipe);
+	}
+
+
+	@Override
+	public boolean checkRecipeInUserFavorites(Recipe r) throws SQLException {
+		return model.checkIfRecipeIsFavorite(r);
+	}
+	
+	@Override
+	public ArrayList<Recipe> getUserFavorites() throws SQLException {
+		return model.getUserFavorites();
+	}
+
 
 	@Override
 	public void setCurrentView(Page currentView) {

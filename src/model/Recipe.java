@@ -26,6 +26,8 @@ public class Recipe {
 	}
 
 	public String getRecipeID() {
+		if(recipeID == null)
+			return "null";
 		return recipeID;
 	}
 

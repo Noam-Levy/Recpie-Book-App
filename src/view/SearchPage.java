@@ -63,29 +63,35 @@ public class SearchPage extends Page{
 	@SuppressWarnings("unchecked") // Choice boxes are of type string
 	@FXML
 	void searchForRecipe(ActionEvent event) {
-		ArrayList<Recipe> foundRecipes;
+		ArrayList<Recipe> foundRecipes = null;
 		for (UIEventListener l : listeners) {
-			if (searchByIngredients.isSelected()) {
-				if(((ChoiceBox<String>)ingredientsBox.getChildren().get(0)).getValue() == null) {
-					showErrorWindow("Please select as least one ingredient");
+			try {
+				if (searchByIngredients.isSelected()) {
+					if(((ChoiceBox<String>)ingredientsBox.getChildren().get(0)).getValue() == null) {
+						showErrorWindow("Please select as least one ingredient");
+						return;
+					}
+					foundRecipes = l.getRecipiesByIngredients(ingredientsBox.getChildren());
+				}
+				else if (searchField.getText().isBlank()) {
+					showErrorWindow("Please enter search data");
 					return;
 				}
-				foundRecipes = l.getRecipiesByIngredients(ingredientsBox.getChildren());	
-			}
-			else if (searchField.getText().isBlank()) {
-				showErrorWindow("Please enter search data");
-				return;
-			}
-			else {
-				if (searchByCuisine.isSelected())
-					foundRecipes = l.getRecipiesByCuisine(searchField.getText());
-				else
-					foundRecipes = l.getRecipesByName(searchField.getText());
+				else {
+					if (searchByCuisine.isSelected())
+						foundRecipes = l.getRecipiesByCuisine(searchField.getText());
+					else
+						foundRecipes = l.getRecipesByName(searchField.getText());
+				} 
+			} catch (Exception e) {
+				showErrorWindow("Cannot search for recipes: " + e.getMessage());
+				l.changeView("SearchPage");
 			}
 			// display all recipes found.
 			l.changeView("AllRecipesPage");
 			l.showFoundRecipes(foundRecipes);
 		}
+
 	}
 
 	@SuppressWarnings("unchecked") // choice boxes of type String

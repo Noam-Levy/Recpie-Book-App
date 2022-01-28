@@ -2,7 +2,6 @@ package view;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
@@ -97,14 +96,8 @@ public class MenuPage extends Page implements Initializable {
 		for (UIEventListener l : listeners) {
 			switch (fileName) {
 			case "AllRecipesPage":
-				 l.setCurrentView(new ShowRecipeBookPage());
-				 try {
-					l.getRecipies();
-				} catch (SQLException e) {
-					showErrorWindow("Something went wrong: " + e.getMessage());
-					l.changeView("searchRecipe");
-				}
-				 break;
+				l.setCurrentView(new ShowRecipeBookPage());
+				break;
 			case "AddPage":
 				l.setCurrentView(new AddRecipePage());
 				break;

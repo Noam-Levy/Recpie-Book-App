@@ -110,7 +110,7 @@ public class RecipeFetcher {
 		this.response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
 		checkResponseCode(response.statusCode());
 
-		JSONArray recipiesData = ((JSONArray)(((JSONObject)this.parser.parse(this.response.body())).get("recipes")));
+		JSONArray recipiesData = ((JSONArray)(((JSONObject)this.parser.parse(this.response.body())).get("results")));
 
 		if(recipiesData == null)
 			throw new ConnectException("Invalid response from API");
@@ -186,7 +186,9 @@ public class RecipeFetcher {
 		while(it.hasNext()) {
 			int id = ((Long)it.next().get("id")).intValue();
 			try {
-			recipes.add(searchRecipeByID(id));
+				Recipe r = searchRecipeByID(id);
+				if(r != null)
+					recipes.add(r);
 			} catch(IndexOutOfBoundsException e) {};
 		}
 		return recipes;

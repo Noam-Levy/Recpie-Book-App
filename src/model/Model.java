@@ -12,18 +12,18 @@ import javafx.scene.control.ChoiceBox;
 import listeners.ModelEventListener;
 
 public class Model {
-	
+
 	private User loggedUser;
 	private ArrayList<ModelEventListener> listeners;
-	
+
 	public Model() {
 		listeners = new ArrayList<ModelEventListener>();
 	}
-	
+
 	public void addListener(ModelEventListener listener) {
 		listeners.add(listener);
 	}
-	
+
 	public boolean loginUser(String userName, String password) throws SQLException, NoSuchAlgorithmException, IOException {
 		User match = DBManager.getInstance().getUser(userName);
 		if(match == null || !PasswordManager.getInstance().checkPassowrd(password, match.getPassword()))
@@ -33,11 +33,11 @@ public class Model {
 			return true;
 		}
 	}
-	
+
 	public void logoutUser() {
 		this.loggedUser = null;
 	}
-	
+
 	public boolean registerUser(String userName, String userPassword) throws UserRegistrationException, SQLException, NoSuchAlgorithmException {
 		if(checkUserExsists(userName))
 			throw new UserRegistrationException("Username already exsists");
@@ -55,7 +55,7 @@ public class Model {
 			return true;
 		return false;
 	}
-	
+
 	public boolean checkUserExsists(String userName) throws SQLException, NoSuchAlgorithmException {
 		return DBManager.getInstance().searchUser(userName);
 	}
@@ -67,23 +67,43 @@ public class Model {
 			throw new UserRegistrationException("Could not regiser user: " + e.getMessage());
 		}
 	}
-	
+
 	public ArrayList<Recipe> getUserFavorites() throws SQLException {
 		return DBManager.getInstance().getUserFavorites(loggedUser.getUserID());
 	}
 
+	public boolean addToUserFavorites(Recipe favoriteRecipe) throws SQLException {
+		return DBManager.getInstance().addRecipeToUserFavorites(loggedUser.getUserID()+"",favoriteRecipe.getRecipeID());	
+	}
+
+	public boolean removeFromUserFavorites(Recipe favoriteRecipe) throws SQLException {
+		return DBManager.getInstance().removeRecipeFromUserFavorites(loggedUser.getUserID()+"",favoriteRecipe.getRecipeID());	
+	}
+
+	public boolean checkIfRecipeIsFavorite(Recipe favoriteRecipe) throws SQLException {
+		return DBManager.getInstance().checkIfRecipeIsFavorite(loggedUser.getUserID()+"",favoriteRecipe.getRecipeID());	
+	}
+
 	public ArrayList<Recipe> getRecipeByName(String recipeName) throws Exception {
-		 ArrayList<Recipe> foundRecipes = DBManager.getInstance().searchRecipeByName(recipeName);
-		if(foundRecipes.size() == 0)
-			foundRecipes = RecipeFetcher.getInstance().searchRecipe(recipeName);
+		ArrayList<Recipe> foundRecipes = DBManager.getInstance().searchRecipeByName(recipeName);
+		if(foundRecipes == null)
+			try {
+				foundRecipes = RecipeFetcher.getInstance().searchRecipe(recipeName);
+			} catch(Exception e) {
+				return null;
+			}
 		return foundRecipes; 
 	}
-	
+
 	public ArrayList<Recipe> getRecipeByCuisine(String cuisine) throws Exception {
 		ArrayList<Recipe> foundRecipes;
 		foundRecipes = DBManager.getInstance().searchRecipeByCuisine(cuisine);
-		if(foundRecipes.size() == 0)
-			foundRecipes = RecipeFetcher.getInstance().searchRecipeByCuisine(cuisine);
+		if(foundRecipes == null)
+			try {
+				foundRecipes = RecipeFetcher.getInstance().searchRecipeByCuisine(cuisine);
+			} catch(Exception e) {
+				return null;
+			}
 		return foundRecipes;
 	}
 
