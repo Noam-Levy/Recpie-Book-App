@@ -57,14 +57,14 @@ public class AddRecipePage extends Page implements Initializable {
 			cmbUnitClone.getItems().add(s);	
 		}
 		cmbUnitClone.setPrefSize(cmbUnit.getPrefWidth(), cmbUnit.getPrefHeight());
-		cmbUnitClone.setStyle("-fx-background-color:  #e8e5dc");
+		cmbUnitClone.setStyle("-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;");
 		TextField newTF1 = new TextField();
 		addListenerToTextField(newTF1);
-		newTF1.setStyle("-fx-background-color:  #e8e5dc");
+		newTF1.setStyle("-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;");
 		TextField newTF2 = new TextField();
-		newTF2.setStyle("-fx-background-color:  #e8e5dc");
+		newTF2.setStyle("-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;");
 		TextField newTF3 = new TextField();
-		newTF3.setStyle("-fx-background-color:  #e8e5dc");
+		newTF3.setStyle("-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;");
 		GPingredient.addRow(GPingredient.getRowCount(), newTF1,cmbUnitClone,newTF2, newTF3);
 	}
 
@@ -76,7 +76,7 @@ public class AddRecipePage extends Page implements Initializable {
 		Label l= new Label(GPinstruction.getRowCount()+"");
 		l.setStyle("-fx-text-fill: black ; ");
 		TextField newTF = new TextField();
-		newTF.setStyle("-fx-background-color:  #e8e5dc");
+		newTF.setStyle("-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;");
 		GPinstruction.addRow(GPinstruction.getRowCount(),l,newTF);
 	}
 

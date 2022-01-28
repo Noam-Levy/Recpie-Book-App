@@ -105,6 +105,8 @@ public class SearchPage extends Page{
 			cmbINGREDClone.getItems().add(s);	
 		}
 		cmbINGREDClone.setPrefSize(cmbINGRED.getPrefWidth(), cmbINGRED.getPrefHeight());
+		cmbINGREDClone.setStyle("-fx-background-color: #ebf2ed;; -fx-border-color: black;"
+				+ " -fx-background-radius: 5; -fx-border-radius: 5");
 		ingredientsBox.getChildren().add(cmbINGREDClone);
 	}
 }
