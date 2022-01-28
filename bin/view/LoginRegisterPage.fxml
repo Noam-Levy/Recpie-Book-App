@@ -32,7 +32,7 @@
                               <Font name="Baskerville" size="37.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="loginUserName" prefHeight="45.0" prefWidth="450.0" style="-fx-background-color: #e8e5dc; -fx-border-color: black; -fx-border-radius: 5;" />
+                        <TextField fx:id="loginUserName" prefHeight="45.0" prefWidth="450.0" style="-fx-background-color: #ebf2ed; -fx-border-color: black; -fx-border-radius: 5;" />
                      </children>
                   </HBox>
                   <HBox prefHeight="50.0" prefWidth="537.0" translateY="2.0">
@@ -42,7 +42,7 @@
                               <Font name="Baskerville" size="37.0" />
                            </font>
                         </Label>
-                        <PasswordField fx:id="loginPassword" prefHeight="45.0" prefWidth="450.0" style="-fx-background-color: #e8e5dc; -fx-border-color: black; -fx-border-radius: 5;" />
+                        <PasswordField fx:id="loginPassword" prefHeight="45.0" prefWidth="450.0" style="-fx-background-color: #ebf2ed; -fx-border-color: black; -fx-border-radius: 5;" />
                      </children>
                   </HBox>
                </children>
@@ -59,7 +59,7 @@
                               <Font name="Baskerville" size="37.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="registerUserName" prefHeight="45.0" prefWidth="450.0" style="-fx-background-color: #e8e5dc; -fx-border-color: black; -fx-border-radius: 5;" />
+                        <TextField fx:id="registerUserName" prefHeight="45.0" prefWidth="450.0" style="-fx-background-color: #ebf2ed; -fx-border-color: black; -fx-border-radius: 5;" />
                      </children>
                   </HBox>
                   <HBox prefHeight="50.0" prefWidth="537.0">
@@ -69,7 +69,7 @@
                               <Font name="Baskerville" size="37.0" />
                            </font>
                         </Label>
-                        <PasswordField fx:id="registerPassword" prefHeight="45.0" prefWidth="450.0" style="-fx-background-color: #e8e5dc; -fx-border-color: black; -fx-border-radius: 5;" />
+                        <PasswordField fx:id="registerPassword" prefHeight="45.0" prefWidth="450.0" style="-fx-background-color: #ebf2ed; -fx-border-color: black; -fx-border-radius: 5;" />
                      </children>
                   </HBox>
                </children>
@@ -77,12 +77,12 @@
                   <Insets top="10.0" />
                </padding>
             </VBox>
-            <Button fx:id="btnLogin" mnemonicParsing="false" onAction="#userLogin" style="-fx-background-color: #e8e5dc; -fx-background-radius: 20; -fx-border-radius: 20; -fx-border-color: black;" text="Login" translateY="100.0" visible="false">
+            <Button fx:id="btnLogin" mnemonicParsing="false" onAction="#userLogin" style="-fx-background-color: #ebf2ed; -fx-background-radius: 20; -fx-border-radius: 20; -fx-border-color: black;" text="Login" translateY="100.0" visible="false">
                <font>
                   <Font name="Baskerville" size="27.0" />
                </font>
             </Button>
-            <Button fx:id="btnRegister" mnemonicParsing="false" onAction="#registerNewUser" style="-fx-background-color: #e8e5dc; -fx-background-radius: 20; -fx-border-radius: 20; -fx-border-color: black;" text="Register" translateY="100.0" visible="false">
+            <Button fx:id="btnRegister" mnemonicParsing="false" onAction="#registerNewUser" style="-fx-background-color: #ebf2ed; -fx-background-radius: 20; -fx-border-radius: 20; -fx-border-color: black;" text="Register" translateY="100.0" visible="false">
                <font>
                   <Font name="Baskerville" size="27.0" />
                </font>
@@ -94,15 +94,16 @@
             <Font size="28.0" />
          </font>
       </Label>
-      <Button layoutX="365.0" layoutY="73.0" mnemonicParsing="false" onAction="#showRegisterOpt" style="-fx-background-color: transparent; -fx-border-color: black; -fx-border-radius: 60;" text="Sign-up">
+      <Button layoutX="365.0" layoutY="73.0" mnemonicParsing="false" onAction="#showRegisterOpt" style="-fx-background-color: #ebf2ed; -fx-border-color: black; -fx-background-radius: 60; -fx-border-radius: 60;" text="Sign-up">
          <font>
             <Font name="Baskerville" size="43.0" />
+				
          </font>
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Button layoutX="604.0" layoutY="73.0" mnemonicParsing="false" onAction="#showLoginOpt" style="-fx-background-color: transparent; -fx-border-color: black; -fx-border-radius: 60;" text="Sign-in">
+      <Button layoutX="604.0" layoutY="73.0" mnemonicParsing="false" onAction="#showLoginOpt" style="-fx-background-color: #ebf2ed; -fx-border-color: black; -fx-background-radius: 60; -fx-border-radius: 60;" text="Sign-in">
          <font>
             <Font name="Baskerville" size="43.0" />
          </font>

@@ -39,19 +39,10 @@
                   <Font name="Zapfino" size="19.0" />
                </font>
             </Button>
-            <Button fx:id="favoriteRecipeButton" alignment="CENTER" layoutX="5.0" layoutY="378.0" mnemonicParsing="false" onAction="#showFavoriteRecipes" prefWidth="240.0" style="-fx-background-color: #b1c1b5;" text="My favorite recipes" textFill="#5e4f3a">
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-               <font>
-                  <Font name="Zapfino" size="19.0" />
-               </font>
-            </Button>
             <Separator layoutX="2.0" layoutY="81.0" prefHeight="3.0" prefWidth="251.0" />
             <Separator layoutX="2.0" layoutY="178.0" prefHeight="3.0" prefWidth="251.0" />
             <Separator layoutX="2.0" layoutY="274.0" prefHeight="3.0" prefWidth="251.0" />
             <Separator layoutX="2.0" layoutY="373.0" prefHeight="3.0" prefWidth="251.0" />
-            <Separator layoutX="1.0" layoutY="473.0" prefHeight="3.0" prefWidth="251.0" />
             <VBox alignment="CENTER" layoutX="37.0" layoutY="807.0" prefHeight="78.0" prefWidth="170.0">
                <children>
                   <Label fx:id="loggedUserLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="26.0" prefWidth="166.0" textFill="#5e4f3a" translateY="-4.0">

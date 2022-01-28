@@ -179,7 +179,7 @@ public class AddRecipePage extends Page implements Initializable {
 
 		ingredient = DBManager.getInstance().searchIngredient(name);
 		if(ingredient == null)	
-			ingredient = DBManager.getInstance().addIngredient(name);
+			ingredient = DBManager.getInstance().addIngredient("null",name);
 
 		ingredient.setAmount(amount);
 		ingredient.setFrom(form);

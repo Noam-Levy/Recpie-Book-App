@@ -60,7 +60,7 @@ public class RecipeFetcher {
 		 * the method compares the recipe with the DB and (if necessary) adds it if it is not in the DB
 		 */
 		this.request = HttpRequest.newBuilder()
-				.uri(URI.create("https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random?number=1"))
+				.uri(URI.create("https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random?number=2"))
 				.header("x-rapidapi-host", "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com")
 				.header("x-rapidapi-key", this.APIKey) 
 				.method("GET", HttpRequest.BodyPublishers.noBody())
@@ -97,7 +97,7 @@ public class RecipeFetcher {
 		return createRecipe(recipieData);
 	}
 
-	public ArrayList<Recipe> searchRecipe(String query) throws Exception { // NEEDS TO BE CHECEKD
+	public ArrayList<Recipe> searchRecipe(String query) throws Exception {
 		/*
 		 *  Allows the user to search for recipes in natural language
 		 */
@@ -128,9 +128,9 @@ public class RecipeFetcher {
 	
 	public ArrayList<Recipe> searchRecipeByCuisine(String cuisine) throws Exception {
 		HttpRequest request = HttpRequest.newBuilder()
-				.uri(URI.create("https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/searchComplex?limitLicense=true&offset=0&number=5&cuisine=" + cuisine))
+				.uri(URI.create("https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/searchComplex?limitLicense=true&offset=0&number=2&cuisine=" + cuisine))
 				.header("x-rapidapi-host", "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com")
-				.header("x-rapidapi-key", "8a9e1f0217mshdad71089a8aab63p17a388jsn2590e5097725")
+				.header("x-rapidapi-key", this.APIKey)
 				.method("GET", HttpRequest.BodyPublishers.noBody())
 				.build();
 		this.response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
@@ -149,7 +149,9 @@ public class RecipeFetcher {
 		ArrayList<Recipe> recipes = new ArrayList<Recipe>();
 		while(it.hasNext()) {
 			int id = ((Long)it.next().get("id")).intValue();
-			recipes.add(searchRecipeByID(id));
+			Recipe r = searchRecipeByID(id);
+			if(r != null)
+				recipes.add(r);
 		}
 		return recipes;
 	}
@@ -160,13 +162,13 @@ public class RecipeFetcher {
 			return null;
 		StringBuffer ingredients = new StringBuffer();
 		for (Ingredient i : ingredientList) {
-			ingredients.append(i.getName()+"%2C");
+			ingredients.append(i.getName().replaceAll(" ", "%20")+"%2C");
 		}
 		
 		HttpRequest request = HttpRequest.newBuilder()
-				.uri(URI.create("https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/findByIngredients?ingredients=" + ingredients.toString() + "&number=5&ranking=1"))
+				.uri(URI.create("https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/findByIngredients?ingredients=" + ingredients + "&number=2&ignorePantry=true&ranking=1"))
 				.header("x-rapidapi-host", "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com")
-				.header("x-rapidapi-key", "8a9e1f0217mshdad71089a8aab63p17a388jsn2590e5097725")
+				.header("x-rapidapi-key", this.APIKey)
 				.method("GET", HttpRequest.BodyPublishers.noBody())
 				.build();
 		this.response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
@@ -198,7 +200,7 @@ public class RecipeFetcher {
 		HttpRequest request = HttpRequest.newBuilder()
 				.uri(URI.create("https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/"+ id + "/information"))
 				.header("x-rapidapi-host", "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com")
-				.header("x-rapidapi-key", "8a9e1f0217mshdad71089a8aab63p17a388jsn2590e5097725")
+				.header("x-rapidapi-key", this.APIKey)
 				.method("GET", HttpRequest.BodyPublishers.noBody())
 				.build();
 		this.response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
@@ -215,11 +217,16 @@ public class RecipeFetcher {
 		return createRecipe(recipeData);
 	}
 
-	private void addRecipeToDB(Recipe recipe) throws SQLException, NoSuchAlgorithmException {
+	private boolean addRecipeToDB(Recipe recipe) throws SQLException, NoSuchAlgorithmException {
 		// Compares the recipe with the DB and (if necessary) adds it to the DB.
 		DBManager manager = DBManager.getInstance();
 		if(manager.requestRecipeByID(recipe.getRecipeID()) == null)
-			manager.addRecipe(recipe);
+			try {
+				return manager.addRecipe(recipe);
+			} catch (SQLException e) {
+				return false;
+			}
+		return true;
 	}
 
 	public String convertMeasurementToGrams(Ingredient i) throws IOException, InterruptedException, ParseException {
@@ -258,8 +265,12 @@ public class RecipeFetcher {
 		int servings = ((Long)recipieData.get("servings")).intValue();
 
 		Recipe randomRecipe = new Recipe(id,title,readyInMinutes,servings);
-		
-		JSONArray instructionsData = (JSONArray)((JSONObject)((JSONArray)recipieData.get("analyzedInstructions")).get(0)).get("steps");
+		JSONArray instructionsData;
+		try {
+			instructionsData = (JSONArray)((JSONObject)((JSONArray)recipieData.get("analyzedInstructions")).get(0)).get("steps");
+		} catch (Exception e) {
+			return null;
+		}
 		Iterator<?> it = instructionsData.iterator();
 		while(it.hasNext())	{
 			JSONObject currentInstruction = (JSONObject)it.next();
@@ -284,7 +295,9 @@ public class RecipeFetcher {
 			String cuisineID = DBManager.getInstance().getCuisineID(currentCuisine);
 			randomRecipe.addCuisine(cuisineID, currentCuisine);
 		}
-		addRecipeToDB(randomRecipe);
+		boolean success = addRecipeToDB(randomRecipe);
+		if (!success)
+			return null;
 		return randomRecipe;
 	}
 } 

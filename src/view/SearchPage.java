@@ -84,7 +84,6 @@ public class SearchPage extends Page{
 						foundRecipes = l.getRecipesByName(searchField.getText());
 				} 
 			} catch (Exception e) {
-				showErrorWindow("Cannot search for recipes: " + e.getMessage());
 				l.changeView("SearchPage");
 			}
 			// display all recipes found.

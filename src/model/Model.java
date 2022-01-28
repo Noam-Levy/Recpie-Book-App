@@ -73,14 +73,20 @@ public class Model {
 	}
 
 	public boolean addToUserFavorites(Recipe favoriteRecipe) throws SQLException {
+		if(favoriteRecipe == null)
+			return false;
 		return DBManager.getInstance().addRecipeToUserFavorites(loggedUser.getUserID()+"",favoriteRecipe.getRecipeID());	
 	}
 
 	public boolean removeFromUserFavorites(Recipe favoriteRecipe) throws SQLException {
+		if(favoriteRecipe == null)
+			return false;
 		return DBManager.getInstance().removeRecipeFromUserFavorites(loggedUser.getUserID()+"",favoriteRecipe.getRecipeID());	
 	}
 
 	public boolean checkIfRecipeIsFavorite(Recipe favoriteRecipe) throws SQLException {
+		if(favoriteRecipe == null)
+			return false;
 		return DBManager.getInstance().checkIfRecipeIsFavorite(loggedUser.getUserID()+"",favoriteRecipe.getRecipeID());	
 	}
 
@@ -115,7 +121,7 @@ public class Model {
 			ingredients[i] = DBManager.getInstance().searchIngredient(((ChoiceBox<String>)ingredientsList.get(i)).getValue());
 		}
 		ArrayList<Recipe> foundRecipes = DBManager.getInstance().searchRecipeByIngredients(ingredients);
-		if(foundRecipes.size() == 0)
+		if(foundRecipes == null || foundRecipes.size() == 0)
 			foundRecipes = RecipeFetcher.getInstance().searchRecipesByIngredients(ingredients);
 		return foundRecipes;
 	}

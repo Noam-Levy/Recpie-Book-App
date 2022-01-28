@@ -15,6 +15,11 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
+
+
+
+
+
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1150.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.AddRecipePage">
    <children>
       <ImageView fitHeight="900.0" fitWidth="1150.0" opacity="0.49" pickOnBounds="true">
@@ -29,7 +34,7 @@
                   <Font name="Baskerville" size="34.0" />
                </font>
             </Label>
-            <TextField fx:id="txfRecipieName" prefHeight="42.0" prefWidth="536.0" style="-fx-background-color: #e8e5dc;" />
+            <TextField fx:id="txfRecipieName" prefHeight="42.0" prefWidth="536.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;" />
          </children>
       </HBox>
       <HBox fillHeight="false" layoutX="110.0" layoutY="150.0" prefHeight="30.0" prefWidth="900.0">
@@ -40,7 +45,7 @@
                      <font>
                         <Font name="Baskerville" size="24.0" />
                      </font></Label>
-                  <TextField fx:id="txfRecipieCookTime" prefWidth="80.0" style="-fx-background-color: #e8e5dc;" />
+                  <TextField fx:id="txfRecipieCookTime" prefWidth="80.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;" />
                </children>
             </HBox>
             <HBox prefHeight="30.0" prefWidth="300.0" spacing="10.0">
@@ -49,7 +54,7 @@
                      <font>
                         <Font name="Baskerville" size="24.0" />
                      </font></Label>
-                  <TextField fx:id="txfRecipieCuisine" prefWidth="80.0" style="-fx-background-color: #e8e5dc;" />
+                  <TextField fx:id="txfRecipieCuisine" prefWidth="80.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;" />
                </children>
             </HBox>
             <HBox layoutX="10.0" layoutY="10.0" prefHeight="30.0" prefWidth="300.0" spacing="10.0">
@@ -59,12 +64,12 @@
                         <Font name="Baskerville" size="24.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txfServings" prefWidth="80.0" style="-fx-background-color: #e8e5dc;" />
+                  <TextField fx:id="txfServings" prefWidth="80.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;" />
                </children>
             </HBox>
          </children>
       </HBox>
-      <Button layoutX="555.0" layoutY="844.0" mnemonicParsing="false" onAction="#saveRecipie" style="-fx-background-color: #e8e5dc; -fx-background-radius: 20; -fx-border-color: black; -fx-border-radius: 20;">
+      <Button layoutX="555.0" layoutY="844.0" mnemonicParsing="false" onAction="#saveRecipie" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5; ">
          <graphic>
             <ImageView fitHeight="29.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -104,10 +109,10 @@
                            <font>
                               <Font name="Baskerville" size="24.0" />
                            </font></Label>
-                        <TextField fx:id="tfAmount" layoutX="101.0" layoutY="81.0" style="-fx-background-color: #e8e5dc;" GridPane.rowIndex="1" />
-                        <ChoiceBox fx:id="cmbUnit" prefWidth="150.0" style="-fx-background-color: #e8e5dc;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <TextField prefHeight="26.0" prefWidth="133.0" style="-fx-background-color: #e8e5dc;" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                        <TextField layoutX="150.0" layoutY="81.0" style="-fx-background-color: #e8e5dc;" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                        <TextField fx:id="tfAmount" layoutX="101.0" layoutY="81.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;" GridPane.rowIndex="1" />
+                        <ChoiceBox fx:id="cmbUnit" prefWidth="150.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <TextField prefHeight="26.0" prefWidth="133.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <TextField layoutX="150.0" layoutY="81.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                      </children>
                      <padding>
                         <Insets left="10.0" top="10.0" />
@@ -146,7 +151,7 @@
                            <font>
                               <Font size="19.0" />
                            </font></Label>
-                        <TextField layoutX="104.0" layoutY="61.0" prefHeight="26.0" prefWidth="236.0" style="-fx-background-color: #e8e5dc;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <TextField layoutX="104.0" layoutY="61.0" prefHeight="26.0" prefWidth="236.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                      </children>
                      <padding>
                         <Insets left="10.0" top="10.0" />
@@ -156,7 +161,7 @@
             </ScrollPane>
          </children>
       </Pane>
-      <Button fx:id="btnAddRowIngredient" layoutX="257.0" layoutY="766.0" mnemonicParsing="false" onAction="#addRowIngredient" prefHeight="26.0" prefWidth="14.0" style="-fx-background-color: #e8e5dc; -fx-background-radius: 20; -fx-border-color: black; -fx-border-radius: 20;">
+      <Button fx:id="btnAddRowIngredient" layoutX="257.0" layoutY="766.0" mnemonicParsing="false" onAction="#addRowIngredient" prefHeight="26.0" prefWidth="14.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5; ">
          <graphic>
             <ImageView fitHeight="24.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -165,7 +170,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button fx:id="btnAddRowInstruction" layoutX="844.0" layoutY="775.0" mnemonicParsing="false" onAction="#addRowInstruction" prefHeight="26.0" prefWidth="14.0" style="-fx-background-color: #e8e5dc; -fx-background-radius: 20; -fx-border-color: black; -fx-border-radius: 20;">
+      <Button fx:id="btnAddRowInstruction" layoutX="844.0" layoutY="775.0" mnemonicParsing="false" onAction="#addRowInstruction" prefHeight="26.0" prefWidth="14.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5; ">
          <graphic>
             <ImageView fitHeight="24.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
                <image>

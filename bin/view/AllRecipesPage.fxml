@@ -115,9 +115,9 @@
             </HBox>
          </children>
       </HBox>
-      <Pane layoutX="3.0" layoutY="230.0" prefHeight="550.0" prefWidth="550.0" style="-fx-background-color: #e8e5dc; -fx-background-radius: 10;">
+      <Pane layoutX="3.0" layoutY="230.0" prefHeight="550.0" prefWidth="550.0" style="-fx-background-color: transparent; -fx-border-radius: 5; -fx-background-radius: 5;">
          <children>
-            <ScrollPane layoutX="3.0" prefHeight="551.0" prefWidth="548.0" style="-fx-background-color: #e8e5dc; -fx-background: #e8e5dc; -fx-background-radius: 10;">
+            <ScrollPane layoutX="3.0" prefHeight="551.0" prefWidth="548.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;   ">
                <content>
                   <GridPane fx:id="GPingredient" hgap="17.0" layoutX="3.0" prefHeight="220.0" prefWidth="540.0" style="-fx-background-color: transparent;" vgap="20.0">
                      <columnConstraints>
@@ -156,9 +156,9 @@
             </ScrollPane>
          </children>
       </Pane>
-      <Pane layoutX="598.0" layoutY="230.0" prefHeight="550.0" prefWidth="550.0" style="-fx-background-color: #e8e5dc; -fx-background-radius: 10;">
+      <Pane layoutX="598.0" layoutY="230.0" prefHeight="550.0" prefWidth="550.0" style="-fx-background-color: transparent; -fx-border-radius: 5; -fx-background-radius: 5;">
          <children>
-            <ScrollPane layoutY="-1.0" prefHeight="551.0" prefWidth="548.0" style="-fx-background-color: #e8e5dc; -fx-background: #e8e5dc; -fx-background-radius: 10;">
+            <ScrollPane layoutY="-1.0" prefHeight="551.0" prefWidth="548.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5; ;  ">
                <content>
                   <GridPane fx:id="GPinstruction" hgap="17.0" prefHeight="220.0" prefWidth="540.0" vgap="20.0">
                      <columnConstraints>
@@ -187,7 +187,7 @@
             </ScrollPane>
          </children>
       </Pane>
-      <Button fx:id="nextRecipeButton" layoutX="576.0" layoutY="830.0" mnemonicParsing="false" onAction="#showNewRecipe" style="-fx-background-color: #e8e5dc; -fx-background-radius: 20;">
+      <Button fx:id="nextRecipeButton" layoutX="602.0" layoutY="830.0" mnemonicParsing="false" onAction="#showNewRecipe" style="-fx-background-color: #ebf2ed; -fx-border-color: #574443; -fx-border-radius: 20; -fx-background-radius: 20;">
          <graphic>
             <ImageView fitHeight="30.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -196,7 +196,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button fx:id="previousRecipeButton" layoutX="528.0" layoutY="830.0" mnemonicParsing="false" onAction="#showNewRecipe" style="-fx-background-color: #e8e5dc; -fx-background-radius: 20;">
+      <Button fx:id="previousRecipeButton" layoutX="503.0" layoutY="831.0" mnemonicParsing="false" onAction="#showNewRecipe" style="-fx-background-color: #ebf2ed; -fx-border-color: #574443; -fx-border-radius: 20; -fx-background-radius: 20;">
          <graphic>
             <ImageView fitHeight="30.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
                <image>
@@ -205,7 +205,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <StackPane layoutX="551.0" layoutY="765.0" prefHeight="50.0" prefWidth="50.0">
+      <StackPane layoutX="551.0" layoutY="822.0" prefHeight="50.0" prefWidth="50.0">
          <children>
             <ImageView fx:id="yellowStar" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" visible="false">
                <image>
@@ -220,5 +220,10 @@
             <CheckBox fx:id="checkBoxFavorite" contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" onAction="#blackOrYellowStar" opacity="0.0" prefHeight="50.0" prefWidth="50.0" />
          </children>
       </StackPane>
+      <ImageView fitHeight="548.0" fitWidth="44.0" layoutX="554.0" layoutY="231.0" pickOnBounds="true">
+         <image>
+            <Image url="@../../images/spiral.jpeg" />
+         </image>
+      </ImageView>
    </children>
 </Pane>

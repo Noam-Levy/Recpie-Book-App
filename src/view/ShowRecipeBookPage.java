@@ -7,7 +7,6 @@ import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -85,6 +84,13 @@ public class ShowRecipeBookPage extends Page implements Initializable {
 	}
 	
 	private void displayRecipe(Recipe r) {
+		if(r == null) {
+			showErrorWindow("no recipes found");
+			for (UIEventListener l : listeners)
+				l.changeView("SearchPage");
+			return;
+		}
+		
 		try {
 			resetGridPanes();
 			checkIfFavorite(r);
@@ -123,7 +129,6 @@ public class ShowRecipeBookPage extends Page implements Initializable {
 		r.getInstructions().forEach((step,instruction) -> { 
 			Label lbStepNum = new Label(step.toString());
 			Label lbInstruction =  new Label(instruction);
-			lbStepNum.setWrapText(true);
 			lbInstruction.setWrapText(true);
 			GPinstruction.addRow(step, lbStepNum, lbInstruction);
 		});
@@ -167,6 +172,6 @@ public class ShowRecipeBookPage extends Page implements Initializable {
 		for (String c : r.getCuisine().values()) {
 			s.append(c+",");
 		}
-		return s.toString();
+		return s.toString() + "";
 	}
 }

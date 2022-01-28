@@ -8,7 +8,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Savepoint;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -117,35 +116,32 @@ public class DBManager {
 	public boolean addRecipe(Recipe recipe) throws SQLException {
 		// change connection type to transaction
 		connectToDB();
-		this.connection.setAutoCommit(false);
-		Savepoint savePoint = this.connection.setSavepoint("savePoint");
 		boolean success = false;
 		try {
 			success =  saveRecipeToDB(recipe);
-			this.connection.commit();
-			this.connection.setAutoCommit(false);
-			this.connection.beginRequest();
+			if(!success)
+				return false;
 			success = success 
 					&& saveInstructionsToDB(recipe.getRecipeID(), recipe.getInstructions()) 
 					&& saveIngredientsToDB(recipe.getRecipeID(), recipe.getIngrediants()) 
 					&& saveCuisineToDB(recipe.getRecipeID(), recipe.getCuisine());
 		} catch (SQLException e) {
 			// roll-back and change connection type to normal.
-			this.connection.rollback(savePoint);
-			this.connection.commit();
-			this.connection.endRequest();
-			this.connection.setAutoCommit(true);
+			removeRecipeFromDB(recipe.getRecipeID());
 			disconnectFromDB(null);
-			throw new SQLException("Cannot add new recipe: " + e.getMessage());
-		}
-		if(success) {
-			// change connection type to normal.
-			this.connection.commit();
-			this.connection.endRequest();
-			this.connection.setAutoCommit(true);
+			return false;
 		}
 		disconnectFromDB(null);
 		return success;
+	}
+
+	private void removeRecipeFromDB(String recipeID) throws SQLException {
+		String query = "DELETE FROM recipe_instructions WHERE recipeID = " + recipeID + ";";
+		executeUpdate(query);
+		query = "DELETE FROM recipe_ingredients WHERE recipeID = " + recipeID + ";";
+		executeUpdate(query);
+		query = "DELETE FROM recipe WHERE recipeID = "+ recipeID + ";";
+		executeUpdate(query);
 	}
 
 	public Recipe requestRecipeByID(String recipeID) throws SQLException {
@@ -189,10 +185,10 @@ public class DBManager {
 	}
 
 	public ArrayList<Recipe> searchRecipeByCuisine(String cuisine) throws SQLException { // TO BE CHECKED
-		String query = "Select recipeID FROM (SELECT cuisineID FROM cuisine WHERE cuisineName = " + cuisine + ") JOIN recipe_cuisine;";
+		String query = "Select recipeID FROM recipe_cuisine "
+				+ "WHERE cuisineID IN (SELECT cuisineID FROM cuisine WHERE cuisineName = \"" + cuisine + "\");";
 		ResultSet rs = executeQuery(query);
 		if(!rs.next()) {
-			disconnectFromDB(rs);
 			return null;
 		}
 		ArrayList<Recipe> recipies =  new ArrayList<Recipe>();
@@ -264,8 +260,8 @@ public class DBManager {
 		return i;
 	}
 
-	public Ingredient addIngredient(String name) throws SQLException {
-		String query = "INSERT INTO ingredient(ingredientID, ingredientName) VALUES (null,\""+ name + "\");";
+	public Ingredient addIngredient(String id,String name) throws SQLException {
+		String query = "INSERT INTO ingredient(ingredientID, ingredientName) VALUES (" + id +",\""+ name + "\");";
 		int effectedRows = executeUpdate(query);	
 		if (effectedRows > 0)
 			return searchIngredient(name);
@@ -342,7 +338,7 @@ public class DBManager {
 	}
 
 	private void addCuisineToRecipe(Recipe recipe) throws SQLException { // TO BE CHECKED
-		String query = "Select cuisineID, cuisineName FROM cuisine NATURAL JOIN recipe_cuisine";
+		String query = "Select cuisineID, cuisineName FROM cuisine NATURAL JOIN recipe_cuisine WHERE recipeID = " + recipe.getRecipeID() + ";";
 		ResultSet rs = executeQuery(query);
 		if(!rs.next())
 			return; // recipe might not have cuisine
@@ -417,10 +413,12 @@ public class DBManager {
 		StringBuffer query = new StringBuffer();
 		query.append("INSERT INTO recipe_ingredients (recipeID, ingredientID, measurementID, amount, form) VALUES ");
 		for (Ingredient i : ingredients) {
+			String ingredientID = i.getIngrediantID();
+			if(searchIngredient(i.getName()) == null)
+				addIngredient(ingredientID, i.getName());
 			int measurementID = requestMeasurementID(i.measurement);
 			if(measurementID < 0)
 				return false;
-			String ingredientID = i.getIngrediantID();
 			float amount = i.getAmount();
 			String form = i.getFrom();
 			query.append("(" + recipeID +"," + ingredientID + "," + measurementID + "," + amount + ",'" + form + "'), ");
@@ -449,21 +447,21 @@ public class DBManager {
 	private int requestMeasurementID(String measurement) throws SQLException {
 		String query = "SELECT measurementID FROM standard_measurement WHERE measurementName = '" + measurement + "';";
 		ResultSet rs = executeQuery(query);
-		if(!(rs.next())) {
+		if(rs.next()) {
+			int measurementID = rs.getInt("measurementID");
+			return measurementID;
+		} else
 			if(!addStandardMeasurement(measurement))
 				return -1;
-			requestMeasurementID(measurement);
+			return requestMeasurementID(measurement);
 		}
-		int measurementID = rs.getInt("measurementID");
-		return measurementID;
-	}
 
 	private boolean addStandardMeasurement(String measurement) throws SQLException { // TO BE CHECKED
 		String query = "INSERT INTO standard_measurement(measurementID, measurementName) values(null,\"" + measurement + "\");";
 		int effectedRows = executeUpdate(query);
 		return effectedRows > 0;
 	}
-
+	
 	private String addCuisineToDB(String currentCuisine) throws SQLException {
 		String query = "INSERT INTO cuisine (cuisineID,cuisineName) VALUES (null,\"" + currentCuisine + "\");";
 		int effectedRows = executeUpdate(query);

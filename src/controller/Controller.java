@@ -96,8 +96,7 @@ public class Controller implements UIEventListener, ModelEventListener {
 			showErrorMessage("Something went wrong. Please try again");
 			return;
 		}
-		//((ShowRecipeBookPage)currentView).setRecipesArray(foundRecipes);
-		((ShowRecipeBookPage)currentView).showFoundRecipes(foundRecipes);
+		((ShowRecipeBookPage)this.currentView).showFoundRecipes(foundRecipes);
 	}
 
 	@Override
