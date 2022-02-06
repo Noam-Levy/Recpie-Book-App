@@ -29,6 +29,7 @@ public abstract class Page {
 		Label label = new Label(error);
 		label.setWrapText(true);
 		label.setTextFill(Color.RED);
+		label.setMinSize(300, 50);
 		root.getChildren().add(label);
 		stage.setScene(new Scene(root, Region.USE_PREF_SIZE, Region.USE_PREF_SIZE));
 		stage.show();

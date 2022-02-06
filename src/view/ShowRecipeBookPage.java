@@ -22,7 +22,7 @@ public class ShowRecipeBookPage extends Page implements Initializable {
 	@FXML private GridPane GPingredient,GPinstruction;
 	@FXML private ImageView blackStar,yellowStar;
 	@FXML private CheckBox checkBoxFavorite, cbShowFavorities;
-	@FXML private Label lbCookTime,lbCuisine,lbRecipeName,lbServing;
+	@FXML private Label lbCookTime,lbCuisine,lbRecipeName,lbServing, lbPageNum;
 	@FXML private Button nextRecipeButton, previousRecipeButton;
 	private ArrayList<Recipe> allRecipes;
 	private int currentRecipeIndex;
@@ -34,7 +34,7 @@ public class ShowRecipeBookPage extends Page implements Initializable {
 			try {
 				allRecipes = l.getRecipies();
 				showFoundRecipes(allRecipes);
-			} catch (SQLException e) {
+			} catch (SQLException | InterruptedException e) {
 				showErrorWindow("Something went wrong: " + e.getMessage());
 				l.changeView("SearchPage");
 			}
@@ -63,7 +63,7 @@ public class ShowRecipeBookPage extends Page implements Initializable {
 					allRecipes = l.getRecipies();
 					showFoundRecipes(allRecipes);
 				}
-			} catch (SQLException e) {
+			} catch (SQLException | InterruptedException e) {
 				showErrorWindow("Cannot display recipes: " + e.getMessage());
 				l.changeView("searchPage");
 			}
@@ -90,7 +90,6 @@ public class ShowRecipeBookPage extends Page implements Initializable {
 				l.changeView("SearchPage");
 			return;
 		}
-		
 		try {
 			resetGridPanes();
 			checkIfFavorite(r);
@@ -109,8 +108,9 @@ public class ShowRecipeBookPage extends Page implements Initializable {
 		
 		lbCookTime.setText(r.getCookTime()+"");
 		lbCuisine.setText(getAllCuisine(r));
-		lbRecipeName.setText(r.getRecipieName()+"");
+		lbRecipeName.setText(r.getRecipeName()+"");
 		lbServing.setText(r.getServings()+"");
+		lbPageNum.setText(String.format("%d/%d",this.currentRecipeIndex + 1,  this.allRecipes.size()));
 		Ingredient currentIngredient;
 
 		int ingredientsSize = r.getIngrediants().size();
@@ -141,15 +141,16 @@ public class ShowRecipeBookPage extends Page implements Initializable {
 	}
 
 	@FXML
-	private void blackOrYellowStar(ActionEvent event) throws SQLException {    	
+	private void blackOrYellowStar(ActionEvent event) throws SQLException, InterruptedException {    	
 		for (UIEventListener l : listeners) {
-			if(checkBoxFavorite.isSelected()) {
-				setStar(true);
-				l.addRecipeToUserFavorites(allRecipes.get(currentRecipeIndex));
-			}
+			if(checkBoxFavorite.isSelected())
+					if(l.addRecipeToUserFavorites(allRecipes.get(currentRecipeIndex)))
+							setStar(true);
+					else
+						showErrorWindow("Cannot add to favorites list");
 			else {
-				setStar(false);
 				l.removeRecipeFromUserFavorites(allRecipes.get(currentRecipeIndex));
+				setStar(false);
 			}
 		}
 	}

@@ -5,6 +5,8 @@ import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
+
 import exceptions.UserRegistrationException;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -15,7 +17,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import listeners.ModelEventListener;
 import listeners.UIEventListener;
-import model.DBManager;
 import model.Model;
 import model.Recipe;
 import view.MenuPage;
@@ -71,6 +72,7 @@ public class Controller implements UIEventListener, ModelEventListener {
 
 	@Override
 	public ArrayList<Recipe> getRecipiesByIngredients(ObservableList<Node> ingredientsList) throws Exception {
+		ingredientsList.removeAll(Collections.singleton(null));
 		return model.getRecipesByIngredients(ingredientsList);
 	}
 
@@ -85,8 +87,8 @@ public class Controller implements UIEventListener, ModelEventListener {
 	}
 
 	@Override
-	public ArrayList<Recipe> getRecipies() throws SQLException {
-		return DBManager.getInstance().showAllRecipies();
+	public ArrayList<Recipe> getRecipies() throws SQLException, InterruptedException {
+		return model.getAllrecipes();
 	}
 
 	@Override
@@ -98,9 +100,14 @@ public class Controller implements UIEventListener, ModelEventListener {
 		}
 		((ShowRecipeBookPage)this.currentView).showFoundRecipes(foundRecipes);
 	}
+	
+	@Override
+	public boolean addRecipeToDB(Recipe r) throws SQLException {
+		return model.addRecipeToDB(r);
+	}
 
 	@Override
-	public boolean addRecipeToUserFavorites(Recipe favoriteRecipe) throws SQLException {
+	public boolean addRecipeToUserFavorites(Recipe favoriteRecipe) throws SQLException, InterruptedException {
 		return model.addToUserFavorites(favoriteRecipe);
 	}
 
@@ -116,7 +123,7 @@ public class Controller implements UIEventListener, ModelEventListener {
 	}
 	
 	@Override
-	public ArrayList<Recipe> getUserFavorites() throws SQLException {
+	public ArrayList<Recipe> getUserFavorites() throws SQLException, InterruptedException {
 		return model.getUserFavorites();
 	}
 
@@ -143,4 +150,5 @@ public class Controller implements UIEventListener, ModelEventListener {
 	public void showErrorMessage(String string) {
 		Page.showErrorWindow(string);
 	}
+
 }

@@ -4,7 +4,10 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
+import org.json.simple.parser.ParseException;
 import exceptions.UserRegistrationException;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
@@ -16,8 +19,12 @@ public class Model {
 	private User loggedUser;
 	private ArrayList<ModelEventListener> listeners;
 
-	public Model() {
+	private ArrayList<Recipe> allRecipes, userFavorites;
+
+	public Model() throws SQLException, InterruptedException {
 		listeners = new ArrayList<ModelEventListener>();
+		allRecipes = getAllrecipes();
+		userFavorites = getUserFavorites();
 	}
 
 	public void addListener(ModelEventListener listener) {
@@ -28,10 +35,13 @@ public class Model {
 		User match = DBManager.getInstance().getUser(userName);
 		if(match == null || !PasswordManager.getInstance().checkPassowrd(password, match.getPassword()))
 			return false;
-		else {
+		try {
 			this.loggedUser = match;
-			return true;
+			userFavorites = getUserFavorites();
+		} catch (SQLException | InterruptedException e) {
+			return false;
 		}
+		return true;
 	}
 
 	public void logoutUser() {
@@ -68,62 +78,187 @@ public class Model {
 		}
 	}
 
-	public ArrayList<Recipe> getUserFavorites() throws SQLException {
-		return DBManager.getInstance().getUserFavorites(loggedUser.getUserID());
+	public ArrayList<Recipe> getAllrecipes() throws SQLException, InterruptedException {
+		if (this.allRecipes == null || this.allRecipes.isEmpty())
+			allRecipes = DBManager.getInstance().showAllRecipies();
+		return this.allRecipes;
 	}
 
-	public boolean addToUserFavorites(Recipe favoriteRecipe) throws SQLException {
-		if(favoriteRecipe == null)
+	public boolean addRecipeToDB(Recipe newRecipe) {
+		boolean addedToDB = false;
+		try {
+			addedToDB = DBManager.getInstance().addRecipe(newRecipe);
+		} catch(SQLException e) {
 			return false;
-		return DBManager.getInstance().addRecipeToUserFavorites(loggedUser.getUserID()+"",favoriteRecipe.getRecipeID());	
+		}
+		if(addedToDB)
+			allRecipes.add(newRecipe);
+		return addedToDB;
+	}
+
+	public ArrayList<Recipe> getUserFavorites() throws SQLException, InterruptedException {
+		if(loggedUser == null)
+			return null;
+		if (this.userFavorites == null || this.userFavorites.isEmpty()) 
+			userFavorites = DBManager.getInstance().getUserFavorites(loggedUser.getUserID());
+		return userFavorites;
+	}	
+
+	public boolean addToUserFavorites(Recipe favoriteRecipe) throws SQLException, InterruptedException { 
+		if(favoriteRecipe == null || this.loggedUser == null)
+			return false;
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					DBManager.getInstance().addRecipeToUserFavorites(loggedUser.getUserID()+"",favoriteRecipe.getRecipeID());
+				} catch (SQLException e) {}
+			}
+		}).start();
+		return this.userFavorites.add(favoriteRecipe);	
 	}
 
 	public boolean removeFromUserFavorites(Recipe favoriteRecipe) throws SQLException {
 		if(favoriteRecipe == null)
 			return false;
-		return DBManager.getInstance().removeRecipeFromUserFavorites(loggedUser.getUserID()+"",favoriteRecipe.getRecipeID());	
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					DBManager.getInstance().removeRecipeFromUserFavorites(loggedUser.getUserID()+"",favoriteRecipe.getRecipeID());
+				} catch (SQLException e) {}
+			}
+		}).start();
+		return userFavorites.remove(favoriteRecipe);
 	}
 
 	public boolean checkIfRecipeIsFavorite(Recipe favoriteRecipe) throws SQLException {
-		if(favoriteRecipe == null)
+		if(favoriteRecipe == null || this.userFavorites == null)
 			return false;
-		return DBManager.getInstance().checkIfRecipeIsFavorite(loggedUser.getUserID()+"",favoriteRecipe.getRecipeID());	
+		return userFavorites.contains(favoriteRecipe);
 	}
 
 	public ArrayList<Recipe> getRecipeByName(String recipeName) throws Exception {
-		ArrayList<Recipe> foundRecipes = DBManager.getInstance().searchRecipeByName(recipeName);
-		if(foundRecipes == null)
-			try {
-				foundRecipes = RecipeFetcher.getInstance().searchRecipe(recipeName);
-			} catch(Exception e) {
-				return null;
+		/*
+		 * Searches for recipes with similar name in the DB and against spoonacular API
+		 */
+		ArrayList<Recipe> foundRecipes = new ArrayList<>();
+		ExecutorService executor = Executors.newFixedThreadPool(5);
+		Thread t1 = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					// will not add nulls - checked in RecipeFetcher
+					ArrayList<Recipe> foundByAPI = RecipeFetcher.getInstance().searchRecipe(recipeName);
+					for (Recipe r : foundByAPI) {
+						executor.execute(new Runnable() {
+							@Override
+							public void run() {
+								if(addRecipeToDB(r))
+									foundRecipes.add(r);
+							}
+						});
+					}
+				} catch (IOException | InterruptedException | ParseException | SQLException | NoSuchAlgorithmException e) {
+					return;
+				}
 			}
+		});
+		t1.run();
+		executor.shutdown();
+		for (Recipe r : allRecipes) {
+			if (r.getRecipeName().equalsIgnoreCase(recipeName) || r.getRecipeName().contains(recipeName))
+				foundRecipes.add(r);
+		}
+		t1.join();
 		return foundRecipes; 
 	}
 
 	public ArrayList<Recipe> getRecipeByCuisine(String cuisine) throws Exception {
-		ArrayList<Recipe> foundRecipes;
-		foundRecipes = DBManager.getInstance().searchRecipeByCuisine(cuisine);
-		if(foundRecipes == null)
-			try {
-				foundRecipes = RecipeFetcher.getInstance().searchRecipeByCuisine(cuisine);
-			} catch(Exception e) {
-				return null;
+		/*
+		 * Searches for recipes from a given cuisine in the DB and against spoonacular API
+		 */
+		ArrayList<Recipe> foundRecipes = new ArrayList<>();
+		ExecutorService executor = Executors.newFixedThreadPool(5);
+		Thread t1 = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					// will not add nulls - checked in RecipeFetcher
+					ArrayList<Recipe> foundByAPI = RecipeFetcher.getInstance().searchRecipeByCuisine(cuisine);
+					for (Recipe r : foundByAPI) {
+						executor.execute(new Runnable() {
+							@Override
+							public void run() {
+								if(addRecipeToDB(r))
+									foundRecipes.add(r);
+							}
+						});
+					}
+				} catch (IOException | InterruptedException | ParseException | SQLException | NoSuchAlgorithmException e) {
+					return;
+				}
 			}
-		return foundRecipes;
+		});
+		t1.run();
+		executor.shutdown();
+		for (Recipe r : allRecipes) {
+			if(r.getCuisine().containsValue(cuisine))
+				foundRecipes.add(r);
+		}
+		t1.join();
+		return foundRecipes; 
 	}
 
 	@SuppressWarnings("unchecked") // choice boxes are of type String
 	public ArrayList<Recipe> getRecipesByIngredients(ObservableList<Node> ingredientsList) throws NoSuchAlgorithmException, IOException, Exception {
+		/*
+		 * Simultaneously searches for recipes that include one or more ingredients from a given list 
+		 * in the DB and against spoonacular API 
+		 */
 		int size = ingredientsList.size();
 		Ingredient[] ingredients = new Ingredient[size];
 		for (int i = 0; i < size; i++) {
 			ingredients[i] = DBManager.getInstance().searchIngredient(((ChoiceBox<String>)ingredientsList.get(i)).getValue());
 		}
-		ArrayList<Recipe> foundRecipes = DBManager.getInstance().searchRecipeByIngredients(ingredients);
-		if(foundRecipes == null || foundRecipes.size() == 0)
-			foundRecipes = RecipeFetcher.getInstance().searchRecipesByIngredients(ingredients);
+
+		ArrayList<Recipe> foundRecipes = new ArrayList<>();
+		Thread t1 = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					// will not add nulls - checked in DBManager.searchRecipeByIngredients()
+					foundRecipes.addAll(DBManager.getInstance().searchRecipeByIngredients(ingredients));
+				} catch (Exception e) {}
+			}
+		});
+
+		ExecutorService executor = Executors.newFixedThreadPool(5);
+		Thread t2 = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					// will not add nulls - checked in RecipeFetcher
+					ArrayList<Recipe> foundByAPI = RecipeFetcher.getInstance().searchRecipesByIngredients(ingredients);
+					for (Recipe r : foundByAPI) {
+						executor.execute(new Runnable() {
+							@Override
+							public void run() {
+								if(addRecipeToDB(r))
+									foundRecipes.add(r);
+							}
+						});
+					}
+				} catch (IOException | InterruptedException | ParseException | SQLException | NoSuchAlgorithmException e) {
+					return;
+				}
+			}
+		});
+		
+		t1.start(); 	t2.start(); 		
+		executor.shutdown();
+		t1.join();		t2.join();
+
 		return foundRecipes;
 	}
-
 }

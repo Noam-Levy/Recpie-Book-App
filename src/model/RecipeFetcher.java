@@ -97,7 +97,7 @@ public class RecipeFetcher {
 		return createRecipe(recipieData);
 	}
 
-	public ArrayList<Recipe> searchRecipe(String query) throws Exception {
+	public ArrayList<Recipe> searchRecipe(String query) throws IOException, InterruptedException, ParseException, SQLException {
 		/*
 		 *  Allows the user to search for recipes in natural language
 		 */
@@ -116,17 +116,21 @@ public class RecipeFetcher {
 			throw new ConnectException("Invalid response from API");
 
 		if(recipiesData.isEmpty())
-			throw new Exception("No recpies found.");
+			throw new ConnectException("No recpies found.");
 
 		@SuppressWarnings("unchecked") // spoonacular API returns JSON objects inside of the JSON array. 
 		Iterator<JSONObject> it = recipiesData.iterator();
 		ArrayList<Recipe> recipes = new ArrayList<Recipe>();
-		while(it.hasNext())
-			recipes.add(createRecipe(it.next()));
+		while(it.hasNext()) {
+			int id = ((Long)it.next().get("id")).intValue();
+			Recipe r = searchRecipeByID(id);
+			if(r != null)
+				recipes.add(r);
+		}
 		return recipes;
 	}
 	
-	public ArrayList<Recipe> searchRecipeByCuisine(String cuisine) throws Exception {
+	public ArrayList<Recipe> searchRecipeByCuisine(String cuisine) throws IOException, InterruptedException, ParseException, SQLException {
 		HttpRequest request = HttpRequest.newBuilder()
 				.uri(URI.create("https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/searchComplex?limitLicense=true&offset=0&number=2&cuisine=" + cuisine))
 				.header("x-rapidapi-host", "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com")
@@ -142,7 +146,7 @@ public class RecipeFetcher {
 			throw new ConnectException("Invalid response from API");
 
 		if(recipiesData.isEmpty())
-			throw new Exception("No recpies found.");
+			throw new ConnectException("No recpies found.");
 
 		@SuppressWarnings("unchecked") // spoonacular API returns JSON objects inside of the JSON array. 
 		Iterator<JSONObject> it = recipiesData.iterator();
@@ -156,7 +160,7 @@ public class RecipeFetcher {
 		return recipes;
 	}
 	
-	public ArrayList<Recipe> searchRecipesByIngredients(Ingredient[] ingredientList) throws Exception {
+	public ArrayList<Recipe> searchRecipesByIngredients(Ingredient[] ingredientList) throws IOException, InterruptedException, ParseException, SQLException {
 		// prepare ingredients list for web request
 		if(ingredientList.length == 0 || ingredientList == null)
 			return null;
@@ -180,7 +184,7 @@ public class RecipeFetcher {
 			throw new ConnectException("Invalid response from API");
 
 		if(recipesData.isEmpty())
-			throw new Exception("No recpies found.");
+			throw new ConnectException("No recpies found.");
 
 		@SuppressWarnings("unchecked") // spoonacular API returns JSON objects inside of the JSON array. 
 		Iterator<JSONObject> it = recipesData.iterator();
@@ -196,7 +200,7 @@ public class RecipeFetcher {
 		return recipes;
 	}
 
-	public Recipe searchRecipeByID(int id) throws Exception {
+	public Recipe searchRecipeByID(int id) throws ParseException, IOException, InterruptedException, SQLException {
 		HttpRequest request = HttpRequest.newBuilder()
 				.uri(URI.create("https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/"+ id + "/information"))
 				.header("x-rapidapi-host", "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com")
@@ -212,22 +216,22 @@ public class RecipeFetcher {
 			throw new ConnectException("Invalid response from API");
 
 		if(recipeData.isEmpty())
-			throw new Exception("No recpies found.");
+			throw new ConnectException("No recpies found.");
 
 		return createRecipe(recipeData);
 	}
 
-	private boolean addRecipeToDB(Recipe recipe) throws SQLException, NoSuchAlgorithmException {
-		// Compares the recipe with the DB and (if necessary) adds it to the DB.
-		DBManager manager = DBManager.getInstance();
-		if(manager.requestRecipeByID(recipe.getRecipeID()) == null)
-			try {
-				return manager.addRecipe(recipe);
-			} catch (SQLException e) {
-				return false;
-			}
-		return true;
-	}
+//	private boolean addRecipeToDB(Recipe recipe) throws SQLException, NoSuchAlgorithmException {
+//		// Compares the recipe with the DB and (if necessary) adds it to the DB.
+//		DBManager manager = DBManager.getInstance();
+//		if(manager.requestRecipeByID(recipe.getRecipeID()) == null)
+//			try {
+//				return manager.addRecipe(recipe);
+//			} catch (SQLException e) {
+//				return false;
+//			}
+//		return true;
+//	}
 
 	public String convertMeasurementToGrams(Ingredient i) throws IOException, InterruptedException, ParseException {
 		/* can be used to convert to other units - I.E: 1000 grams tomatoes = 8 piece(s).
@@ -255,7 +259,7 @@ public class RecipeFetcher {
 		throw new InvalidParameterException("Cannot convert from " + i.getMeasurement());
 	}
 
-	private Recipe createRecipe(JSONObject recipieData) throws Exception{
+	private Recipe createRecipe(JSONObject recipieData) throws SQLException {
 		/*
 		 * translates and returns received JSONObject from spoonacular API as recipe object.
 		 */
@@ -274,15 +278,19 @@ public class RecipeFetcher {
 		Iterator<?> it = instructionsData.iterator();
 		while(it.hasNext())	{
 			JSONObject currentInstruction = (JSONObject)it.next();
-			randomRecipe.addInstruction(((Long)currentInstruction.get("number")).intValue(), (String)currentInstruction.get("step"));
+			randomRecipe.addInstruction((String)currentInstruction.get("step"));
 		}
 
 		JSONArray ingrediantsData = (JSONArray)recipieData.get("extendedIngredients");
 		it = ingrediantsData.iterator();
 		while(it.hasNext()) {
 			JSONObject currentIngredient = (JSONObject)it.next();
-			String form = ((String)(currentIngredient.get("originalName")));
-			form = form.replaceAll(((String)(currentIngredient.get("name"))), "").replaceAll(",","");
+			JSONArray formData = ((JSONArray)currentIngredient.get("meta"));
+			String form = "";
+			for (Object s : formData) {
+				form = form + s.toString() + " ";
+			}
+			form = form.trim();
 			randomRecipe.addIngrediant(new Ingredient(
 					((Long)(currentIngredient.get("id"))).toString(), ((Double)(currentIngredient.get("amount"))).floatValue(),
 					(String)(currentIngredient.get("unit")), (String)(currentIngredient.get("name")),form));
@@ -295,9 +303,6 @@ public class RecipeFetcher {
 			String cuisineID = DBManager.getInstance().getCuisineID(currentCuisine);
 			randomRecipe.addCuisine(cuisineID, currentCuisine);
 		}
-		boolean success = addRecipeToDB(randomRecipe);
-		if (!success)
-			return null;
 		return randomRecipe;
 	}
 } 

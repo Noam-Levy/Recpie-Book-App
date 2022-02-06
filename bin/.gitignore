@@ -1,5 +1,4 @@
 /config.properties
-/controller/
-/listeners/
 /view/
 /model/
+/controller/

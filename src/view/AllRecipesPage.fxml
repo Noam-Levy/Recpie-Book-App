@@ -225,5 +225,11 @@
             <Image url="@../../images/spiral.jpeg" />
          </image>
       </ImageView>
+      <Label fx:id="lbPageNum" MinWidth="50.0" alignment="CENTER" contentDisplay="CENTER" layoutX="545.0" layoutY="793.0" textAlignment="CENTER">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Label>
+      
    </children>
 </Pane>

@@ -150,7 +150,11 @@ public class AddRecipePage extends Page implements Initializable {
 			String cuisineID = DBManager.getInstance().getCuisineID(recipeCuisine);
 			r.addCuisine(cuisineID, recipeCuisine);
 		}
-		return DBManager.getInstance().addRecipe(r);
+		for (UIEventListener l : listeners) {
+			if(!l.addRecipeToDB(r))
+				return false;
+		}
+		return true;
 	}
 
 	private HashMap<Integer, String> createRecipeInstructions() {
@@ -179,8 +183,7 @@ public class AddRecipePage extends Page implements Initializable {
 
 		ingredient = DBManager.getInstance().searchIngredient(name);
 		if(ingredient == null)	
-			ingredient = DBManager.getInstance().addIngredient("null",name);
-
+			ingredient = DBManager.getInstance().addIngredient(name);
 		ingredient.setAmount(amount);
 		ingredient.setFrom(form);
 		ingredient.setMeasurement(unit);
