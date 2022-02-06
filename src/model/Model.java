@@ -1,5 +1,6 @@
 package model;
 
+import java.io.File;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
@@ -7,11 +8,16 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import javax.imageio.ImageIO;
+
 import org.json.simple.parser.ParseException;
+
 import exceptions.UserRegistrationException;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Node;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.image.Image;
 import listeners.ModelEventListener;
 
 public class Model {
@@ -260,5 +266,11 @@ public class Model {
 		t1.join();		t2.join();
 
 		return foundRecipes;
+	}
+
+	public boolean savePhotoRcipe(Image image) throws IOException {
+		String path = System.getProperty("user.dir") + "\\images\\recipes\\" + image.hashCode()+".png";
+		File f = new File(path);
+		return ImageIO.write(SwingFXUtils.fromFXImage(image,null),"PNG",f);
 	}
 }

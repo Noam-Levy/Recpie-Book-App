@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
@@ -13,12 +14,10 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
-
-
-
-
-
+<?import javafx.scene.text.Text?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1150.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.AddRecipePage">
    <children>
@@ -27,157 +26,205 @@
             <Image url="@../../images/recipieBook.jpg" />
          </image>
       </ImageView>
-      <HBox layoutX="110.0" layoutY="50.0" prefHeight="31.0" prefWidth="900.0">
+      <StackPane layoutX="-2.0" layoutY="80.0">
          <children>
-            <Label prefHeight="31.0" prefWidth="258.0" text="Recipie Name">
-               <font>
-                  <Font name="Baskerville" size="34.0" />
-               </font>
-            </Label>
-            <TextField fx:id="txfRecipieName" prefHeight="42.0" prefWidth="536.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;" />
-         </children>
-      </HBox>
-      <HBox fillHeight="false" layoutX="110.0" layoutY="150.0" prefHeight="30.0" prefWidth="900.0">
-         <children>
-            <HBox prefHeight="30.0" prefWidth="300.0" spacing="10.0">
+            <Pane fx:id="addTextRecipe" prefHeight="818.0" prefWidth="1152.0">
                <children>
-                  <Label prefHeight="27.0" text="Cook time">
-                     <font>
-                        <Font name="Baskerville" size="24.0" />
-                     </font></Label>
-                  <TextField fx:id="txfRecipieCookTime" prefWidth="80.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;" />
+                  <HBox layoutX="231.0" prefHeight="31.0" prefWidth="700.0">
+                     <children>
+                        <Label prefHeight="31.0" prefWidth="258.0" text="Recipie Name">
+                           <font>
+                              <Font name="Baskerville" size="34.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="txfRecipieName" prefHeight="42.0" prefWidth="536.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;" />
+                     </children>
+                  </HBox>
+                  <HBox fillHeight="false" layoutX="231.0" layoutY="70.0" prefHeight="30.0" prefWidth="700.0" spacing="20.0">
+                     <children>
+                        <HBox prefHeight="30.0" prefWidth="200.0" spacing="10.0">
+                           <children>
+                              <Label prefHeight="27.0" text="Cook time">
+                                 <font>
+                                    <Font name="Baskerville" size="24.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="txfRecipieCookTime" prefWidth="40.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;" />
+                           </children>
+                        </HBox>
+                        <HBox layoutX="10.0" layoutY="10.0" prefHeight="30.0" prefWidth="200.0" spacing="10.0">
+                           <children>
+                              <Label prefHeight="27.0" prefWidth="103.0" text="Servings">
+                                 <font>
+                                    <Font name="Baskerville" size="24.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="txfServings" prefWidth="40.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="30.0" prefWidth="300.0" spacing="10.0">
+                           <children>
+                              <Label prefHeight="27.0" prefWidth="96.0" text="Cuisine">
+                                 <font>
+                                    <Font name="Baskerville" size="24.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="txfRecipieCuisine" prefHeight="28.0" prefWidth="200.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </HBox>
+                  <Pane layoutX="2.0" layoutY="150.0" prefHeight="550.0" prefWidth="550.0">
+                     <children>
+                        <ScrollPane hbarPolicy="NEVER" hmax="0.0" layoutX="-2.0" prefHeight="551.0" prefWidth="548.0" style="-fx-background-color: transparent; -fx-background: transparent;">
+                           <content>
+                              <GridPane fx:id="GPingredient" hgap="17.0" prefHeight="220.0" prefWidth="540.0" style="-fx-background-color: transparent;" vgap="20.0">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="57.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints maxHeight="37.0" minHeight="10.0" prefHeight="37.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="36.0" minHeight="10.0" prefHeight="36.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" style="-fx-text-fill: black;" text="Amount">
+                                       <font>
+                                          <Font name="Baskerville" size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" style="-fx-text-fill: black;" text="Unit" GridPane.columnIndex="1">
+                                       <font>
+                                          <Font name="Baskerville" size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" style="-fx-text-fill: black;" text="Ingrediant" GridPane.columnIndex="2">
+                                       <font>
+                                          <Font name="Baskerville" size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" layoutX="150.0" layoutY="28.0" style="-fx-text-fill: black;" text="Form" GridPane.columnIndex="3">
+                                       <font>
+                                          <Font name="Baskerville" size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField fx:id="tfAmount" layoutX="101.0" layoutY="81.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;" GridPane.rowIndex="1" />
+                                    <ChoiceBox fx:id="cmbUnit" prefWidth="150.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <TextField prefHeight="26.0" prefWidth="133.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                    <TextField layoutX="150.0" layoutY="81.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                 </children>
+                                 <padding>
+                                    <Insets left="10.0" top="10.0" />
+                                 </padding>
+                              </GridPane>
+                           </content>
+                           <padding>
+                              <Insets left="7.0" />
+                           </padding>
+                        </ScrollPane>
+                     </children>
+                  </Pane>
+                  <Pane layoutX="602.0" layoutY="150.0" prefHeight="550.0" prefWidth="550.0">
+                     <children>
+                        <ScrollPane layoutY="-1.0" prefHeight="551.0" prefWidth="548.0" style="-fx-background-color: transparent; -fx-background: transparent;">
+                           <content>
+                              <GridPane fx:id="GPinstruction" hgap="17.0" prefHeight="220.0" prefWidth="540.0" vgap="20.0">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints maxHeight="36.0" minHeight="10.0" prefHeight="36.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="36.0" minHeight="10.0" prefHeight="36.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Label layoutX="20.0" layoutY="183.0" style="-fx-text-fill: black;" text="Step">
+                                       <font>
+                                          <Font name="Baskerville" size="25.0" />
+                                       </font>
+                                    </Label>
+                                    <Label style="-fx-text-fill: black;" text="Instruction" GridPane.columnIndex="1">
+                                       <font>
+                                          <Font name="Baskerville" size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Label layoutX="20.0" layoutY="101.0" style="-fx-text-fill: black;" text="1" GridPane.rowIndex="1">
+                                       <font>
+                                          <Font size="19.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField layoutX="104.0" layoutY="61.0" prefHeight="26.0" prefWidth="236.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                 </children>
+                                 <padding>
+                                    <Insets left="10.0" top="10.0" />
+                                 </padding>
+                              </GridPane>
+                           </content>
+                        </ScrollPane>
+                     </children>
+                  </Pane>
+                  <Button fx:id="btnAddRowIngredient" layoutX="259.0" layoutY="686.0" mnemonicParsing="false" onAction="#addRowIngredient" prefHeight="26.0" prefWidth="14.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5; ">
+                     <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../images/plus.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="btnAddRowInstruction" layoutX="846.0" layoutY="695.0" mnemonicParsing="false" onAction="#addRowInstruction" prefHeight="26.0" prefWidth="14.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5; ">
+                     <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../images/plus.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button layoutX="557.0" layoutY="749.0" mnemonicParsing="false" onAction="#saveRecipie" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5; ">
+                     <graphic>
+                        <ImageView fitHeight="29.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../images/save.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
                </children>
-            </HBox>
-            <HBox prefHeight="30.0" prefWidth="300.0" spacing="10.0">
+            </Pane>
+            <Pane fx:id="addPhotoRecipe" prefHeight="200.0" prefWidth="200.0" visible="false">
                <children>
-                  <Label prefHeight="27.0" prefWidth="96.0" text="Cuisine">
+                  <Button layoutX="557.0" layoutY="749.0" mnemonicParsing="false" onAction="#savePhotoRecipe" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5; ">
+                     <graphic>
+                        <ImageView fitHeight="29.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../images/save.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <ImageView fx:id="DragDropImage" fitHeight="440.0" fitWidth="440.0" layoutX="335.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/dragDrop.png" />
+                     </image>
+                  </ImageView>
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="500.0" layoutX="315.0" layoutY="90.0" stroke="BLACK" strokeType="OUTSIDE" width="500.0" />
+                  <Text layoutX="385.0" layoutY="620.0" text="Drag and drop picture" textAlignment="CENTER" wrappingWidth="365.2958984375">
                      <font>
-                        <Font name="Baskerville" size="24.0" />
-                     </font></Label>
-                  <TextField fx:id="txfRecipieCuisine" prefWidth="80.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;" />
-               </children>
-            </HBox>
-            <HBox layoutX="10.0" layoutY="10.0" prefHeight="30.0" prefWidth="300.0" spacing="10.0">
-               <children>
-                  <Label fx:id="s" prefHeight="27.0" prefWidth="103.0" text="Servings">
-                     <font>
-                        <Font name="Baskerville" size="24.0" />
+                        <Font size="26.0" />
                      </font>
-                  </Label>
-                  <TextField fx:id="txfServings" prefWidth="80.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;" />
+                  </Text>
+                  <ImageView fx:id="recipeImageView" fitHeight="440.0" fitWidth="440.0" layoutX="335.0" layoutY="120.0" onDragDropped="#handleDrop" onDragOver="#handleDrag" pickOnBounds="true" preserveRatio="true" />
                </children>
-            </HBox>
+            </Pane>
          </children>
-      </HBox>
-      <Button layoutX="555.0" layoutY="844.0" mnemonicParsing="false" onAction="#saveRecipie" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5; ">
-         <graphic>
-            <ImageView fitHeight="29.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../images/save.png" />
-               </image>
-            </ImageView>
-         </graphic></Button>
-      <Pane layoutY="230.0" prefHeight="550.0" prefWidth="550.0">
-         <children>
-            <ScrollPane hbarPolicy="NEVER" hmax="0.0" layoutX="-2.0" prefHeight="551.0" prefWidth="548.0" style="-fx-background-color: transparent; -fx-background: transparent;">
-               <content>
-                  <GridPane fx:id="GPingredient" hgap="17.0" prefHeight="220.0" prefWidth="540.0" style="-fx-background-color: transparent;" vgap="20.0">
-                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="57.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
-                     </columnConstraints>
-                     <rowConstraints>
-                        <RowConstraints maxHeight="37.0" minHeight="10.0" prefHeight="37.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="36.0" minHeight="10.0" prefHeight="36.0" vgrow="SOMETIMES" />
-                     </rowConstraints>
-                     <children>
-                        <Label alignment="CENTER" contentDisplay="CENTER" style="-fx-text-fill: black;" text="Amount">
-                           <font>
-                              <Font name="Baskerville" size="24.0" />
-                           </font></Label>
-                        <Label alignment="CENTER" contentDisplay="CENTER" style="-fx-text-fill: black;" text="Unit" GridPane.columnIndex="1">
-                           <font>
-                              <Font name="Baskerville" size="24.0" />
-                           </font></Label>
-                        <Label alignment="CENTER" contentDisplay="CENTER" style="-fx-text-fill: black;" text="Ingrediant" GridPane.columnIndex="2">
-                           <font>
-                              <Font name="Baskerville" size="24.0" />
-                           </font></Label>
-                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="150.0" layoutY="28.0" style="-fx-text-fill: black;" text="Form" GridPane.columnIndex="3">
-                           <font>
-                              <Font name="Baskerville" size="24.0" />
-                           </font></Label>
-                        <TextField fx:id="tfAmount" layoutX="101.0" layoutY="81.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;" GridPane.rowIndex="1" />
-                        <ChoiceBox fx:id="cmbUnit" prefWidth="150.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <TextField prefHeight="26.0" prefWidth="133.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                        <TextField layoutX="150.0" layoutY="81.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                     </children>
-                     <padding>
-                        <Insets left="10.0" top="10.0" />
-                     </padding>
-                  </GridPane>
-               </content>
-               <padding>
-                  <Insets left="7.0" />
-               </padding>
-            </ScrollPane>
-         </children>
-      </Pane>
-      <Pane layoutX="600.0" layoutY="230.0" prefHeight="550.0" prefWidth="550.0">
-         <children>
-            <ScrollPane layoutY="-1.0" prefHeight="551.0" prefWidth="548.0" style="-fx-background-color: transparent; -fx-background: transparent;">
-               <content>
-                  <GridPane fx:id="GPinstruction" hgap="17.0" prefHeight="220.0" prefWidth="540.0" vgap="20.0">
-                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                     </columnConstraints>
-                     <rowConstraints>
-                        <RowConstraints maxHeight="36.0" minHeight="10.0" prefHeight="36.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="36.0" minHeight="10.0" prefHeight="36.0" vgrow="SOMETIMES" />
-                     </rowConstraints>
-                     <children>
-                        <Label layoutX="20.0" layoutY="183.0" style="-fx-text-fill: black;" text="Step">
-                           <font>
-                              <Font name="Baskerville" size="25.0" />
-                           </font></Label>
-                        <Label style="-fx-text-fill: black;" text="Instruction" GridPane.columnIndex="1">
-                           <font>
-                              <Font name="Baskerville" size="24.0" />
-                           </font></Label>
-                        <Label layoutX="20.0" layoutY="101.0" style="-fx-text-fill: black;" text="1" GridPane.rowIndex="1">
-                           <font>
-                              <Font size="19.0" />
-                           </font></Label>
-                        <TextField layoutX="104.0" layoutY="61.0" prefHeight="26.0" prefWidth="236.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                     </children>
-                     <padding>
-                        <Insets left="10.0" top="10.0" />
-                     </padding>
-                  </GridPane>
-               </content>
-            </ScrollPane>
-         </children>
-      </Pane>
-      <Button fx:id="btnAddRowIngredient" layoutX="257.0" layoutY="766.0" mnemonicParsing="false" onAction="#addRowIngredient" prefHeight="26.0" prefWidth="14.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5; ">
-         <graphic>
-            <ImageView fitHeight="24.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../images/plus.png" />
-               </image>
-            </ImageView>
-         </graphic>
-      </Button>
-      <Button fx:id="btnAddRowInstruction" layoutX="844.0" layoutY="775.0" mnemonicParsing="false" onAction="#addRowInstruction" prefHeight="26.0" prefWidth="14.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5; ">
-         <graphic>
-            <ImageView fitHeight="24.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../images/plus.png" />
-               </image>
-            </ImageView>
-         </graphic>
-      </Button>
+      </StackPane>
+      <CheckBox fx:id="checkIfPhoto" layoutX="448.0" layoutY="21.0" mnemonicParsing="false" onAction="#textOrPhoto" text="Add recipe from picture">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </CheckBox>
    </children>
 </Pane>

@@ -51,7 +51,7 @@ public class ShowRecipeBookPage extends Page implements Initializable {
 		else if (((Button)event.getSource()).getId().equals("previousRecipeButton") && currentRecipeIndex > 0)
 			displayRecipe(allRecipes.get(--currentRecipeIndex));
 	}
-	
+
 	@FXML
 	private void showFavorities(ActionEvent event) {
 		for (UIEventListener l : listeners) {
@@ -82,7 +82,7 @@ public class ShowRecipeBookPage extends Page implements Initializable {
 		this.currentRecipeIndex = 0;
 		showNewRecipe(null);
 	}
-	
+
 	private void displayRecipe(Recipe r) {
 		if(r == null) {
 			showErrorWindow("no recipes found");
@@ -105,7 +105,7 @@ public class ShowRecipeBookPage extends Page implements Initializable {
 				l.changeView("SearchPage");
 			return;
 		}
-		
+
 		lbCookTime.setText(r.getCookTime()+"");
 		lbCuisine.setText(getAllCuisine(r));
 		lbRecipeName.setText(r.getRecipeName()+"");
@@ -133,7 +133,7 @@ public class ShowRecipeBookPage extends Page implements Initializable {
 			GPinstruction.addRow(step, lbStepNum, lbInstruction);
 		});
 	}
-	
+
 	private void checkIfFavorite(Recipe currentrecipe) throws SQLException {
 		for (UIEventListener l : listeners) {
 			setStar(l.checkRecipeInUserFavorites(currentrecipe));
@@ -144,17 +144,17 @@ public class ShowRecipeBookPage extends Page implements Initializable {
 	private void blackOrYellowStar(ActionEvent event) throws SQLException, InterruptedException {    	
 		for (UIEventListener l : listeners) {
 			if(checkBoxFavorite.isSelected())
-					if(l.addRecipeToUserFavorites(allRecipes.get(currentRecipeIndex)))
-							setStar(true);
-					else
-						showErrorWindow("Cannot add to favorites list");
+				if(l.addRecipeToUserFavorites(allRecipes.get(currentRecipeIndex)))
+					setStar(true);
+				else
+					showErrorWindow("Cannot add to favorites list");
 			else {
 				l.removeRecipeFromUserFavorites(allRecipes.get(currentRecipeIndex));
 				setStar(false);
 			}
 		}
 	}
-	
+
 	private void setStar(boolean favorite) {
 		checkBoxFavorite.setSelected(favorite);
 		yellowStar.setVisible(favorite);

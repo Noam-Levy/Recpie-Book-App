@@ -14,6 +14,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import listeners.ModelEventListener;
 import listeners.UIEventListener;
@@ -105,6 +106,12 @@ public class Controller implements UIEventListener, ModelEventListener {
 	public boolean addRecipeToDB(Recipe r) throws SQLException {
 		return model.addRecipeToDB(r);
 	}
+	
+	@Override
+	public boolean savePhotoRecipe(Image image) throws IOException {
+		return model.savePhotoRcipe(image);
+	}
+
 
 	@Override
 	public boolean addRecipeToUserFavorites(Recipe favoriteRecipe) throws SQLException, InterruptedException {
@@ -150,5 +157,4 @@ public class Controller implements UIEventListener, ModelEventListener {
 	public void showErrorMessage(String string) {
 		Page.showErrorWindow(string);
 	}
-
 }
