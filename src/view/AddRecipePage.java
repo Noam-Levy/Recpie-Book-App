@@ -1,9 +1,14 @@
 package view;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.beans.value.ChangeListener;
@@ -13,10 +18,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import listeners.UIEventListener;
 import model.DBManager;
 import model.Ingredient;
@@ -24,10 +35,11 @@ import model.Recipe;
 
 public class AddRecipePage extends Page implements Initializable {
 
-	@FXML private GridPane GPingredient;
-	@FXML private GridPane GPinstruction;
-	@FXML private Button btnAddRowIngredient;
-	@FXML private Button btnAddRowInstruction;
+	@FXML private GridPane GPingredient, GPinstruction;
+	@FXML private Pane addPhotoRecipe, addTextRecipe;
+	@FXML private ImageView recipeImageView, DragDropImage;
+	@FXML private Button btnAddRowIngredient, btnAddRowInstruction;
+	@FXML private CheckBox checkIfPhoto;
 	@FXML private ChoiceBox<String> cmbUnit;
 	@FXML private TextField txfRecipieCookTime, txfRecipieCuisine, txfRecipieName, txfServings, tfAmount;
 
@@ -94,7 +106,7 @@ public class AddRecipePage extends Page implements Initializable {
 		}
 		clearFields();
 	}
-	
+
 	@SuppressWarnings("unchecked") // Choice boxes are of type field
 	private void clearFields() {
 		resetGridPanes() ;
@@ -108,17 +120,57 @@ public class AddRecipePage extends Page implements Initializable {
 		((TextField)GPingredient.getChildren().get(7)).clear();
 		((TextField)GPinstruction.getChildren().get(3)).clear();
 	}
-	
+
 	@FXML
 	private void resetGridPanes() {
 		GPingredient.getChildren().retainAll(GPingredient.getChildren().get(0),GPingredient.getChildren().get(1),
 				GPingredient.getChildren().get(2),GPingredient.getChildren().get(3),GPingredient.getChildren().get(4)
 				,GPingredient.getChildren().get(5),GPingredient.getChildren().get(6),GPingredient.getChildren().get(7));
-		
+
 		GPinstruction.getChildren().retainAll(GPinstruction.getChildren().get(0),GPinstruction.getChildren().get(1)
 				,GPinstruction.getChildren().get(2),GPinstruction.getChildren().get(3));
 	}
 
+	@FXML
+	private void textOrPhoto(ActionEvent event) {    	
+		setDragPhoto(checkIfPhoto.isSelected());
+	}
+
+	@FXML
+	void handleDrag(DragEvent event) {
+		if (event.getDragboard().hasFiles()) {
+			event.acceptTransferModes(TransferMode.ANY);
+		}
+	}
+
+	@FXML
+	void handleDrop(DragEvent event) {
+		List<File> files = event.getDragboard().getFiles();
+		Image img;
+		try {
+			img = new Image(new FileInputStream(files.get(0)));
+			recipeImageView.setImage(img);
+			DragDropImage.setVisible(false);
+		} catch (FileNotFoundException e) {
+			showErrorWindow("Unable to load file");
+		}
+	}
+
+	@FXML
+	void savePhotoRecipe(ActionEvent event) {
+		try {
+			boolean saved = false;
+			for (UIEventListener l : listeners)
+				saved = l.savePhotoRecipe(recipeImageView.getImage());
+			if(saved) {
+				showSuccessWindow("Recipe saved");
+			} else
+				showErrorWindow("Unable to save recipe");
+		} catch (IOException e) {
+			showErrorWindow("Faild to save recipe: " + e.getMessage());
+		}
+		setDragPhoto(true);
+	}
 
 	private void addListenerToTextField(TextField tf) {
 		/*
@@ -142,7 +194,7 @@ public class AddRecipePage extends Page implements Initializable {
 		String recipeCuisine  = txfRecipieCuisine.getText();
 		ArrayList<Ingredient> recipeIngredients = createRecipeIngredient();
 		HashMap<Integer,String> recipeInstructions = createRecipeInstructions();
-		
+
 		Recipe r = new Recipe(null,recipeName,Integer.parseInt(recipeCookTime),Integer.parseInt(recipeServing));
 		r.setIngredients(recipeIngredients);
 		r.setInstructions(recipeInstructions);
@@ -150,7 +202,11 @@ public class AddRecipePage extends Page implements Initializable {
 			String cuisineID = DBManager.getInstance().getCuisineID(recipeCuisine);
 			r.addCuisine(cuisineID, recipeCuisine);
 		}
-		return DBManager.getInstance().addRecipe(r);
+		for (UIEventListener l : listeners) {
+			if(!l.addRecipeToDB(r))
+				return false;
+		}
+		return true;
 	}
 
 	private HashMap<Integer, String> createRecipeInstructions() {
@@ -179,8 +235,7 @@ public class AddRecipePage extends Page implements Initializable {
 
 		ingredient = DBManager.getInstance().searchIngredient(name);
 		if(ingredient == null)	
-			ingredient = DBManager.getInstance().addIngredient("null",name);
-
+			ingredient = DBManager.getInstance().addIngredient(name);
 		ingredient.setAmount(amount);
 		ingredient.setFrom(form);
 		ingredient.setMeasurement(unit);
@@ -201,7 +256,7 @@ public class AddRecipePage extends Page implements Initializable {
 	}
 
 	private boolean checkIfGPIsComplete() {
-		return checkGPingredient()&&checkGPinstruction();
+		return checkGPingredient( )&& checkGPinstruction();
 	}
 
 	private boolean checkGPingredient() {
@@ -215,12 +270,17 @@ public class AddRecipePage extends Page implements Initializable {
 	}
 
 	private boolean checkGPinstruction() {
-		for (int i = 1; i < GPinstruction.getRowCount(); i++) {
+		for (int i = 1; i < GPinstruction.getRowCount(); i++)
 			if(getNodeByCoordinate(GPinstruction,i,1)==null)
 				return false;
-		}
-
 		return true;
+	}
+
+	private void setDragPhoto(boolean state) {
+		addTextRecipe.setVisible(!state);
+		addPhotoRecipe.setVisible(state);
+		DragDropImage.setVisible(state);
+		recipeImageView.setImage(null);
 	}
 
 }

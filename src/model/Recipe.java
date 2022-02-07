@@ -2,18 +2,22 @@ package model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.StringTokenizer;
+
 
 public class Recipe {
 
 	private String recipeID, recipieName;
 	private int cookTime, servings;
 	private HashMap<Integer,String> instructions; // step number, instruction
+	private int totalSteps;
 	private ArrayList<Ingredient> ingredients;
 	private HashMap<String, String> cuisine; // id, name
 	
 	public Recipe() {
 		this.ingredients = new ArrayList<Ingredient>();
 		this.instructions = new HashMap<Integer,String>();
+		this.totalSteps = 0;
 		this.cuisine = new HashMap<String, String>();
 	}
 	
@@ -35,7 +39,7 @@ public class Recipe {
 		this.recipeID = recipeID;
 	}
 
-	public String getRecipieName() {
+	public String getRecipeName() {
 		return recipieName;
 	}
 
@@ -63,8 +67,24 @@ public class Recipe {
 		return instructions;
 	}
 	
+	public void addInstruction(String stepInfo) {
+		/*
+		 * To be used when instruction length is unknown (such as from spoonacular API) 
+		 * in order to be able to save the recipe into the database.
+		 */
+		StringTokenizer tokenizer = new StringTokenizer(stepInfo,".");
+		if(tokenizer.countTokens() > 1) {
+			while(tokenizer.hasMoreTokens())
+				addInstruction(++totalSteps, tokenizer.nextToken().trim()+".");
+			}
+		else {
+			addInstruction(++totalSteps, stepInfo);
+		}
+	}
+	
 	public void addInstruction(int stepNumber, String stepInfo) {
-		this.instructions.put(stepNumber, stepInfo);
+			this.instructions.put(stepNumber, stepInfo);
+			this.totalSteps = stepNumber;
 	}
 	
 	public void setInstructions(HashMap<Integer, String> recipeInstructions) {
@@ -76,6 +96,9 @@ public class Recipe {
 	}
 
 	public void addIngrediant(Ingredient i) {
+		for (Ingredient ingredient : ingredients)
+			if(i.equals(ingredient))
+				return;
 		this.ingredients.add(i);
 	}
 	
@@ -92,8 +115,11 @@ public class Recipe {
 		cuisine.put(id, name);
 	}
 
-	
-	
-	
-	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof Recipe) {
+			return this.recipeID.equalsIgnoreCase(((Recipe) obj).getRecipeID());		
+		}
+		return false;
+	}
 }

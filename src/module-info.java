@@ -7,6 +7,8 @@ module OODFinalProject_AmitMaudi_NoamLevy {
 	requires javafx.base;
 	requires java.sql;
 	requires jasypt;
+	requires java.desktop;
+	requires javafx.swing;
 	
 	opens controller to javafx.fxml;
 	opens view to javafx.fxml;

@@ -14,6 +14,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1150.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ShowRecipeBookPage">
@@ -23,16 +24,225 @@
             <Image url="@../../images/recipieBook.jpg" />
          </image>
       </ImageView>
-      <HBox layoutX="458.0" layoutY="40.0" prefHeight="32.0" prefWidth="235.0" spacing="20.0">
+      <Label fx:id="lbPageNum" MinWidth="50.0" alignment="CENTER" contentDisplay="CENTER" layoutX="540.0" layoutY="793.0" maxWidth="-Infinity" prefHeight="25.0" prefWidth="70.0" textAlignment="CENTER">
+         <font>
+            <Font name="Century Gothic" size="20.0" />
+         </font>
+      </Label>
+      <StackPane layoutX="551.0" layoutY="822.0" prefHeight="50.0" prefWidth="50.0">
          <children>
-            <CheckBox fx:id="cbShowFavorities" mnemonicParsing="false" onAction="#showFavorities">
+            <ImageView fx:id="yellowStar" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" visible="false">
+               <image>
+                  <Image url="@../../images/299040_star_icon.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="blackStar" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../images/211824_star_icon.png" />
+               </image>
+            </ImageView>
+            <CheckBox fx:id="checkBoxFavorite" contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" onAction="#blackOrYellowStar" opacity="0.0" prefHeight="50.0" prefWidth="50.0" />
+         </children>
+      </StackPane>
+      <Pane fx:id="textRecipePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1150.0">
+         <children>
+            <ImageView fitHeight="548.0" fitWidth="44.0" pickOnBounds="true" x="553.0" y="231.0">
+               <image>
+                  <Image url="@../../images/spiral.jpeg" />
+               </image>
+            </ImageView>
+            <HBox layoutX="458.0" layoutY="60.0" prefHeight="32.0" prefWidth="235.0" spacing="20.0">
+               <children>
+                  <CheckBox fx:id="cbShowFavorities" mnemonicParsing="false" onAction="#showFavorities">
+                     <font>
+                        <Font size="23.0" />
+                     </font>
+                  </CheckBox>
+                  <Label text="Show Favorites">
+                     <font>
+                        <Font name="Century Gothic" size="25.0" />
+                     </font>
+                  </Label>
+               </children>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </HBox>
+            <HBox layoutX="110.0" layoutY="100.0" prefHeight="30.0" prefWidth="900.0">
+               <children>
+                  <Label text="Recipe Name">
+                     <font>
+                        <Font name="Century Gothic" size="30.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lbRecipeName" contentDisplay="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="600.0" textAlignment="CENTER" translateX="20.0" translateY="2.0" wrapText="true">
+                     <font>
+                        <Font name="Century Gothic" size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox fillHeight="false" layoutX="110.0" layoutY="150.0" prefHeight="30.0" prefWidth="900.0">
+               <children>
+                  <HBox prefHeight="50.0" prefWidth="250.0" spacing="5.0">
+                     <children>
+                        <Label text="Cook time">
+                           <font>
+                              <Font name="Century Gothic" size="27.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lbCookTime" prefHeight="50.0" prefWidth="99.0" textAlignment="CENTER" translateX="4.0" translateY="2.0" wrapText="true">
+                           <font>
+                              <Font name="Century Gothic" size="20.0" />
+                           </font>
+                           <padding>
+                              <Insets top="3.0" />
+                           </padding>
+                        </Label>
+                     </children>
+                     <HBox.margin>
+                        <Insets top="3.0" />
+                     </HBox.margin>
+                  </HBox>
+                  <HBox prefWidth="400.0" spacing="5.0">
+                     <children>
+                        <Label text="Cuisine">
+                           <font>
+                              <Font name="Century Gothic" size="27.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lbCuisine" prefWidth="200.0" textAlignment="CENTER" translateX="4.0" translateY="2.0" wrapText="true">
+                           <font>
+                              <Font name="Century Gothic" size="20.0" />
+                           </font>
+                           <padding>
+                              <Insets top="3.0" />
+                           </padding>
+                        </Label>
+                     </children>
+                     <HBox.margin>
+                        <Insets top="3.0" />
+                     </HBox.margin>
+                  </HBox>
+                  <HBox layoutX="10.0" layoutY="10.0" prefHeight="30.0" prefWidth="250.0" spacing="5.0">
+                     <children>
+                        <Label text="Servings">
+                           <font>
+                              <Font name="Century Gothic" size="27.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lbServing" prefWidth="125.0" textAlignment="CENTER" translateX="4.0" translateY="2.0">
+                           <font>
+                              <Font name="Century Gothic" size="24.0" />
+                           </font>
+                           <padding>
+                              <Insets top="3.0" />
+                           </padding>
+                        </Label>
+                     </children>
+                     <HBox.margin>
+                        <Insets top="3.0" />
+                     </HBox.margin>
+                  </HBox>
+               </children>
+            </HBox>
+            <Pane layoutX="3.0" layoutY="230.0" prefHeight="550.0" prefWidth="550.0" style="-fx-background-color: transparent; -fx-border-radius: 5; -fx-background-radius: 5;">
+               <children>
+                  <ScrollPane layoutX="3.0" prefHeight="551.0" prefWidth="548.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;   ">
+                     <content>
+                        <GridPane fx:id="GPingredient" hgap="17.0" layoutX="3.0" maxWidth="-Infinity" prefHeight="220.0" prefWidth="540.0" style="-fx-background-color: transparent;" vgap="20.0">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="37.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <Label style="-fx-text-fill: black;" text="Amount">
+                                 <font>
+                                    <Font name="Century Gothic" size="27.0" />
+                                 </font>
+                              </Label>
+                              <Label style="-fx-text-fill: black;" text="Unit" GridPane.columnIndex="1">
+                                 <font>
+                                    <Font name="Century Gothic" size="27.0" />
+                                 </font>
+                              </Label>
+                              <Label style="-fx-text-fill: black;" text="Ingredient" GridPane.columnIndex="2">
+                                 <font>
+                                    <Font name="Century Gothic" size="27.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="150.0" layoutY="28.0" style="-fx-text-fill: black;" text="Form" GridPane.columnIndex="3">
+                                 <font>
+                                    <Font name="Century Gothic" size="27.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets left="10.0" top="10.0" />
+                           </padding>
+                        </GridPane>
+                     </content>
+                  </ScrollPane>
+               </children>
+            </Pane>
+            <Pane layoutX="598.0" layoutY="230.0" prefHeight="550.0" prefWidth="550.0" style="-fx-background-color: transparent; -fx-border-radius: 5; -fx-background-radius: 5;">
+               <children>
+                  <ScrollPane layoutY="-1.0" prefHeight="551.0" prefWidth="548.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5; ;  ">
+                     <content>
+                        <GridPane fx:id="GPinstruction" hgap="17.0" maxWidth="540.0" prefHeight="220.0" prefWidth="540.0" vgap="20.0">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="36.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <Label style="-fx-text-fill: black;" text="Instruction" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="1">
+                                 <font>
+                                    <Font name="Century Gothic" size="27.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="20.0" layoutY="183.0" minWidth="-Infinity" style="-fx-text-fill: black;" text="Step">
+                                 <font>
+                                    <Font name="Century Gothic" size="27.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets left="10.0" top="10.0" />
+                           </padding>
+                        </GridPane>
+                     </content></ScrollPane>
+               </children>
+            </Pane>
+         </children>
+      </Pane>
+      <Pane fx:id="imageRecipePane" prefHeight="900.0" prefWidth="1150.0" visible="false">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="620.0" layoutX="275.0" layoutY="140.0" stroke="BLACK" strokeType="INSIDE" width="600.0" />
+            <ImageView fx:id="imageRecipe" fitHeight="600.0" fitWidth="600.0" layoutX="275.0" layoutY="150.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../images/noImage.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <HBox layoutX="458.0" layoutY="20.0" prefHeight="32.0" prefWidth="235.0" spacing="20.0">
+         <children>
+            <CheckBox fx:id="cbShowImages" mnemonicParsing="false" onAction="#showImageRecipes">
                <font>
                   <Font size="23.0" />
                </font>
             </CheckBox>
-            <Label text="Show Favorites">
+            <Label text="Show Images">
                <font>
-                  <Font name="Baskerville" size="27.0" />
+                  <Font name="Century Gothic" size="25.0" />
                </font>
             </Label>
          </children>
@@ -40,153 +250,6 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </HBox>
-      <HBox layoutX="110.0" layoutY="94.0" prefHeight="30.0" prefWidth="900.0">
-         <children>
-            <Label text="Recipie Name">
-               <font>
-                  <Font name="Baskerville" size="27.0" />
-               </font>
-            </Label>
-            <Label fx:id="lbRecipeName" contentDisplay="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="600.0" textAlignment="CENTER" translateX="20.0" translateY="2.0">
-               <font>
-                  <Font size="21.0" />
-               </font>
-            </Label>
-         </children>
-      </HBox>
-      <HBox fillHeight="false" layoutX="110.0" layoutY="150.0" prefHeight="30.0" prefWidth="900.0">
-         <children>
-            <HBox prefHeight="30.0" prefWidth="300.0" spacing="5.0">
-               <children>
-                  <Label prefHeight="27.0" text="Cook time">
-                     <font>
-                        <Font name="Baskerville" size="27.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="lbCookTime" prefHeight="35.0" prefWidth="99.0" textAlignment="CENTER" translateX="4.0" translateY="2.0">
-                     <font>
-                        <Font size="21.0" />
-                     </font>
-                     <padding>
-                        <Insets top="3.0" />
-                     </padding></Label>
-               </children>
-               <HBox.margin>
-                  <Insets top="3.0" />
-               </HBox.margin>
-            </HBox>
-            <HBox prefHeight="30.0" prefWidth="300.0" spacing="5.0">
-               <children>
-                  <Label prefHeight="27.0" text="Cuisine">
-                     <font>
-                        <Font name="Baskerville" size="27.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="lbCuisine" prefHeight="35.0" prefWidth="100.0" textAlignment="CENTER" translateX="4.0" translateY="2.0">
-                     <font>
-                        <Font size="21.0" />
-                     </font>
-                     <padding>
-                        <Insets top="3.0" />
-                     </padding></Label>
-               </children>
-               <HBox.margin>
-                  <Insets top="3.0" />
-               </HBox.margin>
-            </HBox>
-            <HBox layoutX="10.0" layoutY="10.0" prefHeight="30.0" prefWidth="300.0" spacing="5.0">
-               <children>
-                  <Label prefHeight="27.0" text="Servings">
-                     <font>
-                        <Font name="Baskerville" size="27.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="lbServing" prefHeight="35.0" prefWidth="100.0" textAlignment="CENTER" translateX="4.0" translateY="2.0">
-                     <font>
-                        <Font size="21.0" />
-                     </font>
-                     <padding>
-                        <Insets top="3.0" />
-                     </padding></Label>
-               </children>
-               <HBox.margin>
-                  <Insets top="3.0" />
-               </HBox.margin>
-            </HBox>
-         </children>
-      </HBox>
-      <Pane layoutX="3.0" layoutY="230.0" prefHeight="550.0" prefWidth="550.0" style="-fx-background-color: transparent; -fx-border-radius: 5; -fx-background-radius: 5;">
-         <children>
-            <ScrollPane layoutX="3.0" prefHeight="551.0" prefWidth="548.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;   ">
-               <content>
-                  <GridPane fx:id="GPingredient" hgap="17.0" layoutX="3.0" prefHeight="220.0" prefWidth="540.0" style="-fx-background-color: transparent;" vgap="20.0">
-                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                     </columnConstraints>
-                     <rowConstraints>
-                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="37.0" vgrow="SOMETIMES" />
-                     </rowConstraints>
-                     <children>
-                        <Label style="-fx-text-fill: black;" text="Amount">
-                           <font>
-                              <Font name="Baskerville" size="27.0" />
-                           </font>
-                        </Label>
-                        <Label style="-fx-text-fill: black;" text="Unit" GridPane.columnIndex="1">
-                           <font>
-                              <Font name="Baskerville" size="27.0" />
-                           </font></Label>
-                        <Label style="-fx-text-fill: black;" text="Ingrediant" GridPane.columnIndex="2">
-                           <font>
-                              <Font name="Baskerville" size="27.0" />
-                           </font></Label>
-                        <Label layoutX="150.0" layoutY="28.0" style="-fx-text-fill: black;" text="Form" GridPane.columnIndex="3">
-                           <font>
-                              <Font name="Baskerville" size="27.0" />
-                           </font></Label>
-                     </children>
-                     <padding>
-                        <Insets left="10.0" top="10.0" />
-                     </padding>
-                  </GridPane>
-               </content>
-            </ScrollPane>
-         </children>
-      </Pane>
-      <Pane layoutX="598.0" layoutY="230.0" prefHeight="550.0" prefWidth="550.0" style="-fx-background-color: transparent; -fx-border-radius: 5; -fx-background-radius: 5;">
-         <children>
-            <ScrollPane layoutY="-1.0" prefHeight="551.0" prefWidth="548.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5; ;  ">
-               <content>
-                  <GridPane fx:id="GPinstruction" hgap="17.0" prefHeight="220.0" prefWidth="540.0" vgap="20.0">
-                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" />
-                     </columnConstraints>
-                     <rowConstraints>
-                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="36.0" vgrow="SOMETIMES" />
-                     </rowConstraints>
-                     <children>
-                        <Label style="-fx-text-fill: black;" text="Instruction" GridPane.columnIndex="1">
-                           <font>
-                              <Font name="Baskerville" size="27.0" />
-                           </font></Label>
-                        <Label layoutX="20.0" layoutY="183.0" minWidth="-Infinity" style="-fx-text-fill: black;" text="Step">
-                           <font>
-                              <Font name="Baskerville" size="27.0" />
-                           </font>
-                        </Label>
-                     </children>
-                     <padding>
-                        <Insets left="10.0" top="10.0" />
-                     </padding>
-                  </GridPane>
-               </content>
-            </ScrollPane>
-         </children>
-      </Pane>
       <Button fx:id="nextRecipeButton" layoutX="602.0" layoutY="830.0" mnemonicParsing="false" onAction="#showNewRecipe" style="-fx-background-color: #ebf2ed; -fx-border-color: #574443; -fx-border-radius: 20; -fx-background-radius: 20;">
          <graphic>
             <ImageView fitHeight="30.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
@@ -205,25 +268,6 @@
             </ImageView>
          </graphic>
       </Button>
-      <StackPane layoutX="551.0" layoutY="822.0" prefHeight="50.0" prefWidth="50.0">
-         <children>
-            <ImageView fx:id="yellowStar" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" visible="false">
-               <image>
-                  <Image url="@../../images/299040_star_icon.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="blackStar" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../images/211824_star_icon.png" />
-               </image>
-            </ImageView>
-            <CheckBox fx:id="checkBoxFavorite" contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" onAction="#blackOrYellowStar" opacity="0.0" prefHeight="50.0" prefWidth="50.0" />
-         </children>
-      </StackPane>
-      <ImageView fitHeight="548.0" fitWidth="44.0" layoutX="554.0" layoutY="231.0" pickOnBounds="true">
-         <image>
-            <Image url="@../../images/spiral.jpeg" />
-         </image>
-      </ImageView>
+      
    </children>
 </Pane>

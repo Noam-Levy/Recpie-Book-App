@@ -1,6 +1,7 @@
 package model;
 
 public class Ingredient {
+
 	String IngredientID, name, measurement, form;
 	float amount;
 	
@@ -75,7 +76,13 @@ public class Ingredient {
 				+ ")\n";
 	}
 	
-	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof Ingredient)
+			if(this.IngredientID.equals(((Ingredient)obj).IngredientID))
+				return true;
+		return false;
+	}
 	
 	
 }

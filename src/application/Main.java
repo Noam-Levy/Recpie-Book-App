@@ -14,11 +14,11 @@ public class Main extends Application {
  
 	@Override
 	public void start(Stage primaryStage) {
+		try {
 		Page view = new LoginRegisterPage();
 		Model model = new Model();
 		Controller controller = new Controller(view, model);
-		try {
-			controller.start(primaryStage);
+		controller.start(primaryStage);
 		} catch(Exception e) {
 			Page.showErrorWindow(e.getMessage());
 		}
