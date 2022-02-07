@@ -11,8 +11,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import listeners.UIEventListener;
 import model.Ingredient;
 import model.Recipe;
@@ -20,11 +22,13 @@ import model.Recipe;
 public class ShowRecipeBookPage extends Page implements Initializable {
 
 	@FXML private GridPane GPingredient,GPinstruction;
-	@FXML private ImageView blackStar,yellowStar;
-	@FXML private CheckBox checkBoxFavorite, cbShowFavorities;
+	@FXML private Pane imageRecipePane, textRecipePane;
+	@FXML private ImageView blackStar,yellowStar, imageRecipe;
+	@FXML private CheckBox checkBoxFavorite, cbShowFavorities, cbShowImages;
 	@FXML private Label lbCookTime,lbCuisine,lbRecipeName,lbServing, lbPageNum;
 	@FXML private Button nextRecipeButton, previousRecipeButton;
 	private ArrayList<Recipe> allRecipes;
+	private ArrayList<Image> imageRecipes;
 	private int currentRecipeIndex;
 
 	@Override
@@ -41,32 +45,59 @@ public class ShowRecipeBookPage extends Page implements Initializable {
 		}
 	} 
 
-
 	@FXML
 	private void showNewRecipe(ActionEvent event) {
-		if(event == null)
-			displayRecipe(allRecipes.get(currentRecipeIndex));
+		if(allRecipes.isEmpty())
+			lbPageNum.setText("0/0");
+		else if(event == null)
+			displayRecipe(allRecipes.get(currentRecipeIndex));	
+		else if(cbShowImages.isSelected())
+			showNewImageRecipe(event);
 		else if(((Button)event.getSource()).getId().equals("nextRecipeButton") && currentRecipeIndex < allRecipes.size() - 1)
 			displayRecipe(allRecipes.get(++currentRecipeIndex));
 		else if (((Button)event.getSource()).getId().equals("previousRecipeButton") && currentRecipeIndex > 0)
 			displayRecipe(allRecipes.get(--currentRecipeIndex));
+	}
+	
+	@FXML
+	private void showNewImageRecipe(ActionEvent event) {
+		if(imageRecipes.isEmpty())
+			lbPageNum.setText("0/0");
+		else if(event == null)
+			setImage(imageRecipes.get(currentRecipeIndex));
+		else if(((Button)event.getSource()).getId().equals("nextRecipeButton") && currentRecipeIndex < imageRecipes.size() - 1)
+			setImage(imageRecipes.get(++currentRecipeIndex));
+		else if (((Button)event.getSource()).getId().equals("previousRecipeButton") && currentRecipeIndex > 0)
+			setImage(imageRecipes.get(--currentRecipeIndex));
 	}
 
 	@FXML
 	private void showFavorities(ActionEvent event) {
 		for (UIEventListener l : listeners) {
 			try {
-				if(cbShowFavorities.isSelected()) {
+				if(cbShowFavorities.isSelected())
 					allRecipes = l.getUserFavorites();
-					showFoundRecipes(allRecipes);
-				} else {
-					allRecipes = l.getRecipies();
-					showFoundRecipes(allRecipes);
-				}
+				else
+					allRecipes = l.getRecipies();	
 			} catch (SQLException | InterruptedException e) {
 				showErrorWindow("Cannot display recipes: " + e.getMessage());
 				l.changeView("searchPage");
 			}
+		}
+		showFoundRecipes(allRecipes);
+	}
+
+	@FXML 
+	private void showImageRecipes(ActionEvent event) {
+		setPane(cbShowImages.isSelected());
+		currentRecipeIndex = 0;
+		if(cbShowImages.isSelected()) {
+			for (UIEventListener l : listeners) {
+				imageRecipes = l.getImageRecipes();
+			}
+			showNewImageRecipe(null);
+		} else {
+			showNewRecipe(null);
 		}
 	}
 
@@ -160,6 +191,47 @@ public class ShowRecipeBookPage extends Page implements Initializable {
 		yellowStar.setVisible(favorite);
 		blackStar.setVisible(!favorite);
 	}
+
+	private void setPane(boolean selected) {
+		imageRecipePane.setVisible(selected);
+		textRecipePane.setVisible(!selected);
+		blackStar.setVisible(!selected);
+		yellowStar.setVisible(!selected);
+	}
+
+	private void setImage(Image image) {
+		imageRecipe.setImage(image);
+		centerImage();
+		lbPageNum.setText(String.format("%d/%d",this.currentRecipeIndex + 1,  this.imageRecipes.size()));
+	}
+	
+	private void centerImage() {
+		/*
+		 * centers image in javaFX imageView element
+		 * https://stackoverflow.com/a/32866286
+		 */
+        Image img = imageRecipe.getImage();
+        if (img != null) {
+            double w = 0;
+            double h = 0;
+
+            double ratioX = imageRecipe.getFitWidth() / img.getWidth();
+            double ratioY = imageRecipe.getFitHeight() / img.getHeight();
+
+            double reducCoeff = 0;
+            if(ratioX >= ratioY) {
+                reducCoeff = ratioY;
+            } else {
+                reducCoeff = ratioX;
+            }
+
+            w = img.getWidth() * reducCoeff;
+            h = img.getHeight() * reducCoeff;
+
+            imageRecipe.setX((imageRecipe.getFitWidth() - w) / 2);
+            imageRecipe.setY((imageRecipe.getFitHeight() - h) / 2);
+        }
+    }
 
 	@FXML
 	private void resetGridPanes() {

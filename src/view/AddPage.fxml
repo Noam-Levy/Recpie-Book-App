@@ -32,12 +32,15 @@
                <children>
                   <HBox layoutX="231.0" prefHeight="31.0" prefWidth="700.0">
                      <children>
-                        <Label prefHeight="31.0" prefWidth="258.0" text="Recipie Name">
+                        <Label prefHeight="31.0" prefWidth="258.0" text="Recipe Name">
                            <font>
-                              <Font name="Baskerville" size="34.0" />
+                              <Font name="Century Gothic" size="30.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="txfRecipieName" prefHeight="42.0" prefWidth="536.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;" />
+                        <TextField fx:id="txfRecipieName" prefHeight="42.0" prefWidth="536.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;">
+                           <font>
+                              <Font name="Century Gothic" size="18.0" />
+                           </font></TextField>
                      </children>
                   </HBox>
                   <HBox fillHeight="false" layoutX="231.0" layoutY="70.0" prefHeight="30.0" prefWidth="700.0" spacing="20.0">
@@ -46,30 +49,39 @@
                            <children>
                               <Label prefHeight="27.0" text="Cook time">
                                  <font>
-                                    <Font name="Baskerville" size="24.0" />
+                                    <Font name="Century Gothic" size="24.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="txfRecipieCookTime" prefWidth="40.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;" />
+                              <TextField fx:id="txfRecipieCookTime" prefWidth="50.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;">
+                                 <font>
+                                    <Font name="Century Gothic" size="16.0" />
+                                 </font></TextField>
                            </children>
                         </HBox>
                         <HBox layoutX="10.0" layoutY="10.0" prefHeight="30.0" prefWidth="200.0" spacing="10.0">
                            <children>
                               <Label prefHeight="27.0" prefWidth="103.0" text="Servings">
                                  <font>
-                                    <Font name="Baskerville" size="24.0" />
+                                    <Font name="Century Gothic" size="24.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="txfServings" prefWidth="40.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;" />
+                              <TextField fx:id="txfServings" prefWidth="50.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;">
+                                 <font>
+                                    <Font name="Century Gothic" size="16.0" />
+                                 </font></TextField>
                            </children>
                         </HBox>
                         <HBox prefHeight="30.0" prefWidth="300.0" spacing="10.0">
                            <children>
                               <Label prefHeight="27.0" prefWidth="96.0" text="Cuisine">
                                  <font>
-                                    <Font name="Baskerville" size="24.0" />
+                                    <Font name="Century Gothic" size="24.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="txfRecipieCuisine" prefHeight="28.0" prefWidth="200.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;" />
+                              <TextField fx:id="txfRecipieCuisine" prefHeight="28.0" prefWidth="200.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;">
+                                 <font>
+                                    <Font name="Century Gothic" size="16.0" />
+                                 </font></TextField>
                            </children>
                         </HBox>
                      </children>
@@ -92,28 +104,37 @@
                                  <children>
                                     <Label alignment="CENTER" contentDisplay="CENTER" style="-fx-text-fill: black;" text="Amount">
                                        <font>
-                                          <Font name="Baskerville" size="24.0" />
+                                          <Font name="Century Gothic" size="24.0" />
                                        </font>
                                     </Label>
                                     <Label alignment="CENTER" contentDisplay="CENTER" style="-fx-text-fill: black;" text="Unit" GridPane.columnIndex="1">
                                        <font>
-                                          <Font name="Baskerville" size="24.0" />
+                                          <Font name="Century Gothic" size="24.0" />
                                        </font>
                                     </Label>
                                     <Label alignment="CENTER" contentDisplay="CENTER" style="-fx-text-fill: black;" text="Ingrediant" GridPane.columnIndex="2">
                                        <font>
-                                          <Font name="Baskerville" size="24.0" />
+                                          <Font name="Century Gothic" size="24.0" />
                                        </font>
                                     </Label>
                                     <Label alignment="CENTER" contentDisplay="CENTER" layoutX="150.0" layoutY="28.0" style="-fx-text-fill: black;" text="Form" GridPane.columnIndex="3">
                                        <font>
-                                          <Font name="Baskerville" size="24.0" />
+                                          <Font name="Century Gothic" size="24.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="tfAmount" layoutX="101.0" layoutY="81.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;" GridPane.rowIndex="1" />
+                                    <TextField fx:id="tfAmount" layoutX="101.0" layoutY="81.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;" GridPane.rowIndex="1">
+                                       <font>
+                                          <Font name="Century Gothic" size="16.0" />
+                                       </font></TextField>
                                     <ChoiceBox fx:id="cmbUnit" prefWidth="150.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                    <TextField prefHeight="26.0" prefWidth="133.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                                    <TextField layoutX="150.0" layoutY="81.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                    <TextField prefHeight="26.0" prefWidth="133.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                       <font>
+                                          <Font name="Century Gothic" size="16.0" />
+                                       </font></TextField>
+                                    <TextField layoutX="150.0" layoutY="81.0" style="-fx-background-color:  #ebf2ed; -fx-border-color:  #574443; -fx-border-radius: 5 ; -fx-background-radius: 5;" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                                       <font>
+                                          <Font name="Century Gothic" size="16.0" />
+                                       </font></TextField>
                                  </children>
                                  <padding>
                                     <Insets left="10.0" top="10.0" />
@@ -142,12 +163,12 @@
                                  <children>
                                     <Label layoutX="20.0" layoutY="183.0" style="-fx-text-fill: black;" text="Step">
                                        <font>
-                                          <Font name="Baskerville" size="25.0" />
+                                          <Font name="Century Gothic" size="24.0" />
                                        </font>
                                     </Label>
                                     <Label style="-fx-text-fill: black;" text="Instruction" GridPane.columnIndex="1">
                                        <font>
-                                          <Font name="Baskerville" size="24.0" />
+                                          <Font name="Century Gothic" size="24.0" />
                                        </font>
                                     </Label>
                                     <Label layoutX="20.0" layoutY="101.0" style="-fx-text-fill: black;" text="1" GridPane.rowIndex="1">
@@ -213,7 +234,7 @@
                   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="500.0" layoutX="315.0" layoutY="90.0" stroke="BLACK" strokeType="OUTSIDE" width="500.0" />
                   <Text layoutX="385.0" layoutY="620.0" text="Drag and drop picture" textAlignment="CENTER" wrappingWidth="365.2958984375">
                      <font>
-                        <Font size="26.0" />
+                        <Font name="Century Gothic" size="26.0" />
                      </font>
                   </Text>
                   <ImageView fx:id="recipeImageView" fitHeight="440.0" fitWidth="440.0" layoutX="335.0" layoutY="120.0" onDragDropped="#handleDrop" onDragOver="#handleDrag" pickOnBounds="true" preserveRatio="true" />
@@ -223,7 +244,7 @@
       </StackPane>
       <CheckBox fx:id="checkIfPhoto" layoutX="448.0" layoutY="21.0" mnemonicParsing="false" onAction="#textOrPhoto" text="Add recipe from picture">
          <font>
-            <Font size="24.0" />
+            <Font name="Century Gothic" size="24.0" />
          </font>
       </CheckBox>
    </children>

@@ -1,6 +1,7 @@
 package model;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
@@ -26,12 +27,17 @@ public class Model {
 	private ArrayList<ModelEventListener> listeners;
 
 	private ArrayList<Recipe> allRecipes, userFavorites;
+	private ArrayList<Image> imageRecipes;
+	private final File IMAGE_FOLDER; 
 
 	public Model() throws SQLException, InterruptedException {
 		listeners = new ArrayList<ModelEventListener>();
+		IMAGE_FOLDER = new File(System.getProperty("user.dir") + "\\images\\recipes");
 		allRecipes = getAllrecipes();
+		imageRecipes = getImageRecipes();
 		userFavorites = getUserFavorites();
 	}
+
 
 	public void addListener(ModelEventListener listener) {
 		listeners.add(listener);
@@ -88,6 +94,36 @@ public class Model {
 		if (this.allRecipes == null || this.allRecipes.isEmpty())
 			allRecipes = DBManager.getInstance().showAllRecipies();
 		return this.allRecipes;
+	}
+
+	public ArrayList<Image> getImageRecipes() {
+		if(!IMAGE_FOLDER.isDirectory())
+			return null;
+		if(this.imageRecipes != null)
+			return this.imageRecipes;
+
+		FilenameFilter filter = new FilenameFilter() {
+			@Override
+			public boolean accept(final File dir, final String name) {
+				if(name.endsWith(".png"))
+					return true;
+				return false;
+			}
+		};
+
+		this.imageRecipes = new ArrayList<Image>();
+		for (File f : IMAGE_FOLDER.listFiles(filter)) {
+			try {
+				Image i = SwingFXUtils.toFXImage(ImageIO.read(f), null);
+				imageRecipes.add(i);
+			} catch (IOException e) {
+				for (ModelEventListener l : listeners) {
+					l.showErrorMessage("Error loading image recipes: " + e.getMessage());
+				}
+				return null;
+			}
+		}
+		return this.imageRecipes;
 	}
 
 	public boolean addRecipeToDB(Recipe newRecipe) {
@@ -260,7 +296,7 @@ public class Model {
 				}
 			}
 		});
-		
+
 		t1.start(); 	t2.start(); 		
 		executor.shutdown();
 		t1.join();		t2.join();
@@ -271,6 +307,9 @@ public class Model {
 	public boolean savePhotoRcipe(Image image) throws IOException {
 		String path = System.getProperty("user.dir") + "\\images\\recipes\\" + image.hashCode()+".png";
 		File f = new File(path);
-		return ImageIO.write(SwingFXUtils.fromFXImage(image,null),"PNG",f);
+		boolean success = ImageIO.write(SwingFXUtils.fromFXImage(image,null),"PNG",f);
+		if(success)
+			imageRecipes.add(image);
+		return success;
 	}
 }

@@ -111,6 +111,11 @@ public class Controller implements UIEventListener, ModelEventListener {
 	public boolean savePhotoRecipe(Image image) throws IOException {
 		return model.savePhotoRcipe(image);
 	}
+	
+	@Override
+	public ArrayList<Image> getImageRecipes() {
+		return model.getImageRecipes();
+	}
 
 
 	@Override

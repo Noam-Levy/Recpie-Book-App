@@ -167,7 +167,7 @@ public class AddRecipePage extends Page implements Initializable {
 			} else
 				showErrorWindow("Unable to save recipe");
 		} catch (IOException e) {
-			showErrorWindow("Unable to save recipe: " + e.getMessage());
+			showErrorWindow("Faild to save recipe: " + e.getMessage());
 		}
 		setDragPhoto(true);
 	}

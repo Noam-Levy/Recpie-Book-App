@@ -18,6 +18,7 @@ public interface UIEventListener {
 	ArrayList<Recipe> getRecipiesByCuisine(String text) throws Exception;
 	ArrayList<Recipe> getRecipesByName(String text) throws Exception;
 	ArrayList<Recipe> getRecipies() throws SQLException, InterruptedException;
+	ArrayList<Image> getImageRecipes();
 	ArrayList<Recipe> getUserFavorites() throws SQLException, InterruptedException;
 	boolean checkRecipeInUserFavorites(Recipe r) throws SQLException;
 	boolean removeRecipeFromUserFavorites(Recipe favoriteRecipe) throws SQLException;
@@ -30,4 +31,5 @@ public interface UIEventListener {
 	void userLogout();
 	boolean userLogin(String userName, String password) throws SQLException, NoSuchAlgorithmException, IOException;
 	void showFoundRecipes(ArrayList<Recipe> foundRecipes);
+	
 }
