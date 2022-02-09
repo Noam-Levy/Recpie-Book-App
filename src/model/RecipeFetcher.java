@@ -200,7 +200,7 @@ public class RecipeFetcher {
 		return recipes;
 	}
 
-	public Recipe searchRecipeByID(int id) throws ParseException, IOException, InterruptedException, SQLException {
+	private Recipe searchRecipeByID(int id) throws ParseException, IOException, InterruptedException, SQLException {
 		HttpRequest request = HttpRequest.newBuilder()
 				.uri(URI.create("https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/"+ id + "/information"))
 				.header("x-rapidapi-host", "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com")
@@ -220,18 +220,6 @@ public class RecipeFetcher {
 
 		return createRecipe(recipeData);
 	}
-
-//	private boolean addRecipeToDB(Recipe recipe) throws SQLException, NoSuchAlgorithmException {
-//		// Compares the recipe with the DB and (if necessary) adds it to the DB.
-//		DBManager manager = DBManager.getInstance();
-//		if(manager.requestRecipeByID(recipe.getRecipeID()) == null)
-//			try {
-//				return manager.addRecipe(recipe);
-//			} catch (SQLException e) {
-//				return false;
-//			}
-//		return true;
-//	}
 
 	public String convertMeasurementToGrams(Ingredient i) throws IOException, InterruptedException, ParseException {
 		/* can be used to convert to other units - I.E: 1000 grams tomatoes = 8 piece(s).
@@ -291,7 +279,7 @@ public class RecipeFetcher {
 				form = form + s.toString() + " ";
 			}
 			form = form.trim();
-			randomRecipe.addIngrediant(new Ingredient(
+			randomRecipe.addIngredient(new Ingredient(
 					((Long)(currentIngredient.get("id"))).toString(), ((Double)(currentIngredient.get("amount"))).floatValue(),
 					(String)(currentIngredient.get("unit")), (String)(currentIngredient.get("name")),form));
 		}

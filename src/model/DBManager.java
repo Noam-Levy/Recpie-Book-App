@@ -125,7 +125,7 @@ public class DBManager {
 					&& saveInstructionsToDB(recipe.getRecipeID(), recipe.getInstructions()) 
 					&& saveIngredientsToDB(recipe.getRecipeID(), recipe.getIngrediants()) 
 					&& saveCuisineToDB(recipe.getRecipeID(), recipe.getCuisine());
-		} catch (SQLException e) {
+		} catch (SQLException | NullPointerException e) {
 			// roll-back any changes made
 			removeRecipeFromDB(recipe.getRecipeID());
 			disconnectFromDB(null);
@@ -214,7 +214,7 @@ public class DBManager {
 	public ArrayList<Recipe> searchRecipeByIngredients(Ingredient[] userIngredients) throws SQLException {
 		StringBuffer allIngredients = new StringBuffer();
 		for (int i = 0; i < userIngredients.length; i++) {
-			allIngredients.append(userIngredients[i].IngredientID );
+			allIngredients.append(userIngredients[i].ingredientID );
 			if(i< (userIngredients.length - 1)) {
 				allIngredients.append(" OR ingredientID = ");
 			}
@@ -233,7 +233,7 @@ public class DBManager {
 		return recipies;
 	}
 
-	public ArrayList<Recipe> showAllRecipies() throws SQLException { 
+	public ArrayList<Recipe> showAllRecipes() throws SQLException { 
 		String query = "Select recipeID FROM recipe;";
 		ResultSet rs = executeQuery(query);
 		if(!rs.next()) {
@@ -248,7 +248,8 @@ public class DBManager {
 		return recipies;
 	}
 
-	public Ingredient searchIngredient(String name) throws SQLException {
+	public Ingredient searchIngredient(String name) throws SQLException, NullPointerException {
+		connectToDB();
 		String query = "Select ingredientID FROM ingredient WHERE ingredientName LIKE \"%" + name + "%\";";
 		ResultSet rs = executeQuery(query);
 		if(!(rs.next())) {
@@ -259,8 +260,8 @@ public class DBManager {
 	}
 
 	public Ingredient addIngredient(String name) throws SQLException {
+		connectToDB();
 		String query = "INSERT INTO ingredient(ingredientID, ingredientName) VALUES (null,\"" + name + "\");";
-		
 		PreparedStatement statement = this.connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 		int effectedRows = statement.executeUpdate();
 		ResultSet rs = statement.getGeneratedKeys();
@@ -306,12 +307,9 @@ public class DBManager {
 	public boolean checkIfRecipeIsFavorite(String userID , String recipeID ) throws SQLException {  
 		String query = "Select * FROM user_favorites Where userID = \""+userID +"\" AND recipeID = \"" +recipeID+"\";" ;
 		ResultSet rs = executeQuery(query);
-		if(!(rs.next())) {
-			disconnectFromDB(rs);
-			return false;
-		}
+		boolean isFav = rs.next();
 		disconnectFromDB(rs);
-		return true;
+		return isFav;
 	}
 
 	public ArrayList<String> getMeasurements() throws SQLException {
@@ -342,14 +340,14 @@ public class DBManager {
 		return ingredients;
 	}
 
-	private void addCuisineToRecipe(Recipe recipe) throws SQLException { // TO BE CHECKED
+	private void addCuisineToRecipe(Recipe recipe) throws SQLException {
 		String query = "Select cuisineID, cuisineName FROM cuisine NATURAL JOIN recipe_cuisine WHERE recipeID = " + recipe.getRecipeID() + ";";
 		ResultSet rs = executeQuery(query);
 		if(!rs.next())
 			return; // recipe might not have cuisine
-		recipe.addCuisine(((Integer)(rs.getInt("cuisineID"))).toString(), rs.getString("cuisineName"));
-		while(rs.next())
+		do {
 			recipe.addCuisine(((Integer)(rs.getInt("cuisineID"))).toString(), rs.getString("cuisineName"));
+		} while(rs.next());
 	}
 
 	private void addInstructionsListToRecipe(Recipe recipe) throws SQLException {
@@ -359,9 +357,9 @@ public class DBManager {
 			disconnectFromDB(rs);
 			throw new SQLException("Cannot retrive instructions list to requested recipe");
 		}
-		recipe.addInstruction(rs.getInt("stepNumber"), rs.getString("stepInfo"));
-		while(rs.next())
+		do {
 			recipe.addInstruction(rs.getInt("stepNumber"), rs.getString("stepInfo"));
+		} while(rs.next());
 	}
 
 	private void addIngredientsListToRecipe(Recipe recipe) throws SQLException {
@@ -370,13 +368,12 @@ public class DBManager {
 		ResultSet rs = executeQuery(query);
 		if(!rs.next()) {
 			disconnectFromDB(rs);
-			throw new SQLException("Cannot retrive ingredients list to requested recipe");
+			throw new SQLException("Cannot retrive ingredients list to requested recipe (" + recipe.getRecipeName() + ")");
 		}
-		recipe.addIngrediant(new Ingredient(((Integer)(rs.getInt("ingredientID"))).toString(), rs.getFloat("amount"), 
+		do {
+			recipe.addIngredient(new Ingredient(((Integer)(rs.getInt("ingredientID"))).toString(), rs.getFloat("amount"), 
 				rs.getString("measurementName"), rs.getString("ingredientName"), rs.getString("form")));
-		while(rs.next())
-			recipe.addIngrediant(new Ingredient(((Integer)(rs.getInt("ingredientID"))).toString(), rs.getFloat("amount"), 
-					rs.getString("measurementName"), rs.getString("ingredientName"), rs.getString("form")));
+		} while(rs.next());
 	}
 
 	private boolean saveRecipeToDB(Recipe recipe) throws SQLException {

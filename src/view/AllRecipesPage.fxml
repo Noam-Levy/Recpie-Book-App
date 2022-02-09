@@ -29,21 +29,6 @@
             <Font name="Century Gothic" size="20.0" />
          </font>
       </Label>
-      <StackPane layoutX="551.0" layoutY="822.0" prefHeight="50.0" prefWidth="50.0">
-         <children>
-            <ImageView fx:id="yellowStar" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" visible="false">
-               <image>
-                  <Image url="@../../images/299040_star_icon.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="blackStar" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../images/211824_star_icon.png" />
-               </image>
-            </ImageView>
-            <CheckBox fx:id="checkBoxFavorite" contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" onAction="#blackOrYellowStar" opacity="0.0" prefHeight="50.0" prefWidth="50.0" />
-         </children>
-      </StackPane>
       <Pane fx:id="textRecipePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1150.0">
          <children>
             <ImageView fitHeight="548.0" fitWidth="44.0" pickOnBounds="true" x="553.0" y="231.0">
@@ -268,6 +253,21 @@
             </ImageView>
          </graphic>
       </Button>
+      <StackPane layoutX="551.0" layoutY="822.0" prefHeight="50.0" prefWidth="50.0">
+         <children>
+            <ImageView fx:id="yellowStar" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" visible="false">
+               <image>
+                  <Image url="@../../images/299040_star_icon.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="blackStar" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../images/211824_star_icon.png" />
+               </image>
+            </ImageView>
+            <CheckBox fx:id="checkBoxFavorite" contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" onAction="#blackOrYellowStar" opacity="0.0" prefHeight="50.0" prefWidth="50.0" />
+         </children>
+      </StackPane>
       
    </children>
 </Pane>

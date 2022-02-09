@@ -35,7 +35,7 @@ public class Model {
 		IMAGE_FOLDER = new File(System.getProperty("user.dir") + "\\images\\recipes");
 		allRecipes = getAllrecipes();
 		imageRecipes = getImageRecipes();
-		userFavorites = getUserFavorites();
+		//		userFavorites = getUserFavorites();
 	}
 
 
@@ -92,7 +92,7 @@ public class Model {
 
 	public ArrayList<Recipe> getAllrecipes() throws SQLException, InterruptedException {
 		if (this.allRecipes == null || this.allRecipes.isEmpty())
-			allRecipes = DBManager.getInstance().showAllRecipies();
+			allRecipes = DBManager.getInstance().showAllRecipes();
 		return this.allRecipes;
 	}
 
@@ -213,6 +213,7 @@ public class Model {
 				foundRecipes.add(r);
 		}
 		t1.join();
+		while(!executor.isTerminated()) {}
 		return foundRecipes; 
 	}
 
@@ -249,6 +250,7 @@ public class Model {
 				foundRecipes.add(r);
 		}
 		t1.join();
+		while(!executor.isTerminated()) {}
 		return foundRecipes; 
 	}
 
@@ -276,31 +278,21 @@ public class Model {
 		});
 
 		ExecutorService executor = Executors.newFixedThreadPool(5);
-		Thread t2 = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					// will not add nulls - checked in RecipeFetcher
-					ArrayList<Recipe> foundByAPI = RecipeFetcher.getInstance().searchRecipesByIngredients(ingredients);
-					for (Recipe r : foundByAPI) {
-						executor.execute(new Runnable() {
-							@Override
-							public void run() {
-								if(addRecipeToDB(r))
-									foundRecipes.add(r);
-							}
-						});
-					}
-				} catch (IOException | InterruptedException | ParseException | SQLException | NoSuchAlgorithmException e) {
-					return;
+		// will not add nulls - checked in RecipeFetcher
+		ArrayList<Recipe> foundByAPI = RecipeFetcher.getInstance().searchRecipesByIngredients(ingredients);
+		for (Recipe r : foundByAPI) {
+			executor.execute(new Runnable() {
+				@Override
+				public void run() {
+					if(addRecipeToDB(r))
+						foundRecipes.add(r);
 				}
-			}
-		});
-
-		t1.start(); 	t2.start(); 		
+			});
+		}
+		t1.start();		
 		executor.shutdown();
-		t1.join();		t2.join();
-
+		t1.join();		
+		while(!executor.isTerminated()) {}
 		return foundRecipes;
 	}
 

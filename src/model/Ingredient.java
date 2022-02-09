@@ -2,12 +2,12 @@ package model;
 
 public class Ingredient {
 
-	String IngredientID, name, measurement, form;
+	String ingredientID, name, measurement, form;
 	float amount;
 	
 	public Ingredient(String id, float amount, String measurement, String name, String form)
 	{
-		this.IngredientID = id;
+		this.ingredientID = id;
 		this.name = name;
 		setMeasurement(measurement);
 		this.amount = amount;
@@ -15,11 +15,11 @@ public class Ingredient {
 	}
 
 	public String getIngrediantID() {
-		return IngredientID;
+		return ingredientID;
 	}
 
 	public void setIngrediantID(String ingredientID) {
-		IngredientID = ingredientID;
+		this.ingredientID = ingredientID;
 	}
 
 	public String getName() {
@@ -79,7 +79,7 @@ public class Ingredient {
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof Ingredient)
-			if(this.IngredientID.equals(((Ingredient)obj).IngredientID))
+			if(this.ingredientID.equals(((Ingredient)obj).ingredientID))
 				return true;
 		return false;
 	}

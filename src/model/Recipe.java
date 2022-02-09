@@ -95,7 +95,7 @@ public class Recipe {
 		return ingredients;
 	}
 
-	public void addIngrediant(Ingredient i) {
+	public void addIngredient(Ingredient i) {
 		for (Ingredient ingredient : ingredients)
 			if(i.equals(ingredient))
 				return;
