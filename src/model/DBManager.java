@@ -118,19 +118,17 @@ public class DBManager {
 		connectToDB();
 		boolean success = false;
 		try {
-			success =  saveRecipeToDB(recipe);
-			if(!success)
-				return false;
-			success = success 
+			success =  saveRecipeToDB(recipe)
 					&& saveInstructionsToDB(recipe.getRecipeID(), recipe.getInstructions()) 
 					&& saveIngredientsToDB(recipe.getRecipeID(), recipe.getIngrediants()) 
 					&& saveCuisineToDB(recipe.getRecipeID(), recipe.getCuisine());
 		} catch (SQLException | NullPointerException e) {
 			// roll-back any changes made
 			removeRecipeFromDB(recipe.getRecipeID());
-			disconnectFromDB(null);
-			return false;
+			success = false;
 		}
+		if(!success)
+			removeRecipeFromDB(recipe.getRecipeID());
 		disconnectFromDB(null);
 		return success;
 	}
@@ -145,7 +143,7 @@ public class DBManager {
 	}
 
 	public Recipe requestRecipeByID(String recipeID) throws SQLException {
-		String query = "Select * FROM recipe WHERE recipeID = " + recipeID + ";";
+		String query = "SELECT * FROM recipe WHERE recipeID = " + recipeID + ";";
 		ResultSet rs = executeQuery(query);
 		if(!rs.next()) {
 			disconnectFromDB(rs);
@@ -167,7 +165,7 @@ public class DBManager {
 	}
 
 	public ArrayList<Recipe> searchRecipeByName(String recipeName) throws SQLException {
-		String query = "Select recipeID FROM recipe WHERE recipeName = \"" + recipeName + "\";";
+		String query = "SELECT recipeID FROM recipe WHERE recipeName = \"" + recipeName + "\";";
 		ResultSet rs = executeQuery(query);
 		if(!rs.next()) {
 			disconnectFromDB(rs);
@@ -185,7 +183,7 @@ public class DBManager {
 	}
 
 	public ArrayList<Recipe> searchRecipeByCuisine(String cuisine) throws SQLException {
-		String query = "Select recipeID FROM recipe_cuisine "
+		String query = "SELECT recipeID FROM recipe_cuisine "
 				+ "WHERE cuisineID IN (SELECT cuisineID FROM cuisine WHERE cuisineName = \"" + cuisine + "\");";
 		ResultSet rs = executeQuery(query);
 		if(!rs.next()) {
@@ -201,7 +199,7 @@ public class DBManager {
 
 	public String getCuisineID(String currentCuisine) throws SQLException {
 		String id;
-		String query = "Select cuisineID FROM cuisine WHERE cuisineName = \"" + currentCuisine + "\";";
+		String query = "SELECT cuisineID FROM cuisine WHERE cuisineName = \"" + currentCuisine + "\";";
 		ResultSet rs = executeQuery(query);
 		if(!rs.next())
 			id = addCuisineToDB(currentCuisine);
@@ -219,22 +217,22 @@ public class DBManager {
 				allIngredients.append(" OR ingredientID = ");
 			}
 		}
-		String query = "Select recipeID FROM recipe_ingredients WHERE ingredientID = " + allIngredients.toString() + ";";
+		String query = "SELECT recipeID FROM recipe_ingredients WHERE ingredientID = " + allIngredients.toString() + ";";
 		ResultSet rs = executeQuery(query);
 		if(!rs.next()) {
 			disconnectFromDB(rs);
 			return null;
 		}
 		ArrayList<Recipe> recipies =  new ArrayList<Recipe>();
-		while(rs.next()) {
+		do {
 			recipies.add(requestRecipeByID(rs.getString("recipeID")));
-		}
+		} while(rs.next()); 
 		disconnectFromDB(rs);
 		return recipies;
 	}
 
 	public ArrayList<Recipe> showAllRecipes() throws SQLException { 
-		String query = "Select recipeID FROM recipe;";
+		String query = "SELECT recipeID FROM recipe;";
 		ResultSet rs = executeQuery(query);
 		if(!rs.next()) {
 			disconnectFromDB(rs);
@@ -250,7 +248,7 @@ public class DBManager {
 
 	public Ingredient searchIngredient(String name) throws SQLException, NullPointerException {
 		connectToDB();
-		String query = "Select ingredientID FROM ingredient WHERE ingredientName LIKE \"%" + name + "%\";";
+		String query = "SELECT ingredientID FROM ingredient WHERE ingredientName LIKE \"%" + name + "%\";";
 		ResultSet rs = executeQuery(query);
 		if(!(rs.next())) {
 			return null;
@@ -274,7 +272,7 @@ public class DBManager {
 	}
 
 	public ArrayList<Recipe> getUserFavorites(int userID) throws SQLException { 
-		String query = "Select recipeID FROM user_favorites WHERE userID = " + userID + ";";
+		String query = "SELECT recipeID FROM user_favorites WHERE userID = " + userID + ";";
 		ResultSet rs = executeQuery(query);
 		if(!rs.next()) {
 			disconnectFromDB(rs);
@@ -305,7 +303,7 @@ public class DBManager {
 	}
 
 	public boolean checkIfRecipeIsFavorite(String userID , String recipeID ) throws SQLException {  
-		String query = "Select * FROM user_favorites Where userID = \""+userID +"\" AND recipeID = \"" +recipeID+"\";" ;
+		String query = "SELECT * FROM user_favorites Where userID = \""+userID +"\" AND recipeID = \"" +recipeID+"\";" ;
 		ResultSet rs = executeQuery(query);
 		boolean isFav = rs.next();
 		disconnectFromDB(rs);
@@ -313,7 +311,7 @@ public class DBManager {
 	}
 
 	public ArrayList<String> getMeasurements() throws SQLException {
-		String query = "Select measurementName FROM standard_measurement;";
+		String query = "SELECT measurementName FROM standard_measurement;";
 		ResultSet rs = executeQuery(query);
 		if(!(rs.next())) {
 			disconnectFromDB(rs);
@@ -327,7 +325,7 @@ public class DBManager {
 	}
 
 	public ArrayList<Ingredient> getIngredients() throws SQLException {
-		String query = "Select ingredientID, ingredientName FROM ingredient;";
+		String query = "SELECT ingredientID, ingredientName FROM ingredient;";
 		ResultSet rs = executeQuery(query);
 		if(!(rs.next())) {
 			disconnectFromDB(rs);
@@ -341,7 +339,7 @@ public class DBManager {
 	}
 
 	private void addCuisineToRecipe(Recipe recipe) throws SQLException {
-		String query = "Select cuisineID, cuisineName FROM cuisine NATURAL JOIN recipe_cuisine WHERE recipeID = " + recipe.getRecipeID() + ";";
+		String query = "SELECT cuisineID, cuisineName FROM cuisine NATURAL JOIN recipe_cuisine WHERE recipeID = " + recipe.getRecipeID() + ";";
 		ResultSet rs = executeQuery(query);
 		if(!rs.next())
 			return; // recipe might not have cuisine
@@ -351,7 +349,7 @@ public class DBManager {
 	}
 
 	private void addInstructionsListToRecipe(Recipe recipe) throws SQLException {
-		String query = "Select stepNumber, stepInfo FROM recipe_instructions WHERE recipeID = " + recipe.getRecipeID() + ";";
+		String query = "SELECT stepNumber, stepInfo FROM recipe_instructions WHERE recipeID = " + recipe.getRecipeID() + ";";
 		ResultSet rs = executeQuery(query);
 		if(!rs.next()) {
 			disconnectFromDB(rs);

@@ -35,7 +35,6 @@ public class Model {
 		IMAGE_FOLDER = new File(System.getProperty("user.dir") + "\\images\\recipes");
 		allRecipes = getAllrecipes();
 		imageRecipes = getImageRecipes();
-		//		userFavorites = getUserFavorites();
 	}
 
 
@@ -97,6 +96,8 @@ public class Model {
 	}
 
 	public ArrayList<Image> getImageRecipes() {
+		if(!IMAGE_FOLDER.exists())
+			IMAGE_FOLDER.mkdir();
 		if(!IMAGE_FOLDER.isDirectory())
 			return null;
 		if(this.imageRecipes != null)

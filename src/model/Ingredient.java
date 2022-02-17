@@ -39,6 +39,8 @@ public class Ingredient {
 			return;
 		if (measurement.toLowerCase().equals("c"))
 			this.measurement = "cups";
+		if (measurement.toLowerCase().equals("g"))
+			this.measurement = "grams";
 		else if (measurement.isBlank())
 			this.measurement = "unit";
 		else if(measurement.toLowerCase().equals("tbsp"))

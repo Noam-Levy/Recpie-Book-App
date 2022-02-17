@@ -1,5 +1,8 @@
 /config.properties
+/application/
+/controller/
 /exceptions/
 /listeners/
 /model/
+/module-info.class
 /view/
